@@ -26,4 +26,18 @@ typedef struct			s_player
 	int					team_id;
 	int					egg;
 }						t_player;
+
+typedef int				(*t_command)(int, void *);
+
+int						advance(int player_id, void *arg);
+int						turn(int player_id, void *arg);
+int						see(int player_id, void *arg);
+int						inventory(int player_id, void *arg);
+int						take(int player_id, void *arg);
+int						put(int player_id, void *arg);
+int						kick(int player_id, void *arg);
+int						broadcast(int player_id, void *arg);
+int						incantation(int player_id, void *arg);
+int						fork_player(int player_id, void *arg);
+int						connect_nbr(int player_id, void *arg);
 #endif
