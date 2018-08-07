@@ -1,10 +1,16 @@
 
 #ifndef SERVER_H
 # define SERVER_H
+# include <arpa/inet.h>
 # include <assert.h>
+# include <netdb.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/socket.h>
+# include <unistd.h>
+
+# define ERR_OUT(msg) ({ perror(msg); exit(-1); })
 
 enum					e_directions
 {
@@ -53,6 +59,12 @@ typedef struct			s_map_info
 */
 
 t_map_info					*g_map;
+
+/*
+** server.c
+*/
+
+int						get_server_socket(int port);
 
 /*
 ** Map Functions:
