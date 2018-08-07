@@ -1,6 +1,4 @@
-
 #include "server.h"
-#include <stdio.h>
 
 void			print_map_info(void)
 {
@@ -23,7 +21,7 @@ void			print_map_info(void)
 	}
 }
 
-int				main(void)
+int	test_stone_placement(void)
 {
 	create_map(10, 10);
 	place_random_stones(0, 30);

@@ -1,8 +1,10 @@
 
 #ifndef SERVER_H
 # define SERVER_H
+# include <assert.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 
 enum					e_directions
 {

@@ -29,7 +29,8 @@ FILES		= map_creation.c \
 # (Use full relative path to Makefile)
 MAIN		= src/main.c
 
-TESTMAIN	= testmain.c
+TESTMAIN	= test/testmain.c
+TESTS		= $(wildcard test/test_*.c)
 
 SRC			= $(addprefix src/, $(FILES))
 
@@ -49,10 +50,10 @@ fclean: clean
 
 re: fclean all
 
-test: CFLAGS += -Wno-error
+test: CFLAGS += -Wno-error -Wno-unused-parameter
 test: $(SRC) $(INC) $(TESTMAIN)
 	@printf "%b" "$(LIB_COLOR)Compiling Test: $(OK_COLOR)test_$(NAME)\n$(NO_COLOR)"
-	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o test_$(NAME) $(TESTMAIN) $(SRC)
+	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o test_$(NAME) $(TESTMAIN) $(TESTS) $(SRC)
 
 norm:
 	@printf "%b" "$(LIB_COLOR)$(NAME): Checking Norm...\n$(NO_COLOR)"
