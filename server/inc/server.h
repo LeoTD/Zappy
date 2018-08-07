@@ -65,6 +65,7 @@ t_map_info					*g_map;
 */
 
 int						get_server_socket(int port);
+int						accept_and_poll_clients(int server);
 
 /*
 ** Map Functions:

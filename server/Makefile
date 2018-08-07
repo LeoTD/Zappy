@@ -54,8 +54,8 @@ re: fclean all
 
 test: CFLAGS += -Wno-error -Wno-unused-parameter
 test: $(SRC) $(INC) $(TESTMAIN)
-	@printf "%b" "$(LIB_COLOR)Compiling Test: $(OK_COLOR)test_$(NAME)\n$(NO_COLOR)"
-	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o test_$(NAME) $(TESTMAIN) $(TESTS) $(SRC)
+	printf "%b" "$(LIB_COLOR)Compiling Test: $(OK_COLOR)test_$(NAME)\n$(NO_COLOR)"
+	$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -Itest -o test_$(NAME) $(TESTMAIN) $(TESTS) $(SRC)
 
 norm:
 	@printf "%b" "$(LIB_COLOR)$(NAME): Checking Norm...\n$(NO_COLOR)"
