@@ -22,6 +22,7 @@ INC			= inc/$(NAME).h \
 
 # Add source files here: (files assumed to be in ./src folder)
 FILES		= map_creation.c \
+			  map_movement.c \
 			  map_stonefuncs.c \
 			  server.c \
 			  user_commands.c \

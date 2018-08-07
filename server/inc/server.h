@@ -71,10 +71,14 @@ int						accept_and_poll_clients(int server);
 ** Map Functions:
 */
 
-int						remove_stone(int type, int amount, t_tile *t);
-int						place_stone(int type, int amount, t_tile *t);
-int						place_random_stones(int type, int pool);
 int						create_map(int, int);
+int						place_stone(int type, int amount, t_tile *t);
+int						remove_stone(int type, int amount, t_tile *t);
+int						place_random_stones(int type, int pool);
+
+t_tile					*get_adj_tile(t_tile *home, int dir);
+t_tile					*get_tile_NS(t_tile *home, int v);
+t_tile					*get_tile_EW(t_tile *home, int v);
 
 /*
 ** User commands:
