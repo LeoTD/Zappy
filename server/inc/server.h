@@ -4,6 +4,18 @@
 # include <stdio.h>
 # include <stdlib.h>
 
+enum					e_directions
+{
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+	NORTHEAST,
+	NORTHWEST,
+	SOUTHEAST,
+	SOUTHWEST
+};
+
 typedef struct			s_tile
 {
 	struct s_player		*players;
@@ -26,6 +38,32 @@ typedef struct			s_player
 	int					team_id;
 	int					egg;
 }						t_player;
+
+typedef struct			s_map_info
+{
+	t_tile				**tile;
+	int					x;
+	int					y;
+}						t_map_info;
+
+/*
+** Global Variables:
+*/
+
+t_map_info					*g_map;
+
+/*
+** Map Functions:
+*/
+
+int						remove_stone(int type, int amount, t_tile *t);
+int						place_stone(int type, int amount, t_tile *t);
+int						place_random_stones(int type, int pool);
+int						create_map(int, int);
+
+/*
+** User commands:
+*/
 
 typedef int				(*t_command)(int, void *);
 

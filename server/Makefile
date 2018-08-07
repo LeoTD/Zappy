@@ -21,14 +21,15 @@ COM_STRING	= "Compiling:"
 INC			= inc/$(NAME).h \
 
 # Add source files here: (files assumed to be in ./src folder)
-FILES		= 
+FILES		= map_creation.c \
+			  map_stonefuncs.c \
 
 # MAIN is used by		"make"
 # TESTMAIN is used by	"make test"
 # (Use full relative path to Makefile)
 MAIN		= src/main.c
 
-TESTMAIN	= #testmain.c
+TESTMAIN	= testmain.c
 
 SRC			= $(addprefix src/, $(FILES))
 
