@@ -17,46 +17,43 @@ NO_COLOR    = \033[m
 COM_STRING	= "Compiling:"
 # End Cosmetics.
 
-LIBS		=
-
 # Add header files here: (use full relative path to Makefile)
 INC			= inc/$(NAME).h \
 
 # Add source files here: (files assumed to be in ./src folder)
 FILES		= 
 
+# MAIN is used by		"make"
+# TESTMAIN is used by	"make test"
+# (Use full relative path to Makefile)
 MAIN		= src/main.c
+
 TESTMAIN	= #testmain.c
 
 SRC			= $(addprefix src/, $(FILES))
 
 # ---------------------------------------------------------------------------- #
 
-all: $(NAME)
-
-$(NAME): $(LIBS) $(SRC) $(INC)
-	@printf "%b" "$(LIB_COLOR)Compiling: $(OK_COLOR)$@\n$(NO_COLOR)"
-	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o $(NAME) $(MAIN) $(SRC) $(LIBS)
-
-$(LIBS):
-	@make -C libft
+all: $(SRC) $(INC) $(MAIN)
+	@printf "%b" "$(LIB_COLOR)Compiling: $(OK_COLOR)$(NAME)\n$(NO_COLOR)"
+	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o $(NAME) $(MAIN) $(SRC)
+	@mv $(NAME) ../bin/
 
 clean:
 	@printf "Cleaning up $(NAME)...\n"
 
 fclean: clean
-	@rm -f $(NAME)
-	@make -C libft fclean
+	@rm -f ../bin/$(NAME)
+	@rm -f test_$(NAME)
 
 re: fclean all
 
-test: $(SRC) $(INC)
+test: $(SRC) $(INC) $(TESTMAIN)
 	@printf "%b" "$(LIB_COLOR)Compiling Test: $(OK_COLOR)test_$(NAME)\n$(NO_COLOR)"
-	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o test_$(NAME) $(TESTMAIN) $(SRC) $(LIBS)
+	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o test_$(NAME) $(TESTMAIN) $(SRC)
 
 norm:
 	@printf "%b" "$(LIB_COLOR)$(NAME): Checking Norm...\n$(NO_COLOR)"
-	@norminette $(SRC) $(INCLUDES)
-	@make -C libft norm
+	@norminette $(SRC) $(INC) $(MAIN)
 
 .PHONY: clean fclean all re
