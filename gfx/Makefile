@@ -48,6 +48,7 @@ fclean: clean
 
 re: fclean all
 
+test: CFLAGS += -Wno-error
 test: $(SRC) $(INC) $(TESTMAIN)
 	@printf "%b" "$(LIB_COLOR)Compiling Test: $(OK_COLOR)test_$(NAME)\n$(NO_COLOR)"
 	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o test_$(NAME) $(TESTMAIN) $(SRC)
@@ -56,4 +57,4 @@ norm:
 	@printf "%b" "$(LIB_COLOR)$(NAME): Checking Norm...\n$(NO_COLOR)"
 	@norminette $(SRC) $(INC) $(MAIN)
 
-.PHONY: clean fclean all re
+.PHONY: clean fclean all re test norm
