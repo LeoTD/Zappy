@@ -22,8 +22,13 @@ INC			= inc/$(NAME).h \
 
 # Add source files here: (files assumed to be in ./src folder)
 FILES		= map_creation.c \
-			  map_movement.c \
+			  map_player_movement.c \
+			  map_tile_movement.c \
+			  map_tile_to_player_funcs.c \
 			  map_stonefuncs.c \
+			  map_foodfuncs.c \
+			  player_creation.c \
+			  player_data_api.c \
 			  server.c \
 			  user_commands.c \
 
@@ -55,8 +60,8 @@ re: fclean all
 
 test: CFLAGS += -Wno-error -Wno-unused-parameter -Wno-unused-variable
 test: $(SRC) $(INC) $(TESTMAIN)
-	printf "%b" "$(LIB_COLOR)Compiling Test: $(OK_COLOR)test_$(NAME)\n$(NO_COLOR)"
-	$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -Itest -o test_$(NAME) $(TESTMAIN) $(TESTS) $(SRC)
+	@printf "%b" "$(LIB_COLOR)Compiling Test: $(OK_COLOR)test_$(NAME)\n$(NO_COLOR)"
+	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -Itest -o test_$(NAME) $(TESTMAIN) $(TESTS) $(SRC)
 
 norm:
 	@printf "%b" "$(LIB_COLOR)$(NAME): Checking Norm...\n$(NO_COLOR)"
