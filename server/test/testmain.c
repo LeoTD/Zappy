@@ -9,7 +9,6 @@ int		test_server_listens_for_clients(void);
 int		main(int argc, char **argv)
 {
 	test_stone_placement();
-	test_map_movement();
 	test_user_commands_runnable();
 	test_can_make_server_listener();
 	test_server_listens_for_clients();

@@ -53,7 +53,7 @@ fclean: clean
 
 re: fclean all
 
-test: CFLAGS += -Wno-error -Wno-unused-parameter
+test: CFLAGS += -Wno-error -Wno-unused-parameter -Wno-unused-variable
 test: $(SRC) $(INC) $(TESTMAIN)
 	printf "%b" "$(LIB_COLOR)Compiling Test: $(OK_COLOR)test_$(NAME)\n$(NO_COLOR)"
 	$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -Itest -o test_$(NAME) $(TESTMAIN) $(TESTS) $(SRC)
