@@ -14,8 +14,8 @@ int		main(int argc, char **argv)
 	test_map_movement();
 	test_player_creation();
 	test_player_movement();
-//	test_user_commands_runnable();
-//	test_can_make_server_listener();
-//	test_server_listens_for_clients();
+	test_user_commands_runnable();
+	test_can_make_server_listener();
+	test_server_listens_for_clients();
 	return (0);
 }

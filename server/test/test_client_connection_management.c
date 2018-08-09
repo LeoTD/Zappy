@@ -55,7 +55,10 @@ int		test_server_listens_for_clients(void)
 		{
 			accept_and_poll_clients(fd);
 			if (g_make_server_die)
+			{
+				printf("%s: ok\n", __func__);
 				break;
+			}
 		}
 	}
 	return (0);

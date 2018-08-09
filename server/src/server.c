@@ -27,7 +27,6 @@ int		get_server_socket(int port)
 	optval = 1;
 	if (setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval)) == -1)
 		ERR_OUT("setsockopt");
-	printf("server starting on port %d\n", ntohs(server.sin_port));
 	if (listen(fd, 3) == -1)
 		ERR_OUT("listen");
 	return (fd);
@@ -61,7 +60,6 @@ ssize_t	handle_client_message(int cli_fd)
 	if (count > 0)
 	{
 		buf[count] = '\0';
-		printf("%s:%d -- %s", inet_ntoa(client.sin_addr), client.sin_port, buf);
 #ifdef TESTING
 		g_make_server_die = !strncmp("kill", buf, 4);
 #endif
