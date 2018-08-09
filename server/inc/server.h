@@ -11,6 +11,7 @@
 # include <unistd.h>
 
 # define ERR_OUT(msg) ({ perror(msg); exit(-1); })
+# define CMD_COUNTDOWN(plr) (plr->cmd_list->delay_cycles)
 
 enum					e_directions
 {
@@ -53,6 +54,24 @@ typedef struct			s_map_info
 	int					x;
 	int					y;
 }						t_map_info;
+
+typedef struct			s_cmd
+{
+	struct s_cmd		*next;
+	int					player_id;		//Can we do this better?
+	t_command			cmd;
+	void				*args;
+	int					timestamp;
+	int					delay_cycles;
+}						t_cmd;
+
+typedef struct			s_plr_cmds
+{
+	struct s_plr_cmds	*next_plr;
+	struct s_cmd		*cmd_list;
+	int					player_id;
+	int					cmd_count;
+}						t_plr_cmds;
 
 /*
 ** Global Variables:
