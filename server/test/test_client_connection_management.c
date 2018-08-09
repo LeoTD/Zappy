@@ -20,6 +20,8 @@ void	quicksleep(void)
 	nanosleep(&rqtp, NULL);
 }
 
+int g_make_server_die = 0;
+
 int		test_server_listens_for_clients(void)
 {
 	int		fd;
@@ -45,7 +47,12 @@ int		test_server_listens_for_clients(void)
 	}
 	else
 	{
-		accept_and_poll_clients(fd);
+		while (1)
+		{
+			accept_and_poll_clients(fd);
+			if (g_make_server_die)
+				break;
+		}
 	}
 	return (0);
 }

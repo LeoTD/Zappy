@@ -1,11 +1,8 @@
 #include "server.h"
-#define TESTING // remove me
+#include "test.h" // remove me
 
 static fd_set		g_all_fds;
 static int			g_max_fd;
-#ifdef TESTING
-static int			g_make_server_die;
-#endif
 
 int		get_server_socket(int port)
 {
@@ -16,6 +13,8 @@ int		get_server_socket(int port)
 
 	if ((fd = socket(AF_INET, SOCK_STREAM, getprotobyname("tcp")->p_proto)) < 0)
 		ERR_OUT("socket");
+	g_max_fd = fd;
+	FD_SET(fd, &g_all_fds);
 	server.sin_family = AF_INET;
 	server.sin_port = htons(port);
 	server.sin_addr.s_addr = INADDR_ANY;
@@ -82,29 +81,20 @@ int		accept_and_poll_clients(int serv_fd)
 	fd_set				readable;
 	int					curr_fd;
 
-	g_max_fd = serv_fd;
-	FD_SET(serv_fd, &g_all_fds);
-	while (1)
+	readable = g_all_fds;
+	if (select(g_max_fd + 1, &readable, NULL, NULL, NULL) == -1)
+		ERR_OUT("select");
+	curr_fd = 0;
+	while (curr_fd <= g_max_fd)
 	{
-		readable = g_all_fds;
-		if (select(g_max_fd + 1, &readable, NULL, NULL, NULL) == -1)
-			ERR_OUT("select");
-		curr_fd = 0;
-		while (curr_fd <= g_max_fd)
+		if (FD_ISSET(curr_fd, &readable))
 		{
-			if (FD_ISSET(curr_fd, &readable))
-			{
-				if (curr_fd == serv_fd)
-					handle_client_connection_attempt(curr_fd);
-				else
-					handle_client_message(curr_fd);
-			}
-			curr_fd++;
+			if (curr_fd == serv_fd)
+				handle_client_connection_attempt(curr_fd);
+			else
+				handle_client_message(curr_fd);
 		}
-#ifdef TESTING
-		if (g_make_server_die)
-			break;
-#endif
+		curr_fd++;
 	}
 	return (0);
 }
