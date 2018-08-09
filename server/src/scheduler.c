@@ -25,7 +25,7 @@ int				schd_add_plr(int player_id)
 	return (0);
 }
 
-static t_cmd	*new_command(int player_id, t_command cmd,
+static t_cmd	*new_command(int player_id, t_cmdfunc cmd,
 						void *args, int delay_cycles)
 {
 	t_cmd	*new_cmd;
@@ -48,7 +48,7 @@ static t_cmd	*new_command(int player_id, t_command cmd,
 **	exits if player_id not found.
 */
 
-int				schd_add_cmd(int player_id, t_command cmd,
+int				schd_add_cmd(int player_id, t_cmdfunc cmd,
 						void *args, int delay_cycles)
 {
 	t_plr_cmds	*node;
