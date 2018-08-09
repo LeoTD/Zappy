@@ -37,13 +37,17 @@ int		test_server_listens_for_clients(void)
 	{
 		close(fd);
 		if (!fork())
+		{
 			system(cmd);
+			exit(0);
+		}
 		else
 		{
 			quicksleep();
 			memcpy(cmd + 6, "kill!", 5);
 			system(cmd);
 		}
+		exit(0);
 	}
 	else
 	{
