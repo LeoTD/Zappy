@@ -3,8 +3,8 @@
 int		test_user_commands_runnable(void)
 {
 	advance(1, NULL);
-	turn(1, "right");
-	turn(1, "left");
+	left(1, NULL);
+	right(1, NULL);
 	see(1, NULL);
 	inventory(1, NULL);
 	take(1, "phiras");

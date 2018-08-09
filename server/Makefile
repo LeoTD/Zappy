@@ -29,6 +29,7 @@ FILES		= map_creation.c \
 			  map_foodfuncs.c \
 			  player_creation.c \
 			  player_data_api.c \
+			  message_to_command.c \
 			  server.c \
 			  user_commands.c \
 

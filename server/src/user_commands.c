@@ -5,7 +5,12 @@ int	advance(int player_id, void *arg)
 	return (0);
 }
 
-int	turn(int player_id, void *arg)
+int	left(int player_id, void *arg)
+{
+	return (0);
+}
+
+int	right(int player_id, void *arg)
 {
 	return (0);
 }

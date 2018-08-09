@@ -11,6 +11,7 @@
 # include <unistd.h>
 
 # define ERR_OUT(msg) ({ perror(msg); exit(-1); })
+# define MAX_BROADCAST_LENGTH 4096
 
 enum					e_directions
 {
@@ -115,10 +116,11 @@ int						add_player_to_empty_list(t_player *p, int team);
 ** User commands:
 */
 
-typedef int				(*t_command)(int, void *);
+typedef int				(*t_cmdfunc)(int, void *);
 
 int						advance(int player_id, void *arg);
-int						turn(int player_id, void *arg);
+int						left(int player_id, void *arg);
+int						right(int player_id, void *arg);
 int						see(int player_id, void *arg);
 int						inventory(int player_id, void *arg);
 int						take(int player_id, void *arg);
