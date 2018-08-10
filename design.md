@@ -1,0 +1,370 @@
+
+modules:
+
+    game/various: map.c, tile.c, ...
+    
+    cmdfunc_type.c, .h
+    command_type.c, .h
+    command_list_type.c, .h
+    command_queue_type.c, .h
+    client_type.c, .h
+    
+    user_commands/
+    (advance, right, left, see, inventory, take, put, kick, broadcast, incantation, fork, connect_nbr).c
+
+    gfx_clients.c
+    user_clients_lookup.c
+    active_socket_info.c
+
+    game_parameters.c
+    listen_for_connections.c
+    handshake.c
+    receive_user_message.c
+    is_it_time_to_tick.c
+    remove_dead_players.c
+    pull_ready_commands.c
+    execute_command_list.c
+    game_over.c
+    send_stringified_responses.c
+    decrement_user_command_timers.c
+
+    server.c
+
+
+# Overview
+
+Our program is essentially some setup, and then a while(1) loop that continuously checks for a few possible events.
+
+### Setup
+
++ Tell the game to start up with the given world size, number of teams, and number of starting players. *`game_parameters.c`*
++ Start up the server listening process on the user-specified port. *`listen_for_connections.c`*
+
+### Received a connection request from a user client:
+
++ Initiate the handshake. *`handshake.c`*
+
+### Received a connection request from a graphics client:
+
++ Register them as a known graphics client *`gfx_clients.c`*
+
+### After we have begun a user handshake, that user sent us a second message
+
++ Ask game if a body is available on that team. If so, assign the client to that body. *`handshake.c`*
+
+### A user client with a living in-game avatar sent us a command:
+
++ Add any valid commands contained in the message until the client's command queue is full *`receive_user_message.c`*
+
+### One "tick" of time has passed: *`is_it_time_to_tick.c`*
+
++ Remove from consideration anyone who starves to death before they can act. Tell them they died. *`remove_dead_players.c`*
++ Get list of ready-to-execute commands for remaining players. *`dequeue_commands.c`*
++ (Maybe sort, and) Run every command in the list, storing the game's response *`execute_command_list.c`, `user_commands/<various>.c`*
++ (If someone won, or if everyone died, inform the clients and end.) *`game_over.c`*
++ Report to the user clients the results of their commands. *`create_user_response_string.c`, `send_stringified_responses.c`*
++ Send a specialized report to any connected graphics clients, if they requested one. *`?.c`*
++ Note the time. We won't tick until enough time has passed since this point. *`is_it_time_to_tick.c`*
++ Free the executed commands with their args and responses.
++ Decrement the timer of the top command in every user's queue. *`decrement_user_command_timers.c`*
+
+# types and globals
+
+	typedef void (*t_cmdfunc)(int player_id, void *args);
+
+	typedef struct s_client {
+		int socket_fd;
+		int player_id;
+		t_command_queue *cmdqueue;
+    	} t_client;
+
+	typedef struct s_command {
+		t_cmdfunc cmdfunc;
+		char *args;
+		char *response;
+		struct timespec timestamp; // maybe -- only for an optional but fairness-ensuring extra feature
+		int player_id;
+	} t_command;
+
+    typedef struct s_command_list {
+		t_command *cmd;
+		t_command *next;
+	} t_command_list;
+
+    typedef struct s_command_queue {
+		t_command_list *head;
+		t_command_list *tail;
+		int remaining_space; int dequeue_timer;
+	} t_command_queue;
+
+    enum e_connection_type {
+    	HANDSHAKE,
+    	USER,
+		SERVER,
+    	GFX
+    };
+
+# module details
+
+## client_type.c
+
++ `t_client *new_client(int socket_fd, int player_id);`
++ `void free_client(t_client *client);`
+
+## cmdfunc_type.c
+
++ `int get_cmdfunc_tick_delay(t_cmdfunc f);`
++ `t_cmdfunc string_to_cmdfunc(char *s, char **arg);`
+
+	- If the string matches a cmdfunc that takes an argument, allocate space for the argument and return a pointer to the function.
+	- If it matches a cmdfunc that takes no arguments, just return the pointer.
+	- If it doesn't match any valid command, return NULL.
+
+## command_type.c
+
++ `t_command *new_cmd(t_cmdfunc f, int player_id);`
++ `void free_cmd(t_command *cmd);`
+
+## command_list_type.c
+
++ `t_command_list *new_cmdlist(t_command *cmd);`
++ `void free_cmdlist(t_command_list *list);`
+
+## command_queue_type.c
+
++ `t_command_queue *new_cmdqueue(void);`
++ `void free_cmdqueue(t_command_queue *q);`
++ `int enqueue_command(t_command_queue *q, t_command *cmd)`
+
+	- If the queue has no space remaining, return -1.
+	- If there is no `head`, make this command the `head` and the `tail`, and set the `dequeue_timer` to the proper initial delay. *command_type.c*
+	- Else add a command at `tail->next`.
+	- Decrement and return`remaining_space`.
+
++ `t_command_list *dequeue_command(t_command_queue *q)`
+
+	- If there is nothing in the queue, return NULL.
+	- Remove a `command_list` from the front of the queue.
+	- Set `head` to that `command_list`'s `next` pointer.
+	- Increment `remaining_space`.
+	- Set `dequeue_timer` to the initial delay proper for the new `head`. *`command_type.c`*
+	- Return the dequeued `command_list`.
+
+## listen_for_connections.c
+
++ `void listen_for_connections(port);`
+
+	- Get a socket in passive mode and remember that it's our server fd. *`active_socket_info.c`*
+
+## is_it_time_to_tick.c
+
++ `struct timespec g_last_timestamp;`
+
++ `void set_timestamp();`
+
+	- Fill `g_last_timestamp` with `clock_gettime(CLOCK_MONOTONIC)`
+
++ `int ticks_since_last_timestamp();`
+
+	- If `g_last_timestamp` has never been filled, return 1.
+	- Else get a `now` timespec, get the difference in nanoseconds between it and `g_last_timestamp`, and return that number divided by (t one billion)
+*Watch for overflow. Probably have to do the math in a weird order.*
+
+## active_socket_info.c
+
+	static fd_set g_handshake_fds;
+	static fd_set g_user_fds;
+	static fd_set g_all_fds;
+	static fd_set g_gfx_fds;
+	static int g_max_fd;
+	static int g_server_fd;
+	
++ `int is_connection_type(int sock_fd, enum e_connection_type type);`
+
+	- If type is SERVER, check if equal to `g_server_fd`. Else check the corresponding `fd_set` with `FD_ISSET`.
+
++ `int set_connection_type(int sock_fd, enum e_connection_type type);`
+
+	- Add `sock_fd` to `g_all_fds`.
+	- If larger than `g_max_fd`, set `g_max_fd` to equal `sock_fd`.
+	- If type is SERVER, set `g_server_fd`. Else add to the corresponding `fd_set` with `FD_SET`.
+
++ `int unset_connection_type(int sock_fd, enum e_connection_type type);`
+
+	- Remove from the appropriate `fd_set` with `FD_CLR`.
+
++ `int forget_connection(int sock_fd);`
+
+	- If `sock_fd` was equal to `g_max_fd`, find the largest remaining fd and set `g_max_fd` to that.
+	- Close `sock_fd`.
+	- Remove `sock_fd` every fd set.
+
+## user_clients_lookup.c
+
+	static int g_count;
+	static size_t g_capacity
+	static t_client **g_user_clients;
+
++ `void register_user_client(int socket_fd, int player_id);`
+
+	- Remove from `handshake_fds` and add to `player_fds`. *`active_socket_info.c`*
+	- Create a `t_client` with the appropriate `socket_fd` and `player_id` *`client_type.c`*
+	- If `g_count` == `g_capacity`, realloc more space, increase `g_capacity` appropriately, and insert new client at index `g_count`.
+	- Else find the first NULL slot and stick the new client there.
+	- Increment `g_count`.
+	
++ `t_client *get_client_by_player_id(int player_id);`
+
+	- At worst, we just search through the array from front to end. But see below -- we should do better.
+
+> Just to move on with my life, I'll say this is a linear time search through the clients array until the client with that `player_id` is found. HOWEVER: This is pretty darn bad, specifically because of the `broadcast` command. Any time someone broadcasts anything, we do one of these lookups for every other player in the game, which is O(n\*\*2). Not good. Could conceivably prohibit fast tickrates that would otherwise be achievable, perhaps even in a human-noticeable way.
+
+> OTHER OPTIONS:
+> 1) Get a guarantee from the game side of things that player_ids start at zero, increase monotonically, and are never reused. Use player_id as the index into an array.
+> - PRO: Easy to implement.
+> - PRO: Constant time lookup.
+> - CON: Tightly couples the game logic to the client management for the first time. We have otherwise entirely avoided this.
+> - CON: Array is of unbounded size, and it's possible that nearly 100% of that will be wasted space. We could even crash, eventually. (Imagine a scenario in which the only team simply has a sole client lay an egg, wait for another client to replace him, and then starve to death.)
+> 2) Create a array of `{ int id; t_client **address; }` structs. Keep it sorted by id at all times, remove entries on player death. Look up players by binary search.
+> - PRO: O(log n) lookup.
+> - CON: Less trivial to implement. Sorting involves, what, pulling every entry into a linked list, sorting that with merge or quicksort, then reinserting?
+> 3) Implement it as a hash map, buckets and all.
+> - PRO: Constant time lookup.
+> - PRO: Hash maps are fun.
+> - PRO/CON: Not trivial to implement like option 1, but it's a pretty familiar concept to me and there are a million tutorials and examples.
+> 
+> Any of these are better than the current linear time lookup, because
+> that will actually take forever.
+
++ `t_client *get_client_by_socket_fd(int socket_fd);`
+
+	- A linear time front-to-back search of the array will work here too, at minimum. See above/below.
+> The linear time option isn't disastrous here like it is for looking up by player id, because we do this twice per connected client per tick, not n\*\*2 times. But anything we implement to solve the player id problem would be usable for this too, presumably.
+
++ `void unregister_user_client(t_client *client);`
+
+	- Entirely forget the connection with this socket. *active_socket_info.c*
+	- Free the client and insert a NULL in its previous place in the array.
+	- Decrement `g_count`.
+
+## gfx_clients.c
+*Stub, mostly here as a placeholder*
+
+	static int g_count;
+	static size_t g_capacity;
+	static t_gfx_client **g_gfx_clients;
+
++ `void register_gfx_client(int socket_fd);`
+
+	- Realloc first if necessary.
+	- Call `set_connection_type(socket_fd, GFX)`, create a `t_gfx_client` object, stick it in the array, and increment `g_count`.
+
++ `t_gfx_client *get_gfx_client(int socket_fd);`
+
+	- Walk through the array to find the right one. There will never be more than a few `gfx_clients`... right?
+
+## game_parameters.c
+
+	static char **g_teamnames;
+	static int g_worldwidth;
+	static int g_worldheight;
+
++ `set_game_parameters(int worldwidth, int worldheight, int initial_team_size, char **teamnames);`
+
+	- Set `g_worldwidth` and `g_worldheight`.
+	- Allocate and fill `g_teamnames`, adding a NULL as the last element.
+	- Tell the game logic module how many teams there are, the size of the world, and the initial team size.
+
++ `int get_world_dimensions(int *width, int *height);`
+
+	- Set the values pointed to by `width` and `height` to `g_worldwidth` and `g_worldheight`.
+*Only really called by `handshake.c`, but making them our only globals would be even weirder.*
+
++ `int get_team_id(char *name);`
+
+	- Search front-to-back for the first matching name and return its index, or -1 if no match is found before the final NULL.
+*Few teams, relatively rarely called; time is unlikely to be a concern here.*
+
+## handshake.c
+
++ `void initiate_handshake(int serv_id);`
+
+	- Add to `all_fds` and `handshake_fds` *`active_socket_info.c`*
+	- Send `"WELCOME\n"`
+
++ `void continue_handshake(int cli_fd);`
+
+	- Check that the message they sent matches `valid_teamname\n` *`game_parameters.c`*
+	- If they sent anything else, forget this client *`active_socket_info.c`*
+	- If they named an existing team, ask the game to assign them a `player_id` and tell us how many more spots are open on that team. *`game/something`*
+	- If there was at least one open spot, tell them the world size and their remaining open spots, then register them as a new client *`user_clients_lookup.c`*
+
++ `void send_worldsize_msg(int cli_fd);`
+
+	- If it doesn't exist yet, first create a `static char *msg` by calling `get_world_dimensions`. *`game_parameters.c`*
+	- Send the message: "$width $height\n"
+
+## game_over.c
+
++ `int is_game_over(int *winning_team_id);`
+
+	- Ask the game logic module whether the game has ended and which team won. *`game/something.c`*
+	- If the game has not ended, return 0 and leave `winning_team_id` unchanged.
+	- If someone has won, place the `team_id` of that team in `winning_team_id` and return 1.
+	- If the game ended because everyone died, place `-1` in `winning_team_id` and return 1.
+	
+
++ `void handle_game_over(void);`
+
+	- Send some end-of-game data to the graphics clients.
+	- Exit.
+
+## receive_user_message.c
+
++ `void receive_user_message(int cli_fd)`
+
+	- Get the client object *`user_clients_lookup.c`*
+	- Read the message into a buffer.
+	- While client's command queue is not full and the message has unexamined text remaining:
+	* 	Replace the first newline with a `'\0'` and see if the resulting string matches a valid user command. *string_to_cmdfunc.c*
+	* 	If so, create and enqueue a command object. *`command_type.c`, `command_queue_type.c`*
+	* 	Advance the message pointer to continue checking the remainder of the buffer.
+
+## remove_dead_players.c
+
++ `void remove_dead_players(void);`
+
+	- Get a list from the game of the players who will starve to death this turn. *`game/something.c`*
+	- For each dead player, get their client object, send them the message "death\n", and call `unregister_user_client` *`user_clients_lookup.c`*
+
+## dequeue_commands.c
+
++ `t_command_list *dequeue_commands(t_client **user_clients, int player_count)`
+
+	- Examine each queue accessible from the passed `user_clients` list
+	- While any queue has a `dequeue_timer` of zero, remove the top command from that queue and insert it into a linked list.
+	- Return the list.
+
+## execute_command_list.c
+
++ `void execute_command_list(t_command_list *list)`
+
+	- For each node in `list`, call the node's cmdfunc and store the result in that same command struct. *`user_commands/\<various>.c`*
+
+## send_stringified_responses.c
+
++ `void send_stringified_responses(t_command_list *list)`
+
+	- For each node in `list`, send the result back to the user.
+
+## user_commands/\<various>.c
+
++ Probably one `.c` file per possible user command (`inventory` etc.). In this directory live functions that:
+	- Ask the game for the relevant data, in the case of commands like `see`, or to move entities, for `put`, `advance`...
+	- Translate the response into a string and put that string in the command's response field
+
+## tick_command_timers.c
+
++ `void decrement_user_command_timers(t_client **user_clients, int player_count);`
+
+	- For each user client, decrease by one the value associated with the top command in their command queue.
