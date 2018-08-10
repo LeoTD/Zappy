@@ -10,11 +10,16 @@
 # include <sys/socket.h>
 # include <unistd.h>
 
+<<<<<<< HEAD
 # define ERR_OUT(msg)		({ perror(msg); exit(-1); })
 # define CMD_COUNTDOWN(plr)	(plr->cmd_list->delay_cycles)
 # define CMD_READY(plr)		(CMD_COUNTDOWN(plr) == 0)
 # define DO_CMD_FUNC(cmd)	(cmd->do_cmd(cmd->player_id, cmd->args))
 # define NEXT_CMD(cmd)		(cmd = cmd->next)
+=======
+# define ERR_OUT(msg) ({ perror(msg); exit(-1); })
+# define CMD_COUNTDOWN(plr) (plr->cmd_list->delay_cycles)
+>>>>>>> 290b500ee05795024097585684e4d21ddd2511b7
 
 enum					e_directions
 {
@@ -28,15 +33,24 @@ enum					e_directions
 	SOUTHWEST
 };
 
+# define DEFAULT_PARRAY 8
+
 typedef struct			s_tile
 {
-	struct s_player		*players;
+	struct s_player		**players;
+	int					parray_size;
 	int					num_players;
 	int					stones[6];
 	int					food;
 	int					x;
 	int					y;
 }						t_tile;
+
+# define DEFAULT_FOOD 0
+# define DEFAULT_ENERGY 1260
+# define DEFAULT_LEVEL 1
+# define EGG_TIMER 300
+# define ENERGY_PER_FOOD 126
 
 typedef struct			s_player
 {
@@ -47,7 +61,8 @@ typedef struct			s_player
 	int					energy;
 	int					level;
 	int					id;
-	int					team_id;
+	int					team_pid;
+	int					team;
 	int					egg;
 }						t_player;
 
@@ -62,12 +77,17 @@ typedef struct			s_cmd
 {
 	struct s_cmd		*next;
 	int					player_id;		//Can we do this better?
+<<<<<<< HEAD
 	t_cmd_func			do_cmd;
+=======
+	t_command			cmd;
+>>>>>>> 290b500ee05795024097585684e4d21ddd2511b7
 	void				*args;
 	int					timestamp;
 	int					delay_cycles;
 }						t_cmd;
 
+<<<<<<< HEAD
 typedef struct			s_cmd_queue
 {
 	struct s_cmd_queue	*next_plr;
@@ -75,6 +95,15 @@ typedef struct			s_cmd_queue
 	int					player_id;
 	int					cmd_count;
 }						t_cmd_queue;
+=======
+typedef struct			s_plr_cmds
+{
+	struct s_plr_cmds	*next_plr;
+	struct s_cmd		*cmd_list;
+	int					player_id;
+	int					cmd_count;
+}						t_plr_cmds;
+>>>>>>> 290b500ee05795024097585684e4d21ddd2511b7
 
 /*
 ** Global Variables:
@@ -95,21 +124,47 @@ int						accept_and_poll_clients(int server);
 
 int						create_map(int, int);
 int						place_stone(int type, int amount, t_tile *t);
-int						remove_stone(int type, int amount, t_tile *t);
+int						pickup_stone(int type, int amount, t_tile *t);
+int						place_food(int amount, t_tile *t);
+int						pickup_food(int amount, t_tile *t);
 int						place_random_stones(int type, int pool);
+int						place_random_food(int pool);
 
 t_tile					*get_adj_tile(t_tile *home, int dir);
 t_tile					*get_tile_NS(t_tile *home, int v);
 t_tile					*get_tile_EW(t_tile *home, int v);
 
 /*
+** Player Functions:
+*/
+
+t_player				*new_player(int egg, int team_id);
+int						get_new_player_id(void);
+void					cleanup_player_list(void);
+t_player				*get_player(int pid);
+int						add_player_to_list(t_player *t);
+int						grow_list(void);
+
+int						move_player(t_player *p, int dir);
+int						add_player_to_tile(t_player *p, t_tile *t);
+int						remove_player_from_tile(t_player *p, t_tile *t);
+t_player				*is_player_on_tile(t_player *p, t_tile *t);
+
+int						add_player_to_empty_list(t_player *p, int team);
+
+/*
 ** User commands:
 */
 
+<<<<<<< HEAD
 typedef int				(*t_cmd_func)(int, void *);
+=======
+typedef int				(*t_cmdfunc)(int, void *);
+>>>>>>> 290b500ee05795024097585684e4d21ddd2511b7
 
 int						advance(int player_id, void *arg);
-int						turn(int player_id, void *arg);
+int						left(int player_id, void *arg);
+int						right(int player_id, void *arg);
 int						see(int player_id, void *arg);
 int						inventory(int player_id, void *arg);
 int						take(int player_id, void *arg);

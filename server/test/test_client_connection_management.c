@@ -20,6 +20,8 @@ void	quicksleep(void)
 	nanosleep(&rqtp, NULL);
 }
 
+int g_make_server_die = 0;
+
 int		test_server_listens_for_clients(void)
 {
 	int		fd;
@@ -35,17 +37,29 @@ int		test_server_listens_for_clients(void)
 	{
 		close(fd);
 		if (!fork())
+		{
 			system(cmd);
+			exit(0);
+		}
 		else
 		{
 			quicksleep();
 			memcpy(cmd + 6, "kill!", 5);
 			system(cmd);
 		}
+		exit(0);
 	}
 	else
 	{
-		accept_and_poll_clients(fd);
+		while (1)
+		{
+			accept_and_poll_clients(fd);
+			if (g_make_server_die)
+			{
+				printf("%s: ok\n", __func__);
+				break;
+			}
+		}
 	}
 	return (0);
 }

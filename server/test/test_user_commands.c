@@ -3,8 +3,8 @@
 int		test_user_commands_runnable(void)
 {
 	advance(1, NULL);
-	turn(1, "right");
-	turn(1, "left");
+	left(1, NULL);
+	right(1, NULL);
 	see(1, NULL);
 	inventory(1, NULL);
 	take(1, "phiras");
@@ -13,6 +13,6 @@ int		test_user_commands_runnable(void)
 	broadcast(2, "text");
 	fork_player(2, NULL);
 	connect_nbr(2, NULL);
-	puts("user commands ran without crashing");
+	printf("%s: ok\n", __func__);
 	return (0);
 }
