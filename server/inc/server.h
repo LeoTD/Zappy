@@ -10,16 +10,11 @@
 # include <sys/socket.h>
 # include <unistd.h>
 
-<<<<<<< HEAD
 # define ERR_OUT(msg)		({ perror(msg); exit(-1); })
 # define CMD_COUNTDOWN(plr)	(plr->cmd_list->delay_cycles)
 # define CMD_READY(plr)		(CMD_COUNTDOWN(plr) == 0)
 # define DO_CMD_FUNC(cmd)	(cmd->do_cmd(cmd->player_id, cmd->args))
 # define NEXT_CMD(cmd)		(cmd = cmd->next)
-=======
-# define ERR_OUT(msg) ({ perror(msg); exit(-1); })
-# define CMD_COUNTDOWN(plr) (plr->cmd_list->delay_cycles)
->>>>>>> 290b500ee05795024097585684e4d21ddd2511b7
 
 enum					e_directions
 {
@@ -77,17 +72,12 @@ typedef struct			s_cmd
 {
 	struct s_cmd		*next;
 	int					player_id;		//Can we do this better?
-<<<<<<< HEAD
-	t_cmd_func			do_cmd;
-=======
-	t_command			cmd;
->>>>>>> 290b500ee05795024097585684e4d21ddd2511b7
+	t_cmdfunc			do_cmd;
 	void				*args;
 	int					timestamp;
 	int					delay_cycles;
 }						t_cmd;
 
-<<<<<<< HEAD
 typedef struct			s_cmd_queue
 {
 	struct s_cmd_queue	*next_plr;
@@ -95,15 +85,6 @@ typedef struct			s_cmd_queue
 	int					player_id;
 	int					cmd_count;
 }						t_cmd_queue;
-=======
-typedef struct			s_plr_cmds
-{
-	struct s_plr_cmds	*next_plr;
-	struct s_cmd		*cmd_list;
-	int					player_id;
-	int					cmd_count;
-}						t_plr_cmds;
->>>>>>> 290b500ee05795024097585684e4d21ddd2511b7
 
 /*
 ** Global Variables:
@@ -156,11 +137,7 @@ int						add_player_to_empty_list(t_player *p, int team);
 ** User commands:
 */
 
-<<<<<<< HEAD
-typedef int				(*t_cmd_func)(int, void *);
-=======
 typedef int				(*t_cmdfunc)(int, void *);
->>>>>>> 290b500ee05795024097585684e4d21ddd2511b7
 
 int						advance(int player_id, void *arg);
 int						left(int player_id, void *arg);
@@ -182,7 +159,7 @@ int						connect_nbr(int player_id, void *arg);
 int						schd_step_cycle(t_cmd **lit_cmds);
 int						schd_add_plr(int player_id);
 int						schd_kill_plr(int player_id);
-int						schd_add_cmd(int player_id, t_cmd_func cmd,
+int						schd_add_cmd(int player_id, t_cmdfunc cmd,
 										void *args, int delay_cycles);
 
 /*
