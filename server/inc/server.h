@@ -10,8 +10,11 @@
 # include <sys/socket.h>
 # include <unistd.h>
 
-# define ERR_OUT(msg) ({ perror(msg); exit(-1); })
-# define CMD_COUNTDOWN(plr) (plr->cmd_list->delay_cycles)
+# define ERR_OUT(msg)		({ perror(msg); exit(-1); })
+# define CMD_COUNTDOWN(plr)	(plr->cmd_list->delay_cycles)
+# define CMD_READY(plr)		(CMD_COUNTDOWN(plr) == 0)
+# define DO_CMD_FUNC(cmd)	(cmd->do_cmd(cmd->player_id, cmd->args))
+# define NEXT_CMD(cmd)		(cmd = cmd->next)
 
 enum					e_directions
 {
@@ -59,19 +62,19 @@ typedef struct			s_cmd
 {
 	struct s_cmd		*next;
 	int					player_id;		//Can we do this better?
-	t_command			cmd;
+	t_cmd_func			do_cmd;
 	void				*args;
 	int					timestamp;
 	int					delay_cycles;
 }						t_cmd;
 
-typedef struct			s_plr_cmds
+typedef struct			s_cmd_queue
 {
-	struct s_plr_cmds	*next_plr;
+	struct s_cmd_queue	*next_plr;
 	struct s_cmd		*cmd_list;
 	int					player_id;
 	int					cmd_count;
-}						t_plr_cmds;
+}						t_cmd_queue;
 
 /*
 ** Global Variables:
@@ -103,7 +106,7 @@ t_tile					*get_tile_EW(t_tile *home, int v);
 ** User commands:
 */
 
-typedef int				(*t_command)(int, void *);
+typedef int				(*t_cmd_func)(int, void *);
 
 int						advance(int player_id, void *arg);
 int						turn(int player_id, void *arg);
@@ -116,4 +119,22 @@ int						broadcast(int player_id, void *arg);
 int						incantation(int player_id, void *arg);
 int						fork_player(int player_id, void *arg);
 int						connect_nbr(int player_id, void *arg);
+
+/*
+** Scheduler commands
+*/
+
+int						schd_step_cycle(t_cmd **lit_cmds);
+int						schd_add_plr(int player_id);
+int						schd_kill_plr(int player_id);
+int						schd_add_cmd(int player_id, t_cmd_func cmd,
+										void *args, int delay_cycles);
+
+/*
+** Executioner commands
+*/
+
+int						exec_utioner(t_cmd *cmd_exec_list);
+void					exec_free_cmds(t_cmd *list);
+
 #endif

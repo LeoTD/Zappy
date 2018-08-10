@@ -1,31 +1,31 @@
 #include "server.h"
 
-static t_plr_cmds	*g_plr_cmds = NULL;
+static t_cmd_queue	*g_cmd_queue = NULL;
 
-int				schd_add_plr(int player_id)
+int					schd_add_plr(int player_id)
 {
-	t_plr_cmds	*new;
-	t_plr_cmds	*tmp;
+	t_cmd_queue	*new;
+	t_cmd_queue	*tmp;
 
-	if (!(new = (t_plr_cmds*)ft_memalloc(sizeof(t_plr_cmds))))
+	if (!(new = (t_cmd_queue*)ft_memalloc(sizeof(t_cmd_queue))))
 		ERR_OUT("t_plr_cmd malloc failed\n");
 	new->next_plr = NULL;
 	new->cmd_list = NULL;
 	new->player_id = player_id;
 	new->cmd_count = 0;
-	if (g_plr_cmds)
+	if (g_cmd_queue)
 	{
-		tmp = g_plr_cmds;
+		tmp = g_cmd_queue;
 		while (tmp->next_plr)
 			tmp = tmp->next_plr;
 		tmp->next_plr = new;
 	}
 	else
-		g_plr_cmds = new;
+		g_cmd_queue = new;
 	return (0);
 }
 
-static t_cmd	*new_command(int player_id, t_command cmd,
+static t_cmd		*new_command(int player_id, t_cmd_func cmd,
 						void *args, int delay_cycles)
 {
 	t_cmd	*new_cmd;
@@ -34,7 +34,7 @@ static t_cmd	*new_command(int player_id, t_command cmd,
 		ERR_OUT("t_cmd malloc failed\n");
 	new_cmd->next = NULL;
 	new_cmd->player_id = player_id;
-	new_cmd->cmd = cmd;
+	new_cmd->do_cmd = cmd;
 	new_cmd->args = args;
 	new_cmd->timestamp = 0;		//Determine timestamping!
 	new_cmd->delay_cycles = delay_cycles;
@@ -48,14 +48,14 @@ static t_cmd	*new_command(int player_id, t_command cmd,
 **	exits if player_id not found.
 */
 
-int				schd_add_cmd(int player_id, t_command cmd,
+int					schd_add_cmd(int player_id, t_cmd_func cmd,
 						void *args, int delay_cycles)
 {
-	t_plr_cmds	*node;
+	t_cmd_queue	*node;
 	t_cmd		*new_cmd;
 	t_cmd		*last_cmd;
 
-	node = g_plr_cmds;
+	node = g_cmd_queue;
 	while (node->player_id != player_id)
 		node = node->next_plr;
 	assert(node);
@@ -66,7 +66,7 @@ int				schd_add_cmd(int player_id, t_command cmd,
 	{
 		last_cmd = node->cmd_list;
 		while (last_cmd->next)
-			last_cmd = last_cmd->next;
+			NEXT_CMD(last_cmd);
 		last_cmd->next = new_cmd;
 	}
 	else
@@ -76,38 +76,82 @@ int				schd_add_cmd(int player_id, t_command cmd,
 }
 
 /*
-** Pops leading command to executioner, decrements players cmd_count, and
+** Kills coresponding player when they run out of food.
+** Removes coresponding t_cmd_queue from g_cmd_queue list.
+*/
+
+int					schd_kill_plr(int player_id)
+{
+	t_cmd_queue		*this_cmd_queue;
+	t_cmd_queue		*prev_cmd_queue;
+
+	this_cmd_queue = g_cmd_queue;
+	if (g_cmd_queue->player_id == player_id)
+		g_cmd_queue = g_cmd_queue->next_plr;
+	else
+	{
+		while (this_cmd_queue && this_cmd_queue->player_id != player_id)
+		{
+			prev_cmd_queue = this_cmd_queue;
+			this_cmd_queue = this_cmd_queue->next_plr;
+		}
+		assert(this_cmd_queue);
+		prev_cmd_queue->next_plr = this_cmd_queue->next_plr;
+	}
+	exec_free_cmds(this_cmd_queue->cmd_list);
+	free(this_cmd_queue);
+	return (0);
+}
+
+/*
+** Pops leading command to ready_cmds, decrements players cmd_count, and
 ** points players leading command to next in cmd_list
 */
 
-static int				pop_command(t_plr_cmds *plr)
+static int			pop_command(t_cmd_queue *plr, t_cmd *list)
 {
-	if (plr)
-		return (1);
+	t_cmd	*popped_cmd;
+
+	popped_cmd = plr->cmd_list;
+	if (list)
+	{
+		while (list->next)
+			NEXT_CMD(list);
+		list->next = popped_cmd;
+	}
+	else
+		list = popped_cmd;
+	plr->cmd_list = plr->cmd_list->next;
+	popped_cmd->next = NULL;
+	plr->cmd_count--;
 	return (0);
 }
 
 /*
 ** Main scheduler function. runs through player list and decrements leading
-** command's delay_cycles. If delay_cylces == 0, pop command onto executioner,
-** move player cmd_list pointer over to new lead and decrement cmd_count.
+** command's delay_cycles. If delay_cylces == 0, pop command onto return,
+** move player cmd_list pointer over to new lead.
 */
 
-int						schd_step_cycle(void)
+int					schd_step_cycle(t_cmd **lit_cmds)
 {
-	t_plr_cmds	*plr;
+	t_cmd_queue		*plr;
+	t_cmd			*ready_cmds;
 
-	plr = g_plr_cmds;
+	ready_cmds = NULL;
+	plr = g_cmd_queue;
 	while (plr)
 	{
 		if (plr->cmd_list)
 		{
-			if (CMD_COUNTDOWN(plr) == 0)
-				pop_command(plr);
+			if (CMD_READY(plr))
+				while (CMD_READY(plr))
+					pop_command(plr, ready_cmds);
 			else
 				CMD_COUNTDOWN(plr)--;
 		}
 		plr = plr->next_plr;
 	}
+	*lit_cmds = ready_cmds;
 	return (0);
 }
