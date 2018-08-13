@@ -19,8 +19,9 @@ void		print_map(void)
 
 	x = -1;
 	y = -1;
-	for (int type = 1; type < 9; type++)
+//	for (int type = 1; type < 9; type++)
 	{
+		int type = 1;
 		printf("Showing %s:\n", pstr[type]);
 		while (++y < g_map->y)
 		{

@@ -25,10 +25,6 @@ int				create_map(int x, int y)
 	int			k;
 
 	i = -1;
-	if ((g_map = malloc(sizeof(t_map_info))) == NULL)
-		ERR_OUT("map_creation; malloc");
-	g_map->x = x;
-	g_map->y = y;
 	if ((g_map->tile = malloc(x * sizeof(t_tile *))) == NULL)
 		ERR_OUT("map_creation; malloc");
 	while (++i < x)

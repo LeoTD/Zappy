@@ -1,14 +1,13 @@
 TODO List:
 
 Game Engine:
-	Implement the player commands.
-	Make tiles keep track of players. - Leo
-	Modify player info storage to client_fd paradigm - Josh
+	Implement the player commands. - eliu
+	Empty avatar list. Player id handled internally. - Leo
+	assign_avatar() - Leo
+
 
 Scheduler:
-	Everything lol.
+	????
 
 Server:
-	Accept commands
-	Queues
-	Send responses
+	????

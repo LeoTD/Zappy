@@ -20,8 +20,10 @@ COM_STRING	= "Compiling:"
 # Add header files here: (use full relative path to Makefile)
 INC			= inc/$(NAME).h \
 
-# Add source files here: (files assumed to be in ./src folder)
-FILES		= map_creation.c \
+
+# ---------------------------------------------------------------------------- #
+# ----------- SRC/GAME ------------------------------------------------------- #
+GAME_FILES	= map_creation.c \
 			  map_player_movement.c \
 			  map_tile_movement.c \
 			  map_tile_to_player_funcs.c \
@@ -29,9 +31,22 @@ FILES		= map_creation.c \
 			  map_foodfuncs.c \
 			  player_creation.c \
 			  player_data_api.c \
-			  message_to_command.c \
+
+GAME_SRC	= $(addprefix game/, $(GAME_FILES))
+
+# ---------------------------------------------------------------------------- #
+# ----------- SRC/USER_COMMANDS ---------------------------------------------- #
+USRCMD_FILES= advance.c \
+
+USRCMD_SRC	= $(addprefix user_commands/, $(USRCMD_FILES))
+
+# Add source files here: (files assumed to be in ./src folder)
+FILES		= message_to_command.c \
 			  server.c \
 			  user_commands.c \
+
+# Add any subfolder SRC's here:
+SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))
 
 # MAIN is used by		"make"
 # TESTMAIN is used by	"make test"
@@ -40,8 +55,6 @@ MAIN		= src/main.c
 
 TESTMAIN	= test/testmain.c
 TESTS		= $(wildcard test/test_*.c)
-
-SRC			= $(addprefix src/, $(FILES))
 
 # ---------------------------------------------------------------------------- #
 

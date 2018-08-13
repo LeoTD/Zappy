@@ -1,21 +1,37 @@
 #include "server.h"
 
 /*
+** TODO: Takes avatar on team [ team_id ] off the empty avatar list
+** 		 Adds that avatar to the active player list.
+** 		 returns the player_id.
+**
+** 		 If no empty avatar is found, returns [ -1 ].
+*/
+
+int				assign_avatar(int team_id)
+{
+
+	return (0);
+}
+
+/*
 ** Take a pointer to a [ t_player * ]
 ** Mallocs and fills the struct with initial values
 ** TODO: Adds player to team-specific empty avatar list
 ** TODO: get_team_pid() (ex. player [ 1 ], on team 2)
 **
-** Usage: player_id = new_player(start_tile, (EGG_TIMER || 0), team_id)
+** Usage: player_id = new_player((EGG_TIMER || 0), team_id)
 */
 
-int TEMP_get_pid(void)
+int				get_pid(void)
 {
-	static int i = 0;
-	return (--i);
+	static int i = -1;
+
+	i = i + 1;
+	return (i);
 }
 
-t_player		*new_player(int egg, int team_id)
+t_player		*new_player(int egg, int team_id, int team_pid)
 {
 	t_player	*tmp;
 	int			i;
@@ -31,22 +47,9 @@ t_player		*new_player(int egg, int team_id)
 	tmp->energy = DEFAULT_ENERGY;
 	tmp->level = DEFAULT_LEVEL;
 	tmp->team = team_id;
-	tmp->team_pid = 0; //Get_team_pid() ???
+	tmp->team_pid = team_pid;
 	tmp->egg = egg;
-	tmp->id = TEMP_get_pid();
-
-	add_player_to_empty_list(tmp, tmp->team);
-
+	tmp->id = get_pid();
+	add_player_to_team_waitlist(tmp);
 	return (tmp);
-}
-
-/*
-** TODO: Adds player to empty avatar list for [ team ].
-*/
-
-int				add_player_to_empty_list(t_player *p, int team)
-{
-	p = 0;
-	team = 0;
-	return (0);
 }

@@ -42,9 +42,10 @@ int			test_player_movement(void)
 	move_player(p, WEST);
 	move_player(p, WEST);
 	assert(p->tile->x == t->x - 5 && p->tile->y == t->y - 5);
-//	print_map();
 	
 	printf("%s[ OK ]        \033[0mPlayer's can move!\n", OK_COLOR);
+
+	print_map();
 
 	return (0);
 }

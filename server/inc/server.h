@@ -58,18 +58,26 @@ typedef struct			s_player
 	int					egg;
 }						t_player;
 
-typedef struct			s_map_info
+typedef struct			s_plist
+{
+	t_player			*p;
+	struct s_plist		*next;
+}						t_plist;
+
+typedef struct			s_game_info
 {
 	t_tile				**tile;
 	int					x;
 	int					y;
-}						t_map_info;
+	int					teams;
+	t_plist				**empty_avatars;
+}						t_game_info;
 
 /*
 ** Global Variables:
 */
 
-t_map_info					*g_map;
+t_game_info					*g_map;
 
 /*
 ** server.c
