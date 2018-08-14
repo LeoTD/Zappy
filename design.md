@@ -2,14 +2,14 @@
 modules:
 
     game/various: map.c, tile.c, ...
-    
+
     cmdfunc_type.c, .h
     command_type.c, .h
     command_list_type.c, .h
     command_queue_type.c, .h
     client_type.c, .h
-	client_map_type.c, .h
-    
+    client_map_type.c, .h
+
     user_commands/
     (advance, left_right, see, inventory, take, put, kick, broadcast, incantation, fork, connect_nbr).c
 
@@ -72,32 +72,32 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 # types and globals
 
 	typedef void (*t_cmdfunc)(int player_id, void *args);
-	
+
 	typedef struct s_client {
 		int socket_fd;
 		int player_id;
 		t_command_queue *cmdqueue;
 	} t_client;
-	
+
 	typedef struct s_command {
 		t_cmdfunc cmdfunc;
 		char *args;
 		char *response;
 		struct timespec timestamp; // maybe -- only for an optional but fairness-ensuring extra featureint player_id;
 	} t_command;
-	
+
 	typedef struct s_command_list {
 		t_command *cmd;
 		t_command_list *next;
 	} t_command_list;
-	
+
 	typedef struct s_command_queue {
 		t_command_list *head;
 		t_command_list *tail;
 		int remaining_space;
 		int dequeue_timer;
 	} t_command_queue;
-	
+
 	enum e_connection_type {
 		HANDSHAKE,
 		USER,
@@ -190,7 +190,7 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 	static fd_set g_gfx_fds;
 	static int g_max_fd;
 	static int g_server_fd;
-	
+
 + `int is_connection_type(int sock_fd, enum e_connection_type type);`
 
 	- If type is SERVER, check if equal to `g_server_fd`. Else check the corresponding `fd_set` with `FD_ISSET`.
@@ -310,7 +310,7 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 	- If the game has not ended, return 0 and leave `winning_team_id` unchanged.
 	- If someone has won, place the `team_id` of that team in `winning_team_id` and return 1.
 	- If the game ended because everyone died, place `-1` in `winning_team_id` and return 1.
-	
+
 
 + `void handle_game_over(void);`
 
@@ -355,11 +355,115 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 
 	- For each node in `list`, send the result back to the user.
 
-## user_commands/(see.c, inventory.c, advance.c, ...)
+## user_commands/advance.c
 
-+ Probably one `.c` file per possible user command (`inventory` etc.). In this directory live functions that:
-	- Ask the game for the relevant data, in the case of commands like `see`, or to move entities, for `put`, `advance`...
-	- Translate the response into a string and put that string in the command's response field
++ `char *advance(int player_id, void *args);`
+
+	- Call a game function to move `player_id`'s avatar one space in the direction they are currently facing and return "ok\n".
+
+## user_commands/right_left.c
+
++ `char *left(int player_id, void *args);`
+
+	- Call a game function to change the facing of `player_id`'s avatar and return "ok\n".
+
++ `char *right(int player_id, void *args);`
+
+	- Same as `left`.
+
+## user_commands/see.c
+
++ `char *see(int player_id, void *args);`
+
+	- Get the player struct and determine how far they can see.
+	- Determine the right absolute direction to proceed depending on their current facing.
+	- Fill a tile array outwards in a 'cone' starting at the player's location.
+	- Translate that data into a string by separating the contents of each tile with spaces and separating tiles with commas. *Completely empty tiles appear as ", ," if at least one non-empty tile follows, but are omitted if followed only by other empty tiles.*
+	- Return the string.
+
+## user_commands/inventory.c
+
++ `char *inventory(int player_id, void *args);`
+
+	- Get the player struct.
+	- Translate the contents of their inventory and their current food status into a string, then return the string. *Format: `food 345, sibur 2, deraumere 0...` -- note the zero and the huge food count. Probably that represents `energy + food * 126` instead of just `food`.*
+
+## user_command/put_take.c
+
++ `char *put(int player_id, void *args);`
+
+	- Attempt to place the item named in `args` from the player's inventory onto their tile.
+	- If the attempt fails, return "ko\n".
+	- Else return "ok\n".
+
++ `char *take(int player_id, void *args);`
+
+	- Attempt to take the item named in `args` from the player's current tile into their inventory.
+	- If the attempt fails, return "ko\n".
+	- Else return "ok\n".
+
+## user_commands/kick.c
+
++ `char *kick(int player_id, void *args);`
+
+	- Get the `player_id`'s of the occupants of the player's current tile.
+	- If the current player is the only occupant , return "ko\n".
+	- Else, for each other occupant besides the current player, move that player on the direction the current player is facing and return "ok\n".
+
+## user_commands/broadcast.c
+
++ `char *broadcast(int player_id, void *args);`
+
+	- Get from the game an array of `int[2]`s indicating each player and their direction relative to the current player's location.
+	- For each item in this array, get the corresponding client struct and send its socket a message of the form `message <K> <text>\n`, where `K` is the direction returned from the game, `text` is `args`, and `message` is the literal string "message".
+
+## user_commands/incantation.c
+
+	typedef struct s_incant_args {
+		int player_id;
+		int *levelup_group;
+		int group_size;
+		int new_level;
+	} t_incant_args;
+
++ `char *incantation_finish(int player_id, void *args);`
+
+	- For each living player in the passed `t_incant_args`'s `levelup_group`, call a game function to raise their level to `new_level`.
+	- Send the client named by `args->player_id` the message `"current level <K>\n"`, where `K` is the `t_incant_args`'s `new_level` field.
+*the `player_id` passed as an argument to this function will be meaningless*
+
++ `char *incantation(int player_id, void *args);`
+
+	- Check whether the player's current tile has enough of the right kind of stones to construct a totem and enough players of the correct level to begin the ritual.
+	- If not, create a `t_incant_args` with a `levelup_group` containing only the calling player, a `group_size` of one, and a `new_level` of the player's current level.
+	- Else create a `t_incant_args` with a `levelup_group` containing the `player_id` of every player whose level equals that of the calling player, `group_size` with the array's size, and `new_level` with the player's current level plus one.
+	- Add to the player's queue an `incantation_finish` event with the constructed `t_incant_args` for 300 ticks in the future.
+	- Send `"elevation in progress\n"` to the calling player.
+
+## user_commands/fork.c
+
+	typedef struct s_hatch_args {
+		int team_id;
+		int x;
+		int y;
+	} t_hatch_args;
+
++ `char *hatch(int player_id, void *args);`
+
+	- Call a game function to create a new player at tile `x`, `y` with random facing.
+
++ `char *fork_player(int player_id, void *args);`
+
+	- Maybe tell graphics clients that we laid an egg.
+	- Enqueue a `hatch` event for 600 ticks in the future.
+	- Send `"ok\n"` to the player.
+
+## user_commands/nbr_connect.c
+
++ `char *nbr_connect(int player_id, void *args);`
+
+	- Get "number of authorized and unauthorized connections for the team". **?**
+	- Send it with a newline back to the player.
 
 ## decrement_user_command_timers.c
 
