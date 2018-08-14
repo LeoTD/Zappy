@@ -183,17 +183,17 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 
 	- If type is SERVER, check if equal to `g_server_fd`. Else check the corresponding `fd_set` with `FD_ISSET`.
 
-+ `int set_connection_type(int sock_fd, enum e_connection_type type);`
++ `void set_connection_type(int sock_fd, enum e_connection_type type);`
 
 	- Add `sock_fd` to `g_all_fds`.
 	- If larger than `g_max_fd`, set `g_max_fd` to equal `sock_fd`.
 	- If type is SERVER, set `g_server_fd`. Else add to the corresponding `fd_set` with `FD_SET`.
 
-+ `int unset_connection_type(int sock_fd, enum e_connection_type type);`
++ `void unset_connection_type(int sock_fd, enum e_connection_type type);`
 
 	- Remove from the appropriate `fd_set` with `FD_CLR`.
 
-+ `int forget_connection(int sock_fd);`
++ `void forget_connection(int sock_fd);`
 
 	- If `sock_fd` was equal to `g_max_fd`, find the largest remaining fd and set `g_max_fd` to that.
 	- Close `sock_fd`.
