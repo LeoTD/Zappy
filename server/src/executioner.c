@@ -1,8 +1,8 @@
 #include "server.h"
 
-int         exec_utioner(t_cmd *cmd_exec_list)
+int			exec_utioner(t_cmd *cmd_exec_list)
 {
-    t_cmd		*current_cmd;
+	t_cmd		*current_cmd;
 
 	if (!cmd_exec_list)
 		return (0);			//maybe -1?
@@ -13,7 +13,7 @@ int         exec_utioner(t_cmd *cmd_exec_list)
 		NEXT_CMD(current_cmd);
 	}
 	exec_free_cmds(cmd_exec_list);
-    return (0);
+	return (0);
 }
 
 void		exec_free_cmds(t_cmd *list)

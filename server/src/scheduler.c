@@ -146,7 +146,7 @@ int					schd_step_cycle(t_cmd **lit_cmds)
 		{
 			if (CMD_READY(plr))
 				while (CMD_READY(plr))
-					pop_command(plr, ready_cmds);
+					pop_command(plr, ready_cmds); //WRONG POINTER.
 			else
 				CMD_COUNTDOWN(plr)--;
 		}
