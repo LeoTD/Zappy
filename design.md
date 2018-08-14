@@ -10,7 +10,7 @@ modules:
     client_type.c, .h
     
     user_commands/
-    (advance, right, left, see, inventory, take, put, kick, broadcast, incantation, fork, connect_nbr).c
+    (advance, left_right, see, inventory, take, put, kick, broadcast, incantation, fork, connect_nbr).c
 
     gfx_clients.c
     user_clients_lookup.c
