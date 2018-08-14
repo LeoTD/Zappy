@@ -1,141 +1,48 @@
-
 #ifndef SERVER_H
 # define SERVER_H
-# include <arpa/inet.h>
-# include <assert.h>
-# include <netdb.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/socket.h>
-# include <unistd.h>
+# include "client_type.h"
+# include "cmdfunc_type.h"
+# include "command_list_type.h"
+# include "command_queue_type.h"
+# include "command_type.h"
 
-# define ERR_OUT(msg) ({ perror(msg); exit(-1); })
-# define MAX_BROADCAST_LENGTH 4096
-
-enum					e_directions
+enum			e_connection_type
 {
-	NORTH,
-	SOUTH,
-	EAST,
-	WEST,
-	NORTHEAST,
-	NORTHWEST,
-	SOUTHEAST,
-	SOUTHWEST
+	HANDSHAKE,
+	USER,
+	SERVER,
+	GFX
 };
 
-# define DEFAULT_PARRAY 8
+typedef void	(*t_cmdfunc)(int player_id, void *args);
 
-typedef struct			s_tile
+typedef struct	s_command
 {
-	struct s_player		**players;
-	int					parray_size;
-	int					num_players;
-	int					stones[6];
-	int					food;
-	int					x;
-	int					y;
-}						t_tile;
+	t_cmdfunc	cmdfunc;
+	char		*args;
+	char		*response;
+	int			player_id;
+}				t_command;
 
-# define DEFAULT_FOOD 0
-# define DEFAULT_ENERGY 1260
-# define DEFAULT_LEVEL 1
-# define EGG_TIMER 300
-# define ENERGY_PER_FOOD 126
-
-typedef struct			s_player
+typedef struct	s_command_list
 {
-	struct s_tile		*tile;
-	int					facing;
-	int					stones[6];
-	int					food;
-	int					energy;
-	int					level;
-	int					id;
-	int					team_pid;
-	int					team;
-	int					egg;
-}						t_player;
+	t_command	*cmd;
+	t_command	*next;
+}				t_command_list;
 
-typedef struct			s_plist
+typedef struct	s_command_queue
 {
-	t_player			*p;
-	struct s_plist		*next;
-}						t_plist;
+	t_command_list	*head;
+	t_command_list	*tail;
+	int				remaining_space;
+	int				dequeue_timer;
+}				t_command_queue;
 
-typedef struct			s_game_info
+typedef struct	s_client
 {
-	t_tile				**tile;
-	int					x;
-	int					y;
-	int					teams;
-	t_plist				**empty_avatars;
-}						t_game_info;
+	int				socket_fd;
+	int				player_id;
+	t_command_queue	*cmdqueue;
+}				t_client;
 
-/*
-** Global Variables:
-*/
-
-t_game_info					*g_map;
-
-/*
-** server.c
-*/
-
-int						get_server_socket(int port);
-int						accept_and_poll_clients(int server);
-
-/*
-** Map Functions:
-*/
-
-int						create_map(int, int);
-int						place_stone(int type, int amount, t_tile *t);
-int						pickup_stone(int type, int amount, t_tile *t);
-int						place_food(int amount, t_tile *t);
-int						pickup_food(int amount, t_tile *t);
-int						place_random_stones(int type, int pool);
-int						place_random_food(int pool);
-
-t_tile					*get_adj_tile(t_tile *home, int dir);
-t_tile					*get_tile_NS(t_tile *home, int v);
-t_tile					*get_tile_EW(t_tile *home, int v);
-
-/*
-** Player Functions:
-*/
-
-t_player				*new_player(int egg, int team_id);
-int						get_new_player_id(void);
-void					cleanup_player_list(void);
-t_player				*get_player(int pid);
-int						add_player_to_list(t_player *t);
-int						grow_list(void);
-
-int						move_player(t_player *p, int dir);
-int						add_player_to_tile(t_player *p, t_tile *t);
-int						remove_player_from_tile(t_player *p, t_tile *t);
-t_player				*is_player_on_tile(t_player *p, t_tile *t);
-
-int						add_player_to_empty_list(t_player *p, int team);
-
-/*
-** User commands:
-*/
-
-typedef int				(*t_cmdfunc)(int, void *);
-
-int						advance(int player_id, void *arg);
-int						left(int player_id, void *arg);
-int						right(int player_id, void *arg);
-int						see(int player_id, void *arg);
-int						inventory(int player_id, void *arg);
-int						take(int player_id, void *arg);
-int						put(int player_id, void *arg);
-int						kick(int player_id, void *arg);
-int						broadcast(int player_id, void *arg);
-int						incantation(int player_id, void *arg);
-int						fork_player(int player_id, void *arg);
-int						connect_nbr(int player_id, void *arg);
 #endif
