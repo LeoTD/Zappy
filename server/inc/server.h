@@ -5,6 +5,9 @@
 # include "command_list_type.h"
 # include "command_queue_type.h"
 # include "command_type.h"
+# include <stdio.h>
+
+# define FATAL(msg) ({ fprintf(stderr, "%s: %s\n", __func__, msg); exit(-1); })
 
 enum			e_connection_type
 {
@@ -44,5 +47,7 @@ typedef struct	s_client
 	int				player_id;
 	t_command_queue	*cmdqueue;
 }				t_client;
+
+void			listen_for_connections(int port);
 
 #endif
