@@ -62,7 +62,7 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 + Get list of ready-to-execute commands for remaining players. *`dequeue_commands.c`*
 + (Maybe sort, and) Run every command in the list, storing the game's response *`execute_command_list.c`, `user_commands/<various>.c`*
 + (If someone won, or if everyone died, inform the clients and end.) *`game_over.c`*
-+ Report to the user clients the results of their commands. *`create_user_response_string.c`, `send_stringified_responses.c`*
++ Report to the user clients the results of their commands. *`send_stringified_responses.c`*
 + Send a specialized report to any connected graphics clients, if they requested one. *`?.c`*
 + Free the executed commands with their args and responses.
 + Decrement the timer of the top command in every user's queue. *`decrement_user_command_timers.c`*
