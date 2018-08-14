@@ -6,6 +6,9 @@
 # include "command_queue_type.h"
 # include "command_type.h"
 # include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
 
 # define FATAL(msg) ({ fprintf(stderr, "%s: %s\n", __func__, msg); exit(-1); })
 
@@ -49,5 +52,15 @@ typedef struct	s_client
 }				t_client;
 
 void			listen_for_connections(int port);
+
+extern struct	s_opts
+{
+	int		tickrate;
+	int		server_port;
+	int		world_width;
+	int		world_height;
+	int		initial_players_per_team;
+	char	**team_names;
+}				g_opts;
 
 #endif
