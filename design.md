@@ -20,7 +20,7 @@ modules:
     listen_for_connections.c
     handshake.c
     receive_user_message.c
-    is_it_time_to_tick.c
+    time_to_tick.c
     remove_dead_players.c
     pull_ready_commands.c
     execute_command_list.c
@@ -56,7 +56,7 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 
 + Add any valid commands contained in the message until the client's command queue is full *`receive_user_message.c`*
 
-### One "tick" of time has passed: *`is_it_time_to_tick.c`*
+### One "tick" of time has passed: *`time_to_tick.c`*
 
 + Remove from consideration anyone who starves to death before they can act. Tell them they died. *`remove_dead_players.c`*
 + Get list of ready-to-execute commands for remaining players. *`dequeue_commands.c`*
@@ -64,45 +64,44 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 + (If someone won, or if everyone died, inform the clients and end.) *`game_over.c`*
 + Report to the user clients the results of their commands. *`create_user_response_string.c`, `send_stringified_responses.c`*
 + Send a specialized report to any connected graphics clients, if they requested one. *`?.c`*
-+ Note the time. We won't tick until enough time has passed since this point. *`is_it_time_to_tick.c`*
 + Free the executed commands with their args and responses.
 + Decrement the timer of the top command in every user's queue. *`decrement_user_command_timers.c`*
 
 # types and globals
 
 	typedef void (*t_cmdfunc)(int player_id, void *args);
-
+	
 	typedef struct s_client {
 		int socket_fd;
 		int player_id;
 		t_command_queue *cmdqueue;
-    	} t_client;
-
+	} t_client;
+	
 	typedef struct s_command {
 		t_cmdfunc cmdfunc;
 		char *args;
 		char *response;
-		struct timespec timestamp; // maybe -- only for an optional but fairness-ensuring extra feature
-		int player_id;
+		struct timespec timestamp; // maybe -- only for an optional but fairness-ensuring extra featureint player_id;
 	} t_command;
-
-    typedef struct s_command_list {
+	
+	typedef struct s_command_list {
 		t_command *cmd;
-		t_command *next;
+		t_command_list *next;
 	} t_command_list;
-
-    typedef struct s_command_queue {
+	
+	typedef struct s_command_queue {
 		t_command_list *head;
 		t_command_list *tail;
-		int remaining_space; int dequeue_timer;
+		int remaining_space;
+		int dequeue_timer;
 	} t_command_queue;
-
-    enum e_connection_type {
-    	HANDSHAKE,
-    	USER,
+	
+	enum e_connection_type {
+		HANDSHAKE,
+		USER,
 		SERVER,
-    	GFX
-    };
+		GFX
+	};
 
 # module details
 
@@ -156,19 +155,15 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 
 	- Get a socket in passive mode and remember that it's our server fd. *`active_socket_info.c`*
 
-## is_it_time_to_tick.c
+## time_to_tick.c
 
-+ `struct timespec g_last_timestamp;`
++ `struct timespec g_next_tick`
 
-+ `void set_timestamp();`
++ `int have_we_ticked();`
 
-	- Fill `g_last_timestamp` with `clock_gettime(CLOCK_MONOTONIC)`
-
-+ `int ticks_since_last_timestamp();`
-
-	- If `g_last_timestamp` has never been filled, return 1.
-	- Else get a `now` timespec, get the difference in nanoseconds between it and `g_last_timestamp`, and return that number divided by (t one billion)
-*Watch for overflow. Probably have to do the math in a weird order.*
+	- Get a `current_time` timespec.
+	- If `g_next_tick` has never been filled, or if `current_time > g_next_tick` set `g_next_tick += (1 / t)` and return 1.
+	- Else return 0.
 
 ## active_socket_info.c
 
@@ -357,13 +352,13 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 
 	- For each node in `list`, send the result back to the user.
 
-## user_commands/\<various>.c
+## user_commands/(see.c, inventory.c, advance.c, ...)
 
 + Probably one `.c` file per possible user command (`inventory` etc.). In this directory live functions that:
 	- Ask the game for the relevant data, in the case of commands like `see`, or to move entities, for `put`, `advance`...
 	- Translate the response into a string and put that string in the command's response field
 
-## tick_command_timers.c
+## decrement_user_command_timers.c
 
 + `void decrement_user_command_timers(t_client **user_clients, int player_count);`
 
