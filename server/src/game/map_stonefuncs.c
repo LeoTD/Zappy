@@ -1,13 +1,27 @@
 #include "server.h"
 
-int				place_stone(int type, int amount, t_tile *t)
+int				player_place_stone(int type, t_tile *t, t_player *player)
 {
 	if (!t)
 	{
 		printf("Tried to place stone in NULL tile!\n");
 		return (-1);
 	}
-	t->stones[type] += amount;
+	if (player->stones[type] < 1)
+		return (1);
+	player->stones[type] -= 1;
+	t->stones[type] += 1;
+	return (0);
+}
+
+int				place_stone(int type, t_tile *t)
+{
+	if (!t)
+	{
+		printf("Tried to place stone in NULL tile!\n");
+		return (-1);
+	}
+	t->stones[type] += 1;
 	return (0);
 }
 
@@ -16,16 +30,17 @@ int				place_stone(int type, int amount, t_tile *t)
 ** If requesting more stones than are present, returns 1.
 */
 
-int				pickup_stone(int type, int amount, t_tile *t)
+int				pickup_stone(int type, t_tile *t, t_player *player)
 {
 	if (!t)
 	{
 		printf("Tried to remove stone from NULL tile!\n");
 		return (-1);
 	}
-	if (t->stones[type] < amount)
+	if (t->stones[type] < 1)
 		return (1);
-	t->stones[type] -= amount;
+	t->stones[type] -= 1;
+	player->stones[type] += 1;
 	return (0);
 }
 
@@ -42,7 +57,7 @@ int				place_random_stones(int type, int pool)
 		{
 			while (++k < g_map->y)
 				if (random() % 10 == 0 && --pool >= 0)
-					place_stone(type, 1, &g_map->tile[i][k]);
+					place_stone(type, &g_map->tile[i][k]);
 			k = -1;
 		}
 		i = -1;

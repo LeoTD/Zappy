@@ -16,6 +16,13 @@
 # define DO_CMD_FUNC(cmd)	(cmd->do_cmd(cmd->player_id, cmd->args))
 # define NEXT_CMD(cmd)		(cmd = cmd->next)
 
+# define LINEMATE 0
+# define DERAUMERE 1
+# define SIBUR 2
+# define MENDIANE 3
+# define PHIRAS 4
+# define THYSTAME 5
+
 enum					e_directions
 {
 	NORTH,
@@ -102,8 +109,8 @@ int						accept_and_poll_clients(int server);
 */
 
 int						create_map(int, int);
-int						place_stone(int type, int amount, t_tile *t);
-int						remove_stone(int type, int amount, t_tile *t);
+int						place_stone(int type, t_tile *t);
+int						remove_stone(int type, t_tile *t);
 int						place_random_stones(int type, int pool);
 
 t_tile					*get_adj_tile(t_tile *home, int dir);
@@ -116,17 +123,17 @@ t_tile					*get_tile_EW(t_tile *home, int v);
 
 typedef int				(*t_cmd_func)(int, void *);
 
-int						advance(int player_id, void *arg);
-int						turn(int player_id, void *arg);
-int						see(int player_id, void *arg);
-int						inventory(int player_id, void *arg);
-int						take(int player_id, void *arg);
-int						put(int player_id, void *arg);
-int						kick(int player_id, void *arg);
-int						broadcast(int player_id, void *arg);
-int						incantation(int player_id, void *arg);
-int						fork_player(int player_id, void *arg);
-int						connect_nbr(int player_id, void *arg);
+char					*advance(int player_id, void *arg);
+char 					*turn(int player_id, void *arg);
+char 					*see(int player_id, void *arg);
+char 					*inventory(int player_id, void *arg);
+char 					*take(int player_id, void *arg);
+char 					*put(int player_id, void *arg);
+char 					*kick(int player_id, void *arg);
+char 					*broadcast(int player_id, void *arg);
+char 					*incantation(int player_id, void *arg);
+char 					*fork_player(int player_id, void *arg);
+char 					*connect_nbr(int player_id, void *arg);
 
 /*
 ** Scheduler commands
