@@ -8,6 +8,7 @@ modules:
     command_list_type.c, .h
     command_queue_type.c, .h
     client_type.c, .h
+	client_map_type.c, .h
     
     user_commands/
     (advance, left_right, see, inventory, take, put, kick, broadcast, incantation, fork, connect_nbr).c
@@ -16,7 +17,7 @@ modules:
     user_clients_lookup.c
     active_socket_info.c
 
-    game_parameters.c
+    command_line_options.c
     listen_for_connections.c
     handshake.c
     receive_user_message.c
@@ -37,8 +38,9 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 
 ### Setup
 
-+ Tell the game to start up with the given world size, number of teams, and number of starting players. *`game_parameters.c`*
++ Parse and record the values for port, world size, team names, and initial player count. *`command_line_options.c`*
 + Start up the server listening process on the user-specified port. *`listen_for_connections.c`*
++ Create the game map and the initial player avatars. *`game/?`*
 
 ### Received a connection request from a user client:
 
@@ -102,6 +104,15 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 		SERVER,
 		GFX
 	};
+	
+	extern struct s_opts  {
+        int tickrate;
+        int server_port;
+        int world_width;
+        int world_height;
+        int initial_players_per_team;
+        char **team_names;
+	} g_opts;
 
 # module details
 
@@ -109,6 +120,12 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 
 + `t_client *new_client(int socket_fd, int player_id);`
 + `void free_client(t_client *client);`
+
+## client_map_type.c
+
++ `t_client *map_get_client(t_client_map *map, int id);`
++ `void map_add_client(t_client_map *map, t_client *client);`
++ `t_client *map_remove_client(t_client_map *map, t_client *client);`
 
 ## cmdfunc_type.c
 
@@ -199,6 +216,12 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 	static int g_count;
 	static size_t g_capacity
 	static t_client **g_user_clients;
+	static t_client_map *g_client_player_map;
+	static t_client_map *g_client_socket_map;
+
++ `t_client **get_clients(void)`
+
+	- Simple accessor for the clients list.
 
 + `void register_user_client(int socket_fd, int player_id);`
 
@@ -207,40 +230,22 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 	- If `g_count` == `g_capacity`, realloc more space, increase `g_capacity` appropriately, and insert new client at index `g_count`.
 	- Else find the first NULL slot and stick the new client there.
 	- Increment `g_count`.
+	- Add to the client hash map. *`client_map_type.c`*
 	
 + `t_client *get_client_by_player_id(int player_id);`
 
-	- At worst, we just search through the array from front to end. But see below -- we should do better.
-
-> Just to move on with my life, I'll say this is a linear time search through the clients array until the client with that `player_id` is found. HOWEVER: This is pretty darn bad, specifically because of the `broadcast` command. Any time someone broadcasts anything, we do one of these lookups for every other player in the game, which is O(n\*\*2). Not good. Could conceivably prohibit fast tickrates that would otherwise be achievable, perhaps even in a human-noticeable way.
-
-> OTHER OPTIONS:
-> 1) Get a guarantee from the game side of things that player_ids start at zero, increase monotonically, and are never reused. Use player_id as the index into an array.
-> - PRO: Easy to implement.
-> - PRO: Constant time lookup.
-> - CON: Tightly couples the game logic to the client management for the first time. We have otherwise entirely avoided this.
-> - CON: Array is of unbounded size, and it's possible that nearly 100% of that will be wasted space. We could even crash, eventually. (Imagine a scenario in which the only team simply has a sole client lay an egg, wait for another client to replace him, and then starve to death.)
-> 2) Create a array of `{ int id; t_client **address; }` structs. Keep it sorted by id at all times, remove entries on player death. Look up players by binary search.
-> - PRO: O(log n) lookup.
-> - CON: Less trivial to implement. Sorting involves, what, pulling every entry into a linked list, sorting that with merge or quicksort, then reinserting?
-> 3) Implement it as a hash map, buckets and all.
-> - PRO: Constant time lookup.
-> - PRO: Hash maps are fun.
-> - PRO/CON: Not trivial to implement like option 1, but it's a pretty familiar concept to me and there are a million tutorials and examples.
-> 
-> Any of these are better than the current linear time lookup, because
-> that will actually take forever.
+	- Get the address of the right client object from `g_client_player_map`. Return it. *`client_map_type.c`*
 
 + `t_client *get_client_by_socket_fd(int socket_fd);`
 
-	- A linear time front-to-back search of the array will work here too, at minimum. See above/below.
-> The linear time option isn't disastrous here like it is for looking up by player id, because we do this twice per connected client per tick, not n\*\*2 times. But anything we implement to solve the player id problem would be usable for this too, presumably.
+	- Get the address of the right client object from `g_client_socket_map`. Return it. *`client_map_type.c`*
 
 + `void unregister_user_client(t_client *client);`
 
 	- Entirely forget the connection with this socket. *active_socket_info.c*
 	- Free the client and insert a NULL in its previous place in the array.
 	- Decrement `g_count`.
+	- Delete the corresponding entry from both `g_client_player_map` and `g_client_socket_map`. *`client_map_type.c`*
 
 ## gfx_clients.c
 *Stub, mostly here as a placeholder*
@@ -258,11 +263,9 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 
 	- Walk through the array to find the right one. There will never be more than a few `gfx_clients`... right?
 
-## game_parameters.c
+## command_line_options.c
 
-	static char **g_teamnames;
-	static int g_worldwidth;
-	static int g_worldheight;
+	struct s_opts g_opts; // declaration of `extern struct g_opts` will live here unless/until we make an `extern.c`
 
 + `set_game_parameters(int worldwidth, int worldheight, int initial_team_size, char **teamnames);`
 
