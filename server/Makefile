@@ -41,9 +41,12 @@ USRCMD_FILES= advance.c \
 USRCMD_SRC	= $(addprefix user_commands/, $(USRCMD_FILES))
 
 # Add source files here: (files assumed to be in ./src folder)
-FILES		= message_to_command.c \
-			  server.c \
-			  user_commands.c \
+FILES		= active_socket_info.c \
+			  cmdfunc_type.c \
+			  command_line_options.c \
+			  command_list_type.c \
+			  command_queue_type.c \
+			  listen_for_connections.c \
 
 # Add any subfolder SRC's here:
 SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))
@@ -51,7 +54,7 @@ SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))
 # MAIN is used by		"make"
 # TESTMAIN is used by	"make test"
 # (Use full relative path to Makefile)
-MAIN		= src/main.c
+MAIN		= src/server.c
 
 TESTMAIN	= test/testmain.c
 TESTS		= $(wildcard test/test_*.c)
