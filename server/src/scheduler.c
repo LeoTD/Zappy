@@ -25,7 +25,7 @@ int					schd_add_plr(int player_id)
 	return (0);
 }
 
-static t_cmd		*new_command(int player_id, t_cmdfunc cmd,
+static t_cmd		*new_command(int player_id, t_cmd_func cmd,
 						void *args, int delay_cycles)
 {
 	t_cmd	*new_cmd;
@@ -48,7 +48,7 @@ static t_cmd		*new_command(int player_id, t_cmdfunc cmd,
 **	exits if player_id not found.
 */
 
-int					schd_add_cmd(int player_id, t_cmdfunc cmd,
+int					schd_add_cmd(int player_id, t_cmd_func cmd,
 						void *args, int delay_cycles)
 {
 	t_cmd_queue	*node;
@@ -146,7 +146,7 @@ int					schd_step_cycle(t_cmd **lit_cmds)
 		{
 			if (CMD_READY(plr))
 				while (CMD_READY(plr))
-					pop_command(plr, ready_cmds); //WRONG POINTER.
+					pop_command(plr, ready_cmds);
 			else
 				CMD_COUNTDOWN(plr)--;
 		}
