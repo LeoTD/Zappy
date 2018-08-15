@@ -3,7 +3,7 @@
 #define MAX_OBJ_NAME_LENGTH 10
 #define MAX_BROADCAST_LENGTH 4096
 
-int			schd_add_cmd(int player_id, t_cmdfunc cmd,
+int			schd_add_cmd(int player_id, t_cmd_func cmd,
 		void *args, int delay_cycles)
 {
 	printf("\tplayer %d: cmd %p, args: %s; delay: %d\n", player_id,
@@ -11,7 +11,7 @@ int			schd_add_cmd(int player_id, t_cmdfunc cmd,
 	return (0);
 }
 
-t_cmdfunc	string_to_command_fn_nullary(char *s)
+t_cmd_func	*string_to_command_fn_nullary(char *s)
 {
 	if (!strcmp("advance", s))
 		return (advance);
@@ -32,7 +32,7 @@ t_cmdfunc	string_to_command_fn_nullary(char *s)
 	return (NULL);
 }
 
-t_cmdfunc	string_to_command_fn_unary(char *s, char **arg)
+t_cmd_func	*string_to_command_fn_unary(char *s, char **arg)
 {
 	size_t		len;
 	size_t		max_len;
@@ -58,7 +58,7 @@ t_cmdfunc	string_to_command_fn_unary(char *s, char **arg)
 	return (NULL);
 }
 
-int			get_cmd_tick_delay(t_cmdfunc f)
+int			get_cmd_tick_delay(t_cmd_func f)
 {
 	if (f == connect_nbr)
 		return (0);
@@ -77,7 +77,7 @@ int			get_cmd_tick_delay(t_cmdfunc f)
 
 int			enqueue_received_commands(char *msg, int player_id)
 {
-	t_cmdfunc		cmdfunc;
+	t_cmd_func	*	cmdfunc;
 	void			*arg;
 	int				delay;
 	char			*nl;

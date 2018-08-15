@@ -1,13 +1,13 @@
 #include "server.h"
 
-t_cmdfunc	string_to_command_fn_unary(char *, char **);
-t_cmdfunc	string_to_command_fn_nullary(char *);
+t_cmd_func	*string_to_command_fn_unary(char *, char **);
+t_cmd_func	*string_to_command_fn_nullary(char *);
 int			enqueue_received_commands(char *, int);
 
 int		test_string_to_command_fn()
 {
 	char		*arg;
-	t_cmdfunc	cmdfunc;
+	t_cmd_func	*cmdfunc;
 	char		cmd_str[255] = {0};
 
 	strcpy(cmd_str, "advance");

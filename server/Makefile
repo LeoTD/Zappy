@@ -37,13 +37,17 @@ GAME_SRC	= $(addprefix game/, $(GAME_FILES))
 # ---------------------------------------------------------------------------- #
 # ----------- SRC/USER_COMMANDS ---------------------------------------------- #
 USRCMD_FILES= advance.c \
+			  take.c \
+			  left_right.c \
+			  put.c \
+			  see.c 
 
 USRCMD_SRC	= $(addprefix user_commands/, $(USRCMD_FILES))
 
 # Add source files here: (files assumed to be in ./src folder)
 FILES		= message_to_command.c \
 			  server.c \
-			  user_commands.c \
+			  
 
 # Add any subfolder SRC's here:
 SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))

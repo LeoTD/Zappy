@@ -73,6 +73,8 @@ typedef struct			s_game_info
 	t_plist				**empty_avatars;
 }						t_game_info;
 
+typedef char			*(*t_cmd_func)(int, void *);
+
 typedef struct			s_cmd
 {
 	struct s_cmd		*next;
@@ -105,13 +107,26 @@ int						get_server_socket(int port);
 int						accept_and_poll_clients(int server);
 
 /*
+** Player api:
+*/
+
+t_player				*get_player(int pid);
+
+/*
 ** Map Functions:
 */
 
 int						create_map(int, int);
 int						place_stone(int type, t_tile *t);
+int						player_place_stone(int type, t_tile *t, t_player *player);
 int						remove_stone(int type, t_tile *t);
+int						pickup_stone(int type, t_tile *t, t_player *player);
+
 int						place_random_stones(int type, int pool);
+int						place_random_food(int pool);
+int						player_place_food(t_tile *tile, t_player *player);
+int						pickup_food(t_tile *t, t_player *player);
+int						move_player(t_player *player, int dir);
 
 t_tile					*get_adj_tile(t_tile *home, int dir);
 t_tile					*get_tile_NS(t_tile *home, int v);
@@ -121,7 +136,7 @@ t_tile					*get_tile_EW(t_tile *home, int v);
 ** User commands:
 */
 
-typedef int				(*t_cmd_func)(int, void *);
+typedef char			*(*t_cmd_func)(int, void *);
 
 char					*advance(int player_id, void *arg);
 char 					*turn(int player_id, void *arg);
