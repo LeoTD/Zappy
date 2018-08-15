@@ -10,6 +10,11 @@
 
 int				assign_avatar(int team_id)
 {
+	t_player	*new;
+
+	new = remove_player_from_waitlist(team_id);
+	if (new == NULL)
+		return (-1);
 
 	return (0);
 }
@@ -17,8 +22,6 @@ int				assign_avatar(int team_id)
 /*
 ** Take a pointer to a [ t_player * ]
 ** Mallocs and fills the struct with initial values
-** TODO: Adds player to team-specific empty avatar list
-** TODO: get_team_pid() (ex. player [ 1 ], on team 2)
 **
 ** Usage: player_id = new_player((EGG_TIMER || 0), team_id)
 */

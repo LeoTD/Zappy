@@ -124,7 +124,7 @@ int						attempt_to_put(int pid, char *obj);
 
 
 /*
-** Map Functions:
+** Game Engine Functions:
 */
 
 int						create_map(int, int);
@@ -143,11 +143,18 @@ t_tile					*get_adj_tile(t_tile *home, int dir);
 t_tile					*get_tile_NS(t_tile *home, int v);
 t_tile					*get_tile_EW(t_tile *home, int v);
 
+t_player				*new_player(int egg, int team_id, int team_pid);
+int						get_new_player_id(void);
+void					cleanup_player_list(void);
+t_player				*get_player(int pid);
+int						add_player_to_list(t_player *t);
+int						grow_list(void);
+int						add_player_to_team_waitlist(t_player *p);
+t_player				*remove_player_from_waitlist(int team);
+
 /*
 ** User commands:
 */
-
-typedef char			*(*t_cmd_func)(int, void *);
 
 char					*advance(int player_id, void *arg);
 char 					*turn(int player_id, void *arg);
@@ -164,6 +171,8 @@ char 					*connect_nbr(int player_id, void *arg);
 /*
 ** Scheduler commands
 */
+
+typedef char			*(*t_cmd_func)(int, void *);
 
 int						schd_step_cycle(t_cmd **lit_cmds);
 int						schd_add_plr(int player_id);

@@ -90,3 +90,8 @@ int		attempt_to_put(int pid, char *obj)
 		return (player_place_stone(THYSTAME, player->tile, player));
 	return (1);
 }
+
+void		move_player_by_id(int pid, int dir)
+{
+	move_player(get_player(pid), dir);
+}

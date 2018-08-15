@@ -23,4 +23,5 @@ int			game_init(int x, int y, int teams, int players)
 			new_player(EGG_TIMER, i, j);
 		j = -1;
 	}
+	//Distribute players randomly
 }
