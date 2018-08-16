@@ -1,4 +1,5 @@
 #include "server.h"
+#include "tile_type.h"
 
 #define OK_COLOR "\033[1;35m"
 

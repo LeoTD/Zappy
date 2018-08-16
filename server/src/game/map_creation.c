@@ -1,5 +1,6 @@
 
 #include "server.h"
+#include "tile_type.h"
 
 int				init_tile(t_tile *t, int x, int y)
 {

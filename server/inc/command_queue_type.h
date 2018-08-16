@@ -1,6 +1,7 @@
 #ifndef COMMAND_QUEUE_TYPE_H
 # define COMMAND_QUEUE_TYPE_H
 # include "server.h"
+# include "command_list_type.h"
 
 struct s_command_queue
 {

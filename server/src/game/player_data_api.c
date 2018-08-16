@@ -1,4 +1,5 @@
 #include "server.h"
+#include "player_type.h"
 
 #define START_SIZE 64
 

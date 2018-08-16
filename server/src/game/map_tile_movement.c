@@ -1,5 +1,6 @@
 
 #include "server.h"
+#include "tile_type.h"
 
 t_tile			*get_adj_tile(t_tile *home, int dir)
 {

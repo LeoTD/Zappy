@@ -22,6 +22,8 @@ INC			= inc/$(NAME).h \
 			  inc/command_type.h \
 			  inc/command_list_type.h \
 			  inc/command_queue_type.h \
+			  inc/tile_type.h \
+			  inc/player_type.h \
 			  inc/vec_type.h \
 
 

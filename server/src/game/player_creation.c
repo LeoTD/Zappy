@@ -1,4 +1,5 @@
 #include "server.h"
+#include "player_type.h"
 
 /*
 ** TODO: Takes avatar on team [ team_id ] off the empty avatar list

@@ -1,4 +1,5 @@
 #include "server.h"
+#include "player_type.h"
 
 void		tile_get_data(t_vec pos, t_tile_data *ret)
 {

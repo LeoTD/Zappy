@@ -36,12 +36,18 @@
 // for command_line_options.c and receive_user_message.c
 # define MAX_TEAM_NAME_LENGTH 63
 
-typedef void					(*t_cmdfunc)(int player_id, void *args);
+typedef char					*(*t_cmdfunc)(int player_id, void *args);
 typedef struct s_command		t_command;
 typedef struct s_command_list	t_command_list;
 typedef struct s_command_queue	t_command_queue;
 typedef struct s_client			t_client;
-typedef struct s_vec			t_vec;
+typedef struct s_vec
+{
+	int x;
+	int y;
+}								t_vec;
+typedef struct s_tile			t_tile;
+typedef struct s_player			t_player;
 
 enum			e_connection_type
 {
@@ -51,30 +57,17 @@ enum			e_connection_type
 	GFX
 };
 
-typedef struct			s_tile
+enum			e_directions
 {
-	struct s_player		**players;
-	int					parray_size;
-	int					num_players;
-	int					stones[6];
-	int					food;
-	int					x;
-	int					y;
-}						t_tile;
-
-typedef struct			s_player
-{
-	struct s_tile		*tile;
-	int					facing;
-	int					stones[6];
-	int					food;
-	int					energy;
-	int					level;
-	int					id;
-	int					team_id;
-	int					team_pid;
-	int					egg;
-}						t_player;
+	NORTH,
+	NORTHEAST,
+	EAST,
+	SOUTHEAST,
+	SOUTH,
+	SOUTHWEST,
+	WEST,
+	NORTHWEST
+};
 
 typedef struct			s_plist
 {
@@ -91,11 +84,16 @@ typedef struct			s_game_info
 	t_plist				**empty_avatars;
 }						t_game_info;
 
-/*
-** Global Variables:
-*/
-
-t_game_info					*g_map;
+t_game_info				*g_map;
+extern struct			s_opts
+{
+	int		tickrate;
+	int		server_port;
+	int		world_width;
+	int		world_height;
+	int		initial_players_per_team;
+	char	**team_names;
+}						g_opts;
 
 /*
 ** Player api:
@@ -122,6 +120,7 @@ int						player_place_stone(int type, t_tile *t, t_player *player);
 int						remove_stone(int type, t_tile *t);
 int						pickup_stone(int type, t_tile *t, t_player *player);
 
+t_tile					*get_random_tile(void);
 int						place_random_stones(int type, int pool);
 int						place_random_food(int pool);
 int						player_place_food(t_tile *tile, t_player *player);
@@ -131,6 +130,9 @@ int						move_player(int pid, int dir);
 t_tile					*get_adj_tile(t_tile *home, int dir);
 t_tile					*get_tile_NS(t_tile *home, int v);
 t_tile					*get_tile_EW(t_tile *home, int v);
+
+int						add_player_to_tile(t_player *p, t_tile *t);
+int						is_player_on_tile(t_player *p, t_tile *t);
 
 t_player				*new_player(int egg, int team_id, int team_pid);
 int						get_new_player_id(void);
@@ -159,15 +161,30 @@ char 					*incantation(int player_id, void *arg);
 char 					*fork_player(int player_id, void *arg);
 char 					*connect_nbr(int player_id, void *arg);
 
-extern struct	s_opts
-{
-	int		tickrate;
-	int		server_port;
-	int		world_width;
-	int		world_height;
-	int		initial_players_per_team;
-	char	**team_names;
-}				g_opts;
+// command_line_options.c
+void	parse_command_line_options(int argc, char **argv);
+
+// time_to_tick.c
+int		have_we_ticked(void);
+
+// remove_dead_players.c
+void	remove_dead_players(void);
+
+// dequeue_commands.c
+t_command_list *dequeue_commands(t_client **clients);
+
+// execute_command_list.c
+void	execute_command_list(t_command_list *lst);
+
+// game_over.c
+int		is_game_over(int *winning_team_id_ptr);
+void	handle_game_over(int winning_team_id);
+
+// send_stringified_responses.c
+void	send_results_to_users(t_command_list *lst);
+
+// decrement_user_command_timers.c
+void	decrement_user_command_timers(t_client **clients);
 
 //active_socket_info.c
 void	set_connection_type(int fd, enum e_connection_type type);
@@ -181,7 +198,7 @@ void							listen_for_connections(int port);
 void							handle_waiting_connection_data(int fd);
 
 // cmdfunc_type.c
-int								get_cmdfunc_tick_delay(void (*f)(int, void *));
+int								get_cmdfunc_tick_delay(t_cmdfunc f);
 
 // command_type.c
 t_command						*new_cmd(t_cmdfunc, int player_id);
@@ -189,7 +206,7 @@ void							free_cmd(t_command *cmd);
 
 // client_type.c
 t_client						*new_client(int socket_fd, int player_id);
-void							free_client(struct s_client *client);
+void							free_client(t_client *client);
 
 // command_list_type.c
 t_command_list					*new_cmdlist(t_command *cmd);

@@ -1,4 +1,6 @@
 #include "server.h"
+#include "tile_type.h"
+#include "player_type.h"
 
 int				player_place_stone(int type, t_tile *t, t_player *player)
 {

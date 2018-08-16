@@ -1,4 +1,6 @@
 #include "server.h"
+#include "tile_type.h"
+#include "player_type.h"
 
 /*
 ** Low level functions for player placement and removal

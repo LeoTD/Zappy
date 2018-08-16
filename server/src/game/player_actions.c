@@ -1,4 +1,5 @@
 #include "server.h"
+#include "player_type.h"
 
 void	turn_right(int pid)
 {

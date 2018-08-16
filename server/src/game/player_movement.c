@@ -1,4 +1,5 @@
 #include "server.h"
+#include "player_type.h"
 
 /*
 ** Removes the player from their current tile and places them on

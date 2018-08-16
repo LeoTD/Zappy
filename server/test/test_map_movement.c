@@ -1,4 +1,5 @@
 #include "server.h"
+#include "tile_type.h"
 
 /* Optionally print the results of movements */
 //#define PRINTF_MOVES

@@ -1,4 +1,5 @@
 #include "server.h"
+#include "tile_type.h"
 
 void		print_map(void)
 {

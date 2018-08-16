@@ -69,7 +69,7 @@ int		get_socket_with_available_data(void)
 	static fd_set	readable;
 	int				curr;
 
-	printf("prev = %d, curr = %d, g_max = %d, serv = %d\n", prev, curr, g_max_fd, g_server_fd);
+	printf("prev = %d, g_max = %d, serv = %d\n", prev, g_max_fd, g_server_fd);
 	if (prev == g_max_fd)
 		return ((prev = -1));
 	else if (prev == -1)
