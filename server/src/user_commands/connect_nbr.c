@@ -1,6 +1,6 @@
 #include "server.h"
 
-char	*kick(int player_id, void *args)
+char	*connect_nbr(int player_id, void *args)
 {
 	return "placeholder";
 }

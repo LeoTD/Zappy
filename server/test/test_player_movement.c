@@ -13,36 +13,36 @@ int			test_player_movement(void)
 	create_map(13, 17);
 
 	t_tile *t = &g_map->tile[5][5];
-	p = new_player(0, 1);
+	p = new_player(0, 1, 0);
 	add_player_to_tile(p, t);
 
 	for (int i = 0; i < 34817; i++) //ends at t->x, t->y - 1
-		move_player(p->id, NORTH);
+		move_player(p, NORTH);
 	assert(p->tile->x == t->x && p->tile->y == t->y - 1);
 	printf("%s[ OK ] ", OK_COLOR);
 	for (int i = 0; i < 26625; i++) //ends at t->x + 1, t->y - 1
-		move_player(p->id, EAST);
+		move_player(p, EAST);
 	assert(p->tile->x == t->x + 1 && p->tile->y == t->y - 1);
 	printf("%s[ OK ] ", OK_COLOR);
 	for (int i = 0; i < 34817; i++) //ends at t->x + 1, t->y
-		move_player(p->id, SOUTH);
+		move_player(p, SOUTH);
 	assert(p->tile->x == t->x + 1 && p->tile->y == t->y);
 	printf("%s[ OK ] ", OK_COLOR);
 	for (int i = 0; i < 26625; i++) //ends at t->x, t->y
-		move_player(p->id, WEST);
+		move_player(p, WEST);
 	assert(p->tile->x == t->x && p->tile->y == t->y);
 	printf("%s[ OK ] ", OK_COLOR);
 
-	move_player(p->id, NORTH);
-	move_player(p->id, NORTH);
-	move_player(p->id, NORTH);
-	move_player(p->id, NORTH);
-	move_player(p->id, NORTH);
-	move_player(p->id, WEST);
-	move_player(p->id, WEST);
-	move_player(p->id, WEST);
-	move_player(p->id, WEST);
-	move_player(p->id, WEST);
+	move_player(p, NORTH);
+	move_player(p, NORTH);
+	move_player(p, NORTH);
+	move_player(p, NORTH);
+	move_player(p, NORTH);
+	move_player(p, WEST);
+	move_player(p, WEST);
+	move_player(p, WEST);
+	move_player(p, WEST);
+	move_player(p, WEST);
 	assert(p->tile->x == t->x - 5 && p->tile->y == t->y - 5);
 	
 	printf("%s[ OK ]        \033[0mPlayer's can move!\n", OK_COLOR);

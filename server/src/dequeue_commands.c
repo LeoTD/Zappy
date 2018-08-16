@@ -34,14 +34,14 @@ static void		step_client_queue(t_client *client)
 		client->cmdqueue->dequeue_timer = -1;
 }
 
-t_command_list	*dequeue_commands(t_client **user_clients, int player_count)
+t_command_list	*dequeue_commands(t_client **user_clients)
 {
 	t_command_list	*popped_cmds;
 	int				i;
 
 	popped_cmds = NULL;
 	i = -1;
-	while (++i < player_count)
+	while (user_clients[++i])
 	{
 		if (user_clients[i]->cmdqueue->dequeue_timer == 0)
 		{

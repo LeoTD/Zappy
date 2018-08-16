@@ -6,5 +6,7 @@
 **	May or may not convert food to energy.
 */
 
-
-
+char	*inventory(int player_id, void *args)
+{
+	return "placeholder";
+}

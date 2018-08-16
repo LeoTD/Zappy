@@ -1,4 +1,5 @@
 #include "server.h"
+#include "player_type.h"
 
 /*
 **	Display all resources and players in formatted display.
@@ -9,17 +10,18 @@
 
 char	*find_next_tile_result(t_tile *tile)
 {
-	int		count;
-	char	*obj;
+	/* int		count; */
+	/* char	*obj; */
 
-	obj = ft_strjoin_free(obj, find_food(tile));
-	obj = ft_strjoin_free(obj, find_stones(tile));
-	obj = ft_strjoin_free(obj, find_players(tile));
-	return (obj);
+	/* obj = ft_strjoin_free(&obj, find_food(tile)); */
+	/* obj = ft_strjoin_free(&obj, find_stones(tile)); */
+	/* obj = ft_strjoin_free(&obj, find_players(tile)); */
+	/* return (obj); */
 	// Find amount of food and store into string.
 	// Find amount of each individual stone and strjoin_free to str.
 	// Find amount of players on each tile and strjoin_free to str.
 	// return str. 
+	return (NULL);
 
 }
 
@@ -39,7 +41,9 @@ char	*get_format_string(t_player *player, t_tile *tile)
 		while (amount_per_row <= vision_distance * 2)
 		{
 			next_tile_result = find_next_tile_result(temp);
-			resulting_string = ft_strjoin_free(resulting_string, next_tile_result);
+			resulting_string = "placeholder to make this compile";
+			//resulting_string = ft_strjoin_free(resulting_string, next_tile_result);
+
 			temp = get_adj_tile(temp, EAST);
 		}
 		vision_distance++;

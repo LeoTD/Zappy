@@ -1,4 +1,5 @@
 #include "server.h"
+#include "tile_type.h"
 
 t_tile		*get_random_tile(void)
 {
@@ -51,4 +52,5 @@ int			game_init(int x, int y, int teams, int players)
 		g_map->players_on_team[i] = players;
 	}
 	randomize_player_positions();
+	return (0);
 }

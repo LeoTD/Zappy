@@ -30,13 +30,17 @@ INC			= inc/$(NAME).h \
 # ---------------------------------------------------------------------------- #
 # ----------- SRC/GAME ------------------------------------------------------- #
 GAME_FILES	= map_creation.c \
-			  map_player_movement.c \
+			  player_movement.c \
 			  map_tile_movement.c \
 			  map_tile_to_player_funcs.c \
 			  map_stonefuncs.c \
 			  map_foodfuncs.c \
+			  player_actions.c \
 			  player_creation.c \
 			  player_data_api.c \
+			  player_empty_list_funcs.c \
+			  game_init.c \
+			  see.c \
 
 
 GAME_SRC	= $(addprefix game/, $(GAME_FILES))
@@ -44,6 +48,12 @@ GAME_SRC	= $(addprefix game/, $(GAME_FILES))
 # ---------------------------------------------------------------------------- #
 # ----------- SRC/USER_COMMANDS ---------------------------------------------- #
 USRCMD_FILES= advance.c \
+			  broadcast.c \
+			  connect_nbr.c \
+			  fork_player.c \
+			  incantation.c \
+			  inventory.c \
+			  kick.c \
 			  take.c \
 			  left_right.c \
 			  put.c \
@@ -52,8 +62,7 @@ USRCMD_FILES= advance.c \
 USRCMD_SRC	= $(addprefix user_commands/, $(USRCMD_FILES))
 
 # Add source files here: (files assumed to be in ./src folder)
-FILES		= server.c \
-			  active_socket_info.c \
+FILES		= active_socket_info.c \
 			  cmdfunc_type.c \
 			  command_type.c \
 			  command_line_options.c \
@@ -63,6 +72,13 @@ FILES		= server.c \
 			  receive_user_message.c \
 			  user_clients_lookup.c \
 			  handshake.c \
+			  decrement_user_command_timers.c \
+			  execute_command_list.c \
+			  remove_dead_players.c \
+			  game_over.c \
+			  send_stringified_responses.c \
+			  time_to_tick.c \
+			  dequeue_commands.c \
 
 # Add any subfolder SRC's here:
 SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))

@@ -107,9 +107,11 @@ t_player				*get_player(int pid);
 
 void					turn_left(int pid);
 void					turn_right(int pid);
+void					walk_forward(int pid);
 
 int						attempt_to_take(int pid, char *obj);
 int						attempt_to_put(int pid, char *obj);
+
 /*
 ** Game Engine Functions:
 */
@@ -125,14 +127,15 @@ int						place_random_stones(int type, int pool);
 int						place_random_food(int pool);
 int						player_place_food(t_tile *tile, t_player *player);
 int						pickup_food(t_tile *t, t_player *player);
-int						move_player(int pid, int dir);
+int						move_player(t_player *p, int dir);
 
 t_tile					*get_adj_tile(t_tile *home, int dir);
 t_tile					*get_tile_NS(t_tile *home, int v);
 t_tile					*get_tile_EW(t_tile *home, int v);
 
+int						remove_player_from_tile(t_player *p, t_tile *t);
 int						add_player_to_tile(t_player *p, t_tile *t);
-int						is_player_on_tile(t_player *p, t_tile *t);
+t_player				*is_player_on_tile(t_player *p, t_tile *t);
 
 t_player				*new_player(int egg, int team_id, int team_pid);
 int						get_new_player_id(void);
@@ -231,5 +234,11 @@ void				register_user_client(int sock_fd, int player_id);
 t_client			*get_client_by_player_id(int player_fd);
 t_client			*get_client_by_socket_fd(int sock_fd);
 void				unregister_user_client(t_client *client);
+
+// send_stringified_responses.c
+void	send_stringified_responses(t_command_list *lst);
+
+// time_to_tick.c
+int			have_we_ticked(void);
 
 #endif

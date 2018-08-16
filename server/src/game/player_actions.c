@@ -20,6 +20,7 @@ void	turn_left(int pid)
 {
 	t_player *player;
 
+	player = get_player(pid);
 	if (player->facing == NORTH)
 		player->facing = WEST;
 	else if (player->facing == WEST)
@@ -28,6 +29,14 @@ void	turn_left(int pid)
 		player->facing = EAST;
 	else if (player->facing == EAST)
 		player->facing = NORTH;
+}
+
+void	walk_forward(int pid)
+{
+	t_player *player;
+
+	player = get_player(pid);
+	move_player(player, player->facing);
 }
 
 /*

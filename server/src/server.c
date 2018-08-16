@@ -21,7 +21,7 @@ int	main(int argc, char **argv)
 			execute_command_list(cmds);
 			if (is_game_over(&winning_team_id))
 				handle_game_over(winning_team_id);
-			send_results_to_users(cmds);
+			send_stringified_responses(cmds);
 			free_cmdlist(cmds);
 			decrement_user_command_timers(user_clients);
 		}

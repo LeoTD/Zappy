@@ -2,6 +2,6 @@
 
 char	*advance(int player_id, void *args)
 {
-	move_player(player_id);
+	walk_forward(player_id);
 	return ("ok\n");
 }

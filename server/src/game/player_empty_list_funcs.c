@@ -1,4 +1,5 @@
 #include "server.h"
+#include "player_type.h"
 
 /*
 ** Make and delete t_plist's.
