@@ -87,12 +87,12 @@ typedef struct			s_game_info
 t_game_info				*g_map;
 extern struct			s_opts
 {
-	int		tickrate;
-	int		server_port;
-	int		world_width;
-	int		world_height;
-	int		initial_players_per_team;
-	char	**team_names;
+	int					tickrate;
+	int					server_port;
+	int					world_width;
+	int					world_height;
+	int					initial_players_per_team;
+	char				**team_names;
 }						g_opts;
 
 /*
@@ -165,80 +165,80 @@ char 					*fork_player(int player_id, void *arg);
 char 					*connect_nbr(int player_id, void *arg);
 
 // command_line_options.c
-void	parse_command_line_options(int argc, char **argv);
+void					parse_command_line_options(int argc, char **argv);
 
 // time_to_tick.c
-int		have_we_ticked(void);
+int						have_we_ticked(void);
 
 // remove_dead_players.c
-void	remove_dead_players(void);
+void					remove_dead_players(void);
 
 // dequeue_commands.c
-t_command_list *dequeue_commands(t_client **clients);
+t_command_list 			*dequeue_commands(t_client **clients);
 
 // execute_command_list.c
-void	execute_command_list(t_command_list *lst);
+void					execute_command_list(t_command_list *lst);
 
 // game_over.c
-int		is_game_over(int *winning_team_id_ptr);
-void	handle_game_over(int winning_team_id);
+int						is_game_over(int *winning_team_id_ptr);
+void					handle_game_over(int winning_team_id);
 
 // send_stringified_responses.c
-void	send_results_to_users(t_command_list *lst);
+void					send_results_to_users(t_command_list *lst);
 
 // decrement_user_command_timers.c
-void	decrement_user_command_timers(t_client **clients);
+void					decrement_user_command_timers(t_client **clients);
 
 //active_socket_info.c
-void	set_connection_type(int fd, enum e_connection_type type);
-int		get_socket_with_available_data(void);
-void	forget_connection(int sock_fd);
-int		is_connection_type(int sock_fd, enum e_connection_type type);
-void	unset_connection_type(int sock_fd, enum e_connection_type type);
-
+void					set_connection_type(int fd, enum e_connection_type type);
+int						get_socket_with_available_data(void);
+void					forget_connection(int sock_fd);
+int						is_connection_type(int sock_fd, enum e_connection_type type);
+void					unset_connection_type(int sock_fd, enum e_connection_type type);
+	
 // listen_for_connections.c
-void							listen_for_connections(int port);
-void							handle_waiting_connection_data(int fd);
+void					listen_for_connections(int port);
+void					handle_waiting_connection_data(int fd);
 
 // cmdfunc_type.c
-int								get_cmdfunc_tick_delay(t_cmdfunc f);
+int						get_cmdfunc_tick_delay(t_cmdfunc f);
 
 // command_type.c
-t_command						*new_cmd(t_cmdfunc, int player_id);
-void							free_cmd(t_command *cmd);
+t_command				*new_cmd(t_cmdfunc, int player_id);
+void					free_cmd(t_command *cmd);
 
 // client_type.c
-t_client						*new_client(int socket_fd, int player_id);
-void							free_client(t_client *client);
+t_client				*new_client(int socket_fd, int player_id);
+void					free_client(t_client *client);
 
 // command_list_type.c
-t_command_list					*new_cmdlist(t_command *cmd);
-void							free_cmdlist(t_command_list *list);
+t_command_list			*new_cmdlist(t_command *cmd);
+void					free_cmdlist(t_command_list *list);
 
 // command_queue_type.c
-t_command_queue					*new_cmdqueue(void);
-void							free_cmdqueue(t_command_queue *q);
-int								enqueue_command(t_command_queue *q, t_command *cmd);
-t_command_list					*dequeue_command(t_command_queue *q);
+t_command_queue			*new_cmdqueue(void);
+void					free_cmdqueue(t_command_queue *q);
+int						enqueue_command(t_command_queue *q, t_command *cmd);
+t_command_list			*dequeue_command(t_command_queue *q);
 
 // handshake.c
-void		initiate_user_connection_handshake(int server_fd);
-void		complete_user_connection_handshake(int cli_fd);
+void					initiate_user_connection_handshake(int server_fd);
+void					complete_user_connection_handshake(int cli_fd);
 
 // receive_user_message.c
-void		receive_user_message(int cli_fd);
+void					receive_user_message(int cli_fd);
 
 // user_clients_lookup.c
-t_client			**get_clients(void);
-void				register_user_client(int sock_fd, int player_id);
-t_client			*get_client_by_player_id(int player_fd);
-t_client			*get_client_by_socket_fd(int sock_fd);
-void				unregister_user_client(t_client *client);
+t_client				**get_clients(void);
+void					register_user_client(int sock_fd, int player_id);
+t_client				*get_client_by_player_id(int player_fd);
+t_client				*get_client_by_socket_fd(int sock_fd);
+void					unregister_user_client(t_client *client);
 
 // send_stringified_responses.c
-void	send_stringified_responses(t_command_list *lst);
+void					send_stringified_responses(t_command_list *lst);
 
 // time_to_tick.c
-int			have_we_ticked(void);
+int						have_we_ticked(void);
 
 #endif
