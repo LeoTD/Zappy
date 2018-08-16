@@ -1,5 +1,11 @@
 #include "server.h"
 
+/*
+** THIS FILE IS FOR REFERENCE.
+** Don't destroy, Max needs it :)
+*/
+
+
 static t_cmd_queue	*g_cmd_queue = NULL;
 
 int					schd_add_plr(int player_id)
