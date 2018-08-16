@@ -1,4 +1,5 @@
-#include "command_list_type.c"
+#include "server.h"
+#include "command_list_type.h"
 
 t_command_list		*new_cmdlist(t_command *cmd)
 {

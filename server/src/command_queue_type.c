@@ -1,4 +1,7 @@
+#include "server.h"
 #include "command_queue_type.h"
+
+#define MAX_COMMANDS	10
 
 t_command_queue		*new_cmdqueue(void)
 {

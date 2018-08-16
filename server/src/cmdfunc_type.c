@@ -1,4 +1,6 @@
 #include "server.h"
+# define MAX_BROADCAST_LENGTH 4096
+# define MAX_OBJ_NAME_LENGTH 11
 
 int					get_cmdfunc_tick_delay(t_cmdfunc f)
 {
@@ -49,8 +51,8 @@ static t_cmdfunc	string_to_cmdfunc_unary(char *s, char **arg_ptr)
 	len = strnlen(space + 1, max_len);
 	if ((space + 1)[len] != '\0')
 		return (NULL);
-	*arg = malloc(len);
-	strcpy(*arg, space + 1);
+	*arg_ptr = malloc(len);
+	strcpy(*arg_ptr, space + 1);
 	if (*s == 'b')
 		return (broadcast);
 	if (*s == 'p')
@@ -63,6 +65,6 @@ static t_cmdfunc	string_to_cmdfunc_unary(char *s, char **arg_ptr)
 t_cmdfunc			string_to_cmdfunc(char *string, char **arg_ptr)
 {
 	if (*string == 't' || *string == 'p' || *string == 'b')
-		return (string_to_cmdfunc_unary(string, *arg_ptr));
+		return (string_to_cmdfunc_unary(string, arg_ptr));
 	return (string_to_cmdfunc_nullary(string));
 }

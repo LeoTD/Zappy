@@ -25,3 +25,16 @@ void	listen_for_connections(int port)
 		ERR_OUT("listen");
 	set_connection_type(fd, SERVER);
 }
+
+void	handle_waiting_connection_data(int fd)
+{
+	if (is_connection_type(fd, SERVER))
+		initiate_user_connection_handshake(fd);
+	else if (is_connection_type(fd, HANDSHAKE))
+		complete_user_connection_handshake(fd);
+	else
+	{
+		assert(is_connection_type(fd, USER));
+		receive_user_message(fd);
+	}
+}

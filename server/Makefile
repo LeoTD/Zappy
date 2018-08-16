@@ -19,6 +19,10 @@ COM_STRING	= "Compiling:"
 
 # Add header files here: (use full relative path to Makefile)
 INC			= inc/$(NAME).h \
+			  inc/command_type.h \
+			  inc/command_list_type.h \
+			  inc/command_queue_type.h \
+			  inc/vec_type.h \
 
 
 # ---------------------------------------------------------------------------- #
@@ -32,6 +36,7 @@ GAME_FILES	= map_creation.c \
 			  player_creation.c \
 			  player_data_api.c \
 
+
 GAME_SRC	= $(addprefix game/, $(GAME_FILES))
 
 # ---------------------------------------------------------------------------- #
@@ -43,10 +48,14 @@ USRCMD_SRC	= $(addprefix user_commands/, $(USRCMD_FILES))
 # Add source files here: (files assumed to be in ./src folder)
 FILES		= active_socket_info.c \
 			  cmdfunc_type.c \
+			  command_type.c \
 			  command_line_options.c \
 			  command_list_type.c \
 			  command_queue_type.c \
 			  listen_for_connections.c \
+			  receive_user_message.c \
+			  user_clients_lookup.c \
+			  handshake.c \
 
 # Add any subfolder SRC's here:
 SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))

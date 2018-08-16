@@ -1,8 +1,9 @@
-#ifndef COMMAND_TYPE_H
-# define COMMAND_TYPE_H
-# include "server.h"
+#include "server.h"
 
-t_command		*new_cmd(t_cmdfunc f, int player_id);
-void			free_cmd(t_command *cmd);
-
-#endif
+struct s_command
+{
+	t_cmdfunc	cmdfunc;
+	char		*args;
+	char		*response;
+	int			player_id;
+};

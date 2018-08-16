@@ -3,11 +3,7 @@
 
 int		test_can_make_server_listener(void)
 {
-	int fd;
-
-	fd = get_server_socket(0);
-	assert(fd > 0);
-	close(fd);
+	listen_for_connections(8282);
 	return (0);
 }
 
@@ -24,18 +20,20 @@ int g_make_server_die = 0;
 
 int		test_server_listens_for_clients(void)
 {
-	int		fd;
+	int		serv_fd = 8283;
+	int		readable_socket;
 	struct sockaddr_in	server;
 	socklen_t	len;
 	char cmd[255] = {0};
 
 	len = sizeof server;
-	fd = get_server_socket(0);
-	getsockname(fd, (struct sockaddr *)&server, &len);
+	listen_for_connections(serv_fd);
+	HEREMSG;
+	getsockname(serv_fd, (struct sockaddr *)&server, &len);
 	sprintf(cmd, "echo 'hello' | nc localhost %d", ntohs(server.sin_port));
 	if (!fork())
 	{
-		close(fd);
+		close(serv_fd);
 		if (!fork())
 		{
 			system(cmd);
@@ -53,7 +51,12 @@ int		test_server_listens_for_clients(void)
 	{
 		while (1)
 		{
-			accept_and_poll_clients(fd);
+	HEREMSG;
+			while ((readable_socket = get_socket_with_available_data()) != -1)
+			{
+	HEREMSG;
+				handle_waiting_connection_data(readable_socket);
+			}
 			if (g_make_server_die)
 			{
 				printf("%s: ok\n", __func__);

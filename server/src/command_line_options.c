@@ -1,6 +1,6 @@
 #include "server.h"
 
-struct s_opts	g_opts = { 0 };
+struct s_opts	g_opts = {};
 
 static void		usage(void)
 {
@@ -33,6 +33,12 @@ static void		parse_team_names(char **argv)
 	i = 0;
 	while (argv[i] && argv[i][0] != '-')
 	{
+		if (strlen(argv[i]) > MAX_TEAM_NAME_LENGTH)
+		{
+			fprintf(stderr, "Team name `%s' exceeds max length of %d\n",
+					argv[i], MAX_TEAM_NAME_LENGTH);
+			exit(1);
+		}
 		g_opts.team_names[i + 1] = argv[i];
 		++i;
 	}

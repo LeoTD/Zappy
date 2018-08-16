@@ -1,33 +1,17 @@
 #include "server.h"
 
-static void	accept_clients_and_new_messages(void)
-{
-	int	fd;
-
-	while ((fd = get_readable_socket()) != -1)
-	{
-		if (is_connection_type(fd, SERVER))
-			initiate_handshake(fd);
-		else if (is_connection_type(fd, HANDSHAKE))
-			continue_handshake(fd);
-		else
-		{
-			assert(is_connection_type(fd, USER));
-			receive_user_message(fd);
-		}
-	}
-}
-
 int	main(int argc, char **argv)
 {
 	t_command_list	*cmds;
 	int				winning_team_id;
+	int				fd;
 
 	parse_command_line_options(argc, argv);
 	listen_for_connections(g_opts.server_port);
 	while (1)
 	{
-		accept_clients_and_new_messages();
+		while ((fd = get_socket_with_available_data()) != -1)
+			handle_waiting_connection_data(fd);
 		if (have_we_ticked())
 		{
 			remove_dead_players();
