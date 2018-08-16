@@ -129,9 +129,9 @@ int						player_place_food(t_tile *tile, t_player *player);
 int						pickup_food(t_tile *t, t_player *player);
 int						move_player(t_player *p, int dir);
 
-char					*find_food(t_tile *tile);
-char					*find_stone(t_tile *tile);
-char					*find_stones(t_tile *tile);
+//	find_resouces.c
+char					*find_food(t_player *player);
+char					*find_stones(t_player *player);
 
 t_tile					*get_adj_tile(t_tile *home, int dir);
 t_tile					*get_tile_NS(t_tile *home, int v);
@@ -149,6 +149,15 @@ int						add_player_to_list(t_player *t);
 int						grow_list(void);
 int						add_player_to_team_waitlist(t_player *p);
 t_player				*remove_player_from_waitlist(int team);
+
+/*
+**	get_player_inventory.c
+*/
+
+char					*wrap(char *str);
+char					*delimit(char *str1, char *d, char *str2);
+char					*search_inventory(t_player *player);
+char					*get_player_inventory(int pid);
 
 /*
 ** User commands:
