@@ -37,14 +37,14 @@ t_tile			*get_tile_NS(t_tile *home, int v)
 {
 	int			newy;
 
-	if (abs(v) > g_map->y)
-		v = v % g_map->y;
+	if (abs(v) > g_map->dim.y)
+		v = v % g_map->dim.y;
 	newy = home->y;
 	newy += v;
-	if (newy >= g_map->y)
-		newy = newy - g_map->y;
+	if (newy >= g_map->dim.y)
+		newy = newy - g_map->dim.y;
 	else if (newy < 0)
-		newy = newy + g_map->y;
+		newy = newy + g_map->dim.y;
 	return (&g_map->tile[home->x][newy]);
 }
 
@@ -52,13 +52,13 @@ t_tile			*get_tile_EW(t_tile *home, int v)
 {
 	int			newx;
 
-	if (abs(v) > g_map->x)
-		v = v % g_map->x;
+	if (abs(v) > g_map->dim.x)
+		v = v % g_map->dim.x;
 	newx = home->x;
 	newx += v;
-	if (newx >= g_map->x)
-		newx = newx - g_map->x;
+	if (newx >= g_map->dim.x)
+		newx = newx - g_map->dim.x;
 	else if (newx < 0)
-		newx = newx + g_map->x;
+		newx = newx + g_map->dim.x;
 	return (&g_map->tile[newx][home->y]);
 }

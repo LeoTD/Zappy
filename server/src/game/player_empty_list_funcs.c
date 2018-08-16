@@ -20,7 +20,7 @@ int				*new_plist(t_player *p, t_plist **head)
 	{
 		while (tmp->next != NULL)
 			tmp = tmp->next;
-		tmp->next = new
+		tmp->next = new;
 	}
 	else
 		*head = new;
@@ -33,7 +33,7 @@ int				*new_plist(t_player *p, t_plist **head)
 
 int				add_player_to_team_waitlist(t_player *p)
 {
-	new_plist(p, &g_map->empty_avatars[p->team]);
+	new_plist(p, &g_map->empty_avatars[p->team_id]);
 	return (0);
 }
 

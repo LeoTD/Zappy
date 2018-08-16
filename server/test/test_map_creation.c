@@ -11,9 +11,9 @@ void			print_map_info(void)
 
 	x = -1;
 	y = -1;
-	while (++x < g_map->x)
+	while (++x < g_map->dim.x)
 	{
-		while (++y < g_map->y)
+		while (++y < g_map->dim.y)
 		{
 			t = &g_map->tile[x][y];
 			printf("(%d, %d)", t->x, t->y);
@@ -29,8 +29,8 @@ int test_stone_correctness(int type, int pool)
 {
 	int res = 0;
 
-	for (int x = 0; x < g_map->x; x++)
-		for (int y = 0; y < g_map->y; y++)
+	for (int x = 0; x < g_map->dim.x; x++)
+		for (int y = 0; y < g_map->dim.y; y++)
 			if (g_map->tile[x][y].stones[type] > 0)
 				res += g_map->tile[x][y].stones[type];
 //	printf("type: %d; pool: %d; res: %d\n", type, pool, res);
@@ -42,8 +42,8 @@ int test_food_correctness(int pool)
 {
 	int res = 0;
 
-	for (int x = 0; x < g_map->x; x++)
-		for (int y = 0; y < g_map->y; y++)
+	for (int x = 0; x < g_map->dim.x; x++)
+		for (int y = 0; y < g_map->dim.y; y++)
 			if (g_map->tile[x][y].food > 0)
 				res += g_map->tile[x][y].food;
 //	printf("type: %d; pool: %d; res: %d\n", type, pool, res);
@@ -56,8 +56,8 @@ int	test_map_creation(void)
 	int			pool;
 
 	create_map(10, 10);
-	for (int x = 0; x < g_map->x; x++)
-		for (int y = 0; y < g_map->y; y++)
+	for (int x = 0; x < g_map->dim.x; x++)
+		for (int y = 0; y < g_map->dim.y; y++)
 			assert(g_map->tile[x][y].x == x && g_map->tile[x][y].y == y);
 	printf("%s[ OK ] \033[0m                                   Map tiles created!\n", OK_COLOR);
 

@@ -49,7 +49,7 @@ t_player		*new_player(int egg, int team_id, int team_pid)
 	tmp->food = DEFAULT_FOOD;
 	tmp->energy = DEFAULT_ENERGY;
 	tmp->level = DEFAULT_LEVEL;
-	tmp->team = team_id;
+	tmp->team_id = team_id;
 	tmp->team_pid = team_pid;
 	tmp->egg = egg;
 	tmp->id = get_pid();

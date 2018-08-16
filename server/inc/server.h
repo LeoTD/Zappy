@@ -23,6 +23,14 @@
 # define PHIRAS 4
 # define THYSTAME 5
 
+# define DEFAULT_PARRAY 8
+
+# define DEFAULT_FOOD 0
+# define DEFAULT_ENERGY 1260
+# define DEFAULT_LEVEL 1
+# define EGG_TIMER 300
+# define ENERGY_PER_FOOD 126
+
 enum					e_directions
 {
 	NORTH,
@@ -37,7 +45,8 @@ enum					e_directions
 
 typedef struct			s_tile
 {
-	struct s_player		*players;
+	struct s_player		**players;
+	int					parray_size;
 	int					num_players;
 	int					stones[6];
 	int					food;
@@ -55,6 +64,7 @@ typedef struct			s_player
 	int					level;
 	int					id;
 	int					team_id;
+	int					team_pid;
 	int					egg;
 }						t_player;
 
@@ -67,9 +77,9 @@ typedef struct			s_plist
 typedef struct			s_game_info
 {
 	t_tile				**tile;
-	int					x;
-	int					y;
+	t_vec				dim;
 	int					teams;
+	int					*players_on_team;
 	t_plist				**empty_avatars;
 }						t_game_info;
 

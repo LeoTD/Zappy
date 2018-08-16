@@ -4,7 +4,7 @@ void		tile_get_data(t_vec pos, t_tile_data *ret)
 {
 	t_tile		*t;
 
-	t = &g_map->tile[pos.x][pos.y]
+	t = &g_map->tile[pos.x][pos.y];
 	ret->pos.x = pos.x;
 	ret->pos.y = pos.y;
 	ret->stones[0] = t->stones[0];

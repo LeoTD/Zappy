@@ -23,9 +23,9 @@ void		print_map(void)
 	{
 		int type = 1;
 		printf("Showing %s:\n", pstr[type]);
-		while (++y < g_map->y)
+		while (++y < g_map->dim.y)
 		{
-			while (++x < g_map->x)
+			while (++x < g_map->dim.x)
 			{
 				t = &g_map->tile[x][y];
 				switch (type)
@@ -63,7 +63,7 @@ void		print_map(void)
 		}
 		y = -1;
 		printf("Press Enter for next entity type.\n");
-		for (int i = 0; i < (g_map->y + 1) * 2; i++)
+		for (int i = 0; i < (g_map->dim.y + 1) * 2; i++)
 			printf("\033[1A\033[2K");
 		printf("\033[1A\033[2K");
 		read(0, &str, 1);
