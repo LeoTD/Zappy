@@ -30,7 +30,7 @@ static t_cmd		*new_command(int player_id, t_cmd_func cmd,
 {
 	t_cmd	*new_cmd;
 
-	if (!(new_cmd = (t_cmd*)ft_memalloc(sizeof(t_cmd))))
+	if (!(new_cmd = (t_cmd*)(sizeof(t_cmd))))
 		ERR_OUT("t_cmd malloc failed\n");
 	new_cmd->next = NULL;
 	new_cmd->player_id = player_id;

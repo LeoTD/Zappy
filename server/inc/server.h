@@ -1,8 +1,8 @@
-
 #ifndef SERVER_H
 # define SERVER_H
 # include <arpa/inet.h>
 # include <assert.h>
+# include <limits.h>
 # include <netdb.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -30,17 +30,25 @@
 # define DEFAULT_LEVEL 1
 # define EGG_TIMER 300
 # define ENERGY_PER_FOOD 126
+# define FATAL(msg) ({ fprintf(stderr, "%s: %s\n", __func__, msg); exit(-1); })
+# define HEREMSG fprintf(stderr, "MADE IT %s:%d\n", __func__, __LINE__)
 
-enum					e_directions
+// for command_line_options.c and receive_user_message.c
+# define MAX_TEAM_NAME_LENGTH 63
+
+typedef void					(*t_cmdfunc)(int player_id, void *args);
+typedef struct s_command		t_command;
+typedef struct s_command_list	t_command_list;
+typedef struct s_command_queue	t_command_queue;
+typedef struct s_client			t_client;
+typedef struct s_vec			t_vec;
+
+enum			e_connection_type
 {
-	NORTH,
-	SOUTH,
-	EAST,
-	WEST,
-	NORTHEAST,
-	NORTHWEST,
-	SOUTHEAST,
-	SOUTHWEST
+	HANDSHAKE,
+	USER,
+	SERVER,
+	GFX
 };
 
 typedef struct			s_tile
@@ -83,38 +91,11 @@ typedef struct			s_game_info
 	t_plist				**empty_avatars;
 }						t_game_info;
 
-typedef char			*(*t_cmd_func)(int, void *);
-
-typedef struct			s_cmd
-{
-	struct s_cmd		*next;
-	int					player_id;		//Can we do this better?
-	t_cmd_func			do_cmd;
-	void				*args;
-	int					timestamp;
-	int					delay_cycles;
-}						t_cmd;
-
-typedef struct			s_cmd_queue
-{
-	struct s_cmd_queue	*next_plr;
-	struct s_cmd		*cmd_list;
-	int					player_id;
-	int					cmd_count;
-}						t_cmd_queue;
-
 /*
 ** Global Variables:
 */
 
 t_game_info					*g_map;
-
-/*
-** server.c
-*/
-
-int						get_server_socket(int port);
-int						accept_and_poll_clients(int server);
 
 /*
 ** Player api:
@@ -131,8 +112,6 @@ void					turn_right(int pid);
 
 int						attempt_to_take(int pid, char *obj);
 int						attempt_to_put(int pid, char *obj);
-
-
 /*
 ** Game Engine Functions:
 */
@@ -168,6 +147,8 @@ t_player				*remove_player_from_waitlist(int team);
 
 char					*advance(int player_id, void *arg);
 char 					*turn(int player_id, void *arg);
+char					*left(int player_id, void *args);
+char					*right(int player_id, void *args);
 char 					*see(int player_id, void *arg);
 char 					*inventory(int player_id, void *arg);
 char 					*take(int player_id, void *arg);
@@ -178,23 +159,60 @@ char 					*incantation(int player_id, void *arg);
 char 					*fork_player(int player_id, void *arg);
 char 					*connect_nbr(int player_id, void *arg);
 
-/*
-** Scheduler commands
-*/
+extern struct	s_opts
+{
+	int		tickrate;
+	int		server_port;
+	int		world_width;
+	int		world_height;
+	int		initial_players_per_team;
+	char	**team_names;
+}				g_opts;
 
-typedef char			*(*t_cmd_func)(int, void *);
+//active_socket_info.c
+void	set_connection_type(int fd, enum e_connection_type type);
+int		get_socket_with_available_data(void);
+void	forget_connection(int sock_fd);
+int		is_connection_type(int sock_fd, enum e_connection_type type);
+void	unset_connection_type(int sock_fd, enum e_connection_type type);
 
-int						schd_step_cycle(t_cmd **lit_cmds);
-int						schd_add_plr(int player_id);
-int						schd_kill_plr(int player_id);
-int						schd_add_cmd(int player_id, t_cmd_func cmd,
-										void *args, int delay_cycles);
+// listen_for_connections.c
+void							listen_for_connections(int port);
+void							handle_waiting_connection_data(int fd);
 
-/*
-** Executioner commands
-*/
+// cmdfunc_type.c
+int								get_cmdfunc_tick_delay(void (*f)(int, void *));
 
-int						exec_utioner(t_cmd *cmd_exec_list);
-void					exec_free_cmds(t_cmd *list);
+// command_type.c
+t_command						*new_cmd(t_cmdfunc, int player_id);
+void							free_cmd(t_command *cmd);
+
+// client_type.c
+t_client						*new_client(int socket_fd, int player_id);
+void							free_client(struct s_client *client);
+
+// command_list_type.c
+t_command_list					*new_cmdlist(t_command *cmd);
+void							free_cmdlist(t_command_list *list);
+
+// command_queue_type.c
+t_command_queue					*new_cmdqueue(void);
+void							free_cmdqueue(t_command_queue *q);
+int								enqueue_command(t_command_queue *q, t_command *cmd);
+t_command_list					*dequeue_command(t_command_queue *q);
+
+// handshake.c
+void		initiate_user_connection_handshake(int server_fd);
+void		complete_user_connection_handshake(int cli_fd);
+
+// receive_user_message.c
+void		receive_user_message(int cli_fd);
+
+// user_clients_lookup.c
+t_client			**get_clients(void);
+void				register_user_client(int sock_fd, int player_id);
+t_client			*get_client_by_player_id(int player_fd);
+t_client			*get_client_by_socket_fd(int sock_fd);
+void				unregister_user_client(t_client *client);
 
 #endif
