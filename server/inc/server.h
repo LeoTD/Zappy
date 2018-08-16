@@ -113,6 +113,17 @@ int						accept_and_poll_clients(int server);
 t_player				*get_player(int pid);
 
 /*
+**	player_actions.c:
+*/
+
+void					turn_left(int pid);
+void					turn_right(int pid);
+
+int						attempt_to_take(int pid, char *obj);
+int						attempt_to_put(int pid, char *obj);
+
+
+/*
 ** Map Functions:
 */
 
@@ -126,7 +137,7 @@ int						place_random_stones(int type, int pool);
 int						place_random_food(int pool);
 int						player_place_food(t_tile *tile, t_player *player);
 int						pickup_food(t_tile *t, t_player *player);
-int						move_player(t_player *player, int dir);
+int						move_player(int pid, int dir);
 
 t_tile					*get_adj_tile(t_tile *home, int dir);
 t_tile					*get_tile_NS(t_tile *home, int v);

@@ -8,7 +8,8 @@
 
 char	*see(int player_id, void *args)
 {
-	
+	char	*response;
 
-	return ("ok\n");
+	response = see_tiles(player_id);
+	return (response);	
 }

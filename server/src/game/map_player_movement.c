@@ -7,13 +7,15 @@
 ** Common usage: move_player(p, p->facing);
 */
 
-int			move_player(t_player *p, int dir)
+int			move_player(int pid)
 {
 	t_tile		*next;
+	t_player	*player;
 
-	next = get_adj_tile(p->tile, dir);
-	remove_player_from_tile(p, p->tile);
-	add_player_to_tile(p, next);
-	p->tile = next;
+	player = get_player(pid);
+	next = get_adj_tile(player->tile, player->facing);
+	remove_player_from_tile(player, player->tile);
+	add_player_to_tile(player, next);
+	player->tile = next;
 	return (0);
 }
