@@ -8,5 +8,8 @@
 
 char	*inventory(int player_id, void *args)
 {
-	return "placeholder";
+	char	*str;
+
+	str = get_player_inventory(player_id);
+	return (str);
 }

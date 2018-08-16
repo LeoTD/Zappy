@@ -129,6 +129,10 @@ int						player_place_food(t_tile *tile, t_player *player);
 int						pickup_food(t_tile *t, t_player *player);
 int						move_player(t_player *p, int dir);
 
+char					*find_food(t_tile *tile);
+char					*find_stone(t_tile *tile);
+char					*find_stones(t_tile *tile);
+
 t_tile					*get_adj_tile(t_tile *home, int dir);
 t_tile					*get_tile_NS(t_tile *home, int v);
 t_tile					*get_tile_EW(t_tile *home, int v);
@@ -163,6 +167,13 @@ char 					*broadcast(int player_id, void *arg);
 char 					*incantation(int player_id, void *arg);
 char 					*fork_player(int player_id, void *arg);
 char 					*connect_nbr(int player_id, void *arg);
+
+/*
+**	User game helpers:
+*/
+
+char					*get_player_inventory(int pid);
+
 
 // command_line_options.c
 void					parse_command_line_options(int argc, char **argv);
@@ -240,5 +251,13 @@ void					send_stringified_responses(t_command_list *lst);
 
 // time_to_tick.c
 int						have_we_ticked(void);
+
+/*
+**	str_utils.c:
+*/
+
+char					*strnew(char *str);
+char					*strjoin_free(char *str1, char *str2);
+char					*itoa(int n);
 
 #endif

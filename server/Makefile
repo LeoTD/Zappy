@@ -41,6 +41,10 @@ GAME_FILES	= map_creation.c \
 			  player_empty_list_funcs.c \
 			  game_init.c \
 			  see.c \
+			  get_player_inventory.c \
+			  str_utils.c \
+			  find_resources.c \
+
 
 
 GAME_SRC	= $(addprefix game/, $(GAME_FILES))
