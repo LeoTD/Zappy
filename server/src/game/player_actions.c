@@ -29,14 +29,6 @@ void	turn_left(int pid)
 		player->facing = NORTH;
 }
 
-char	*see_tiles(int pid)
-{
-	t_player *player;
-
-	player = get_player(pid);
-
-}
-
 /*
 **	Find a way to be able to be able to know exactly what is being taken.
 **	Returns 1 if no resource exists to take. Returns 0 if taken successfully.
@@ -89,9 +81,4 @@ int		attempt_to_put(int pid, char *obj)
 	else if (!strcmp(obj, "thystame"))
 		return (player_place_stone(THYSTAME, player->tile, player));
 	return (1);
-}
-
-void		move_player_by_id(int pid, int dir)
-{
-	move_player(get_player(pid), dir);
 }
