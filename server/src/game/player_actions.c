@@ -52,17 +52,17 @@ int		attempt_to_take(int pid, char *obj)
 	if (!strcmp(obj, "food"))
 		return (pickup_food(player->tile, player));
 	else if (!strcmp(obj, "linemate"))
-		return (pickup_stone(LINEMATE, player->tile, player));
+		return (player_pickup_stone(LINEMATE, player->tile, player));
 	else if (!strcmp(obj, "deraumere"))
-		return (pickup_stone(DERAUMERE, player->tile, player));
+		return (player_pickup_stone(DERAUMERE, player->tile, player));
 	else if (!strcmp(obj, "sibur"))
-		return (pickup_stone(SIBUR, player->tile, player));
+		return (player_pickup_stone(SIBUR, player->tile, player));
 	else if (!strcmp(obj, "mendiane"))
-		return (pickup_stone(MENDIANE, player->tile, player));
+		return (player_pickup_stone(MENDIANE, player->tile, player));
 	else if (!strcmp(obj, "phiras"))
-		return (pickup_stone(PHIRAS, player->tile, player));
+		return (player_pickup_stone(PHIRAS, player->tile, player));
 	else if (!strcmp(obj, "thystame"))
-		return (pickup_stone(THYSTAME, player->tile, player));
+		return (player_pickup_stone(THYSTAME, player->tile, player));
 	return (1);
 }
 

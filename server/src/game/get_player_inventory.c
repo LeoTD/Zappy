@@ -3,7 +3,6 @@
 
 /*
 **	Example end string: {food 356, linemate 2, draumere 3, sibur 4, mendiane 5, ...}
-**	
 */
 
 char	*wrap(char *str)

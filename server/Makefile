@@ -31,6 +31,7 @@ INC			= inc/$(NAME).h \
 # ----------- SRC/GAME ------------------------------------------------------- #
 GAME_FILES	= map_creation.c \
 			  player_movement.c \
+			  tile_data_api.c \
 			  map_tile_movement.c \
 			  map_tile_to_player_funcs.c \
 			  map_stonefuncs.c \
@@ -44,6 +45,7 @@ GAME_FILES	= map_creation.c \
 			  get_player_inventory.c \
 			  str_utils.c \
 			  find_resources.c \
+			  kick.c \
 
 
 

@@ -5,10 +5,8 @@ char	*find_food(t_player *player)
 {
 	char	*count;
 
-	count = itoa(player->food);
-//	count = itoa(player->energy);
+	count = itoa(player->food * 126 + player->energy);
 	count = strjoin_free(strnew("food "), count);
-//	count = strjoin_free(strnew("food "), energy);
 	return (count);
 }
 

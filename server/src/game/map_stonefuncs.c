@@ -16,23 +16,12 @@ int				player_place_stone(int type, t_tile *t, t_player *player)
 	return (0);
 }
 
-int				place_stone(int type, t_tile *t)
-{
-	if (!t)
-	{
-		printf("Tried to place stone in NULL tile!\n");
-		return (-1);
-	}
-	t->stones[type] += 1;
-	return (0);
-}
-
 /*
 ** Returns 0 on success.
 ** If requesting more stones than are present, returns 1.
 */
 
-int				pickup_stone(int type, t_tile *t, t_player *player)
+int				player_pickup_stone(int type, t_tile *t, t_player *player)
 {
 	if (!t)
 	{
@@ -43,6 +32,17 @@ int				pickup_stone(int type, t_tile *t, t_player *player)
 		return (1);
 	t->stones[type] -= 1;
 	player->stones[type] += 1;
+	return (0);
+}
+
+int				place_stone(int type, t_tile *t)
+{
+	if (!t)
+	{
+		printf("Tried to place stone in NULL tile!\n");
+		return (-1);
+	}
+	t->stones[type] += 1;
 	return (0);
 }
 
