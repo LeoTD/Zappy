@@ -10,6 +10,7 @@ void	test_client_connection_listener(void);
 
 int		main(int argc, char **argv)
 {
+	srandomdev();
 	puts("hello world");
 	test_client_connection_listener();
 	/* test_map_creation(); */

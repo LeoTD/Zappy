@@ -5,6 +5,17 @@ static fd_set	g_active_player_fds;
 static fd_set	g_gfx_fds;
 static fd_set	g_all_fds;
 static int		g_max_fd = 0;
+static int		g_prev_iter = -1;
+
+void	socket_lookup_init(void)
+{
+	FD_ZERO(&g_handshake_fds);
+	FD_ZERO(&g_active_player_fds);
+	FD_ZERO(&g_all_fds);
+	FD_ZERO(&g_gfx_fds);
+	g_max_fd = 0;
+	g_prev_iter = -1;
+}
 
 void	socket_lookup_add(int fd, enum e_socktype type)
 {
@@ -12,10 +23,7 @@ void	socket_lookup_add(int fd, enum e_socktype type)
 
 	if (is_first_entry)
 	{
-		FD_ZERO(&g_handshake_fds);
-		FD_ZERO(&g_active_player_fds);
-		FD_ZERO(&g_all_fds);
-		FD_ZERO(&g_gfx_fds);
+		socket_lookup_init();
 		is_first_entry = 0;
 	}
 	if (type == ACTIVE_PLAYER)
@@ -62,23 +70,22 @@ int		socket_lookup_has(int fd, enum e_socktype type)
 
 int		iter_next_readable_socket(void)
 {
-	static int prev = -1;
 	static fd_set readable;
 	struct timeval timeout;
 	int	curr;
 
-	if (prev == -1)
+	if (g_prev_iter == -1)
 	{
 		timeout.tv_sec = 0;
 		timeout.tv_usec = 0;
 		readable = g_all_fds;
 		select(g_max_fd + 1, &readable, NULL, NULL, &timeout);
 	}
-	curr = prev + 1;
+	curr = g_prev_iter + 1;
 	while (curr <= g_max_fd && !(FD_ISSET(curr, &readable)))
 		++curr;
 	if (curr > g_max_fd)
 		curr = -1;
-	prev = curr;
+	g_prev_iter = curr;
 	return (curr);
 }
