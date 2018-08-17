@@ -14,6 +14,12 @@ static int	string_to_team_id(char *str)
 	return (-1);
 }
 
+static void	abort_handshake(int fd)
+{
+	socket_lookup_remove(fd);
+	close(fd);
+}
+
 void		initiate_user_connection_handshake(int serv_fd)
 {
 	int					cli_fd;
@@ -25,17 +31,16 @@ void		initiate_user_connection_handshake(int serv_fd)
 		perror("handshake accept");
 	else
 	{
-		set_connection_type(cli_fd, HANDSHAKE);
-		if (send(cli_fd, "WELCOME\n", 8, 1) == -1)
-		{
+		if (send(cli_fd, "WELCOME\n", 8, 0) == -1)
 			perror("send welcome");
-			forget_connection(cli_fd);
-		}
+		else
+			socket_lookup_add(cli_fd, HANDSHAKE);
 	}
 }
 
 static int assign_avatar(int team, int *num_open_slots_ptr)
 {
+	// TODO: remove when this is a real game function call!
 	*num_open_slots_ptr = 2;
 	return (30);
 }
@@ -52,7 +57,11 @@ static int	assign_to_team_if_slot_available(int sock_fd, int team_id)
 	snprintf(response, sizeof(response), "%d\n%d %d\n",
 			open_slots, g_opts.world_width, g_opts.world_height);
 	if (send(sock_fd, response, strlen(response), 0) == -1)
+	{
+		// tell the game to free this body again and return -1?
+		// or just hope this never happens
 		perror("send nb-client/worldsize");
+	}
 	return (player_id);
 }
 
@@ -68,14 +77,14 @@ void		complete_user_connection_handshake(int cli_fd)
 	if (count <= 0)
 	{
 		fputs("client disconnected mid-handshake\n", stderr);
-		forget_connection(cli_fd);
+		abort_handshake(cli_fd);
 		return ;
 	}
 	if (!(nl = strchr(msg, '\n')))
-		forget_connection(cli_fd);
+		abort_handshake(cli_fd);
 	*nl = '\0';
 	if ((team_id = string_to_team_id(msg)) == -1)
-		forget_connection(cli_fd);
+		abort_handshake(cli_fd);
 	else if ((assign_to_team_if_slot_available(cli_fd, team_id)) == -1)
-		forget_connection(cli_fd);
+		abort_handshake(cli_fd);
 }

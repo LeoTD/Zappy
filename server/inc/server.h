@@ -8,6 +8,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/socket.h>
+# include <sys/time.h>
 # include <unistd.h>
 
 # define ERR_OUT(msg)		({ perror(msg); exit(-1); })
@@ -49,11 +50,11 @@ typedef struct s_vec
 typedef struct s_tile			t_tile;
 typedef struct s_player			t_player;
 
-enum			e_connection_type
+enum			e_socktype
 {
 	HANDSHAKE,
-	USER,
 	SERVER,
+	ACTIVE_PLAYER,
 	GFX
 };
 
@@ -227,15 +228,15 @@ void					send_results_to_users(t_command_list *lst);
 void					decrement_user_command_timers(t_client **clients);
 
 //active_socket_info.c
-void					set_connection_type(int fd, enum e_connection_type type);
-int						get_socket_with_available_data(void);
-void					forget_connection(int sock_fd);
-int						is_connection_type(int sock_fd, enum e_connection_type type);
-void					unset_connection_type(int sock_fd, enum e_connection_type type);
+void					socket_lookup_add(int fd, enum e_socktype type);
+void					socket_lookup_remove(int sock_fd);
+int						socket_lookup_has(int sock_fd, enum e_socktype type);
+int						iter_next_readable_socket(void);
 	
 // listen_for_connections.c
 void					listen_for_connections(int port);
 void					handle_waiting_connection_data(int fd);
+int						get_server_fd(void);
 
 // cmdfunc_type.c
 int						get_cmdfunc_tick_delay(t_cmdfunc f);

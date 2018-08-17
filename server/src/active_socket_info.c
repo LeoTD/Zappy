@@ -1,53 +1,44 @@
 #include "server.h"
+#include "test.h" // remove me
 
 static fd_set	g_handshake_fds;
-static fd_set	g_user_fds;
+static fd_set	g_active_player_fds;
+static fd_set	g_gfx_fds;
 static fd_set	g_all_fds;
 static int		g_max_fd = 0;
-static int		g_server_fd = 0;
 
-void	set_connection_type(int sock_fd, enum e_connection_type type)
+void	socket_lookup_add(int fd, enum e_socktype type)
 {
-	FD_SET(sock_fd, &g_all_fds);
-	if (sock_fd > g_max_fd)
-		g_max_fd = sock_fd;
-	if (type == SERVER)
-		g_server_fd = sock_fd;
-	else if (type == USER)
-		FD_SET(sock_fd, &g_user_fds);
+	static int is_first_entry = 1;
+
+	if (is_first_entry)
+	{
+		FD_ZERO(&g_handshake_fds);
+		FD_ZERO(&g_active_player_fds);
+		FD_ZERO(&g_all_fds);
+		FD_ZERO(&g_gfx_fds);
+		is_first_entry = 0;
+	}
+	if (type == ACTIVE_PLAYER)
+		FD_SET(fd, &g_active_player_fds);
 	else if (type == HANDSHAKE)
-		FD_SET(sock_fd, &g_handshake_fds);
-	else
-		FATAL("bad connection type");
+		FD_SET(fd, &g_handshake_fds);
+	else if (type == GFX)
+		FD_SET(fd, &g_gfx_fds);
+	FD_SET(fd, &g_all_fds);
+	if (fd > g_max_fd)
+		g_max_fd = fd;
 }
 
-void	unset_connection_type(int sock_fd, enum e_connection_type type)
-{
-	if (type == USER)
-		FD_CLR(sock_fd, &g_user_fds);
-	else if (type == HANDSHAKE)
-		FD_CLR(sock_fd, &g_handshake_fds);
-	else
-		FATAL("bad connection type");
-}
-
-int		is_connection_type(int sock_fd, enum e_connection_type type)
-{
-	if (type == SERVER)
-		return (sock_fd == g_server_fd);
-	if (type == USER)
-		return (FD_ISSET(sock_fd, &g_user_fds));
-	if (type == HANDSHAKE)
-		return (FD_ISSET(sock_fd, &g_handshake_fds));
-	else
-		FATAL("bad connection type");
-}
-
-void	forget_connection(int sock_fd)
+void	socket_lookup_remove(int fd)
 {
 	int		new_max_fd;
 
-	if (g_max_fd == sock_fd)
+	FD_CLR(fd, &g_active_player_fds);
+	FD_CLR(fd, &g_handshake_fds);
+	FD_CLR(fd, &g_gfx_fds);
+	FD_CLR(fd, &g_all_fds);
+	if (g_max_fd == fd)
 	{
 		new_max_fd = g_max_fd - 1;
 		while (!(FD_ISSET(new_max_fd, &g_all_fds)))
@@ -57,39 +48,38 @@ void	forget_connection(int sock_fd)
 		}
 		g_max_fd = new_max_fd;
 	}
-	FD_CLR(sock_fd, &g_user_fds);
-	FD_CLR(sock_fd, &g_handshake_fds);
-	FD_CLR(sock_fd, &g_all_fds);
-	close(sock_fd);
 }
 
-int		get_socket_with_available_data(void)
+int		socket_lookup_has(int fd, enum e_socktype type)
 {
-	static int		prev = -1;
-	static fd_set	readable;
-	int				curr;
+	if (type == ACTIVE_PLAYER)
+		return (FD_ISSET(fd, &g_active_player_fds));
+	if (type == HANDSHAKE)
+		return (FD_ISSET(fd, &g_handshake_fds));
+	if (type == GFX)
+		return (FD_ISSET(fd, &g_gfx_fds));
+	return (0);
+}
 
-	printf("prev = %d, g_max = %d, serv = %d\n", prev, g_max_fd, g_server_fd);
-	if (prev == g_max_fd)
-		return ((prev = -1));
-	else if (prev == -1)
+int		iter_next_readable_socket(void)
+{
+	static int prev = -1;
+	static fd_set readable;
+	struct timeval timeout;
+	int	curr;
+
+	if (prev == -1)
 	{
+		timeout.tv_sec = 0;
+		timeout.tv_usec = 0;
 		readable = g_all_fds;
-		HEREMSG;
-		if (select(g_max_fd + 1, &readable, NULL, NULL, NULL) == -1)
-			ERR_OUT("select");
-		HEREMSG;
+		select(g_max_fd + 1, &readable, NULL, NULL, &timeout);
 	}
 	curr = prev + 1;
-	while (curr <= g_max_fd)
-	{
-		if (FD_ISSET(curr, &readable))
-		{
-			puts("isset");
-			return ((prev = curr));
-		}
+	while (curr <= g_max_fd && !(FD_ISSET(curr, &readable)))
 		++curr;
-	}
-	prev = g_max_fd;
-	return (-1);
+	if (curr > g_max_fd)
+		curr = -1;
+	prev = curr;
+	return (curr);
 }

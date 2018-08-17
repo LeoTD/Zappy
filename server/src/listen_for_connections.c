@@ -1,6 +1,13 @@
 #include "server.h"
 
-void	listen_for_connections(int port)
+static int	g_server_fd = -1;
+
+inline int	get_server_fd(void)
+{
+	return (g_server_fd);
+}
+
+void		listen_for_connections(int port)
 {
 	struct sockaddr_in	server;
 	socklen_t			len;
@@ -9,6 +16,7 @@ void	listen_for_connections(int port)
 
 	if ((fd = socket(AF_INET, SOCK_STREAM, getprotobyname("tcp")->p_proto)) < 0)
 		ERR_OUT("socket");
+	printf("server starting with fd %d\n", fd);
 	server.sin_family = AF_INET;
 	server.sin_port = htons(port);
 	server.sin_addr.s_addr = INADDR_ANY;
@@ -23,18 +31,19 @@ void	listen_for_connections(int port)
 		ERR_OUT("setsockopt");
 	if (listen(fd, 3) == -1)
 		ERR_OUT("listen");
-	set_connection_type(fd, SERVER);
+	g_server_fd = fd;
+	socket_lookup_add(fd, SERVER);
 }
 
-void	handle_waiting_connection_data(int fd)
+void		handle_waiting_connection_data(int fd)
 {
-	if (is_connection_type(fd, SERVER))
+	if (fd == get_server_fd())
 		initiate_user_connection_handshake(fd);
-	else if (is_connection_type(fd, HANDSHAKE))
+	else if (socket_lookup_has(fd, HANDSHAKE))
 		complete_user_connection_handshake(fd);
 	else
 	{
-		assert(is_connection_type(fd, USER));
+		assert(socket_lookup_has(fd, ACTIVE_PLAYER));
 		receive_user_message(fd);
 	}
 }
