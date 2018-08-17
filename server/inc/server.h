@@ -160,6 +160,23 @@ char					*search_inventory(t_player *player);
 char					*get_player_inventory(int pid);
 
 /*
+**	game/kick.c
+*/
+
+int						attempt_to_kick(int pid);
+
+// ?
+
+int						*remove_pid(int *parray, int size, int current);
+
+// game/vision.c
+char					*see_tiles(int pid);
+// game/existing_counts.c
+char					*existing_food_count(t_tile *tile);
+char					*existing_player_count(t_tile *tile);
+char					*existing_stone_count(t_tile *tile);
+
+/*
 ** User commands:
 */
 
@@ -268,5 +285,7 @@ int						have_we_ticked(void);
 char					*strnew(char *str);
 char					*strjoin_free(char *str1, char *str2);
 char					*itoa(int n);
+
+int						*get_current_tile_player_count(int pid, int *count);
 
 #endif

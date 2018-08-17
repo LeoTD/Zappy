@@ -13,9 +13,9 @@ char	*find_next_tile_result(t_tile *tile)
 	/* int		count; */
 	/* char	*obj; */
 
-	/* obj = ft_strjoin_free(&obj, find_food(tile)); */
-	/* obj = ft_strjoin_free(&obj, find_stones(tile)); */
-	/* obj = ft_strjoin_free(&obj, find_players(tile)); */
+	/* obj = strjoin_free(obj, find_food(tile)); */
+	/* obj = strjoin_free(obj, find_stones(tile)); */
+	/* obj = strjoin_free(obj, find_players(tile)); */
 	/* return (obj); */
 
 	// Find amount of food and store into string.
@@ -52,7 +52,6 @@ char	*get_format_string(t_player *player, t_tile *tile)
 	}
 	return (resulting_string);
 }
-
 
 char	*see_tiles(int pid)
 {

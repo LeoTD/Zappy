@@ -2,5 +2,7 @@
 
 char	*kick(int player_id, void *args)
 {
-	return "placeholder";
+	if (attempt_to_kick(player_id))
+		return ("ko\n");
+	return ("ok\n");
 }

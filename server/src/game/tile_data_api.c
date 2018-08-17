@@ -1,6 +1,8 @@
 #include "server.h"
 #include "player_type.h"
+#include "tile_type.h"
 
+/*
 void		tile_get_data(t_vec pos, t_tile_data *ret)
 {
 	t_tile		*t;
@@ -17,6 +19,7 @@ void		tile_get_data(t_vec pos, t_tile_data *ret)
 	ret->food = t->food;
 	ret->num_players = t->num_players;
 }
+*/
 
 /*
 ** Takes pid to get reference to a tile.

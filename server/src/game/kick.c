@@ -1,0 +1,68 @@
+#include "server.h"
+#include "player_type.h"
+#include "tile_type.h"
+
+/*
+**	None of these functions are tested.
+**	Remove_pid searches through the array, removes the `current` passed in pid
+**	and returns a realloced array without the pid.
+*/
+
+int		*remove_pid(int *parray, int size, int current)
+{
+	int		i;
+	int		*copy;
+
+	i = 0;
+	size = size - 1;
+	copy = realloc(parray, size);
+	while (i < size)
+	{
+		if (parray[i] != current)
+			copy[i] = parray[i];
+		i++;
+	}
+	free(parray);
+	return (copy);
+}
+
+/*
+**	Kick_em takes an array of pids, the size of the array, and the direction that 
+**	they will be moving. Moves all pids that direction.
+**	May or may not segfault here.
+*/
+
+void	kick_em(int *parray, int dir, int size)
+{
+	t_player	*player;
+	
+	while (size > 0)
+	{
+		player = get_player(parray[size - 1]);
+		move_player(player, dir);
+		size--;
+	}
+	write(1, "segfault warning\n", 17);
+}
+
+/*
+**	Checks to see if number of players is greater than 1. If not, return error 1.
+**	If they are other players. Grab all players on current tile minus the player kicking
+**	and move all players the direction the kicking player is facing.
+*/
+
+int		attempt_to_kick(int pid)
+{
+	int			size;
+	int			*parray;
+	t_player	*player;
+
+	player = get_player(pid);
+	if (player->tile->num_players <= 1)
+		return (1);
+	parray = get_current_tile_player_count(pid, &size);
+	parray = remove_pid(parray, size, pid);
+	kick_em(parray, player->facing, size);
+	free(parray);
+	return (0);
+}
