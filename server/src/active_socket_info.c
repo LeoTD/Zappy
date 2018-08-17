@@ -1,5 +1,4 @@
 #include "server.h"
-#include "test.h" // remove me
 
 static fd_set	g_handshake_fds;
 static fd_set	g_active_player_fds;
