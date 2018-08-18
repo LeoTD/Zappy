@@ -12,7 +12,7 @@ int	main(int argc, char **argv)
 	while (1)
 	{
 		user_clients = get_clients();
-		while ((fd = get_socket_with_available_data()) != -1)
+		while ((fd = iter_next_readable_socket()) != -1)
 			handle_waiting_connection_data(fd);
 		if (have_we_ticked())
 		{

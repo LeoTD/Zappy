@@ -5,4 +5,8 @@
 
 extern int g_make_server_die;
 extern int g_server_fd;
+// helpers.c
+
+int	get_port_from_fd(int fd);
+void test_server_listen(void);
 #endif

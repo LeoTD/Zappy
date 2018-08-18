@@ -230,7 +230,7 @@ void					send_results_to_users(t_command_list *lst);
 void					decrement_user_command_timers(t_client **clients);
 
 //active_socket_info.c
-void					socket_lookup_init(void);
+void					socket_lookup_init(int do_close);
 void					socket_lookup_add(int fd, enum e_socktype type);
 void					socket_lookup_remove(int sock_fd);
 int						socket_lookup_has(int sock_fd, enum e_socktype type);

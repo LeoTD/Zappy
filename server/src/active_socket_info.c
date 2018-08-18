@@ -7,8 +7,20 @@ static fd_set	g_all_fds;
 static int		g_max_fd = 0;
 static int		g_prev_iter = -1;
 
-void	socket_lookup_init(void)
+void	socket_lookup_init(int do_close)
 {
+	int i;
+
+	if (do_close == 1)
+	{
+		i = 0;
+		while (i <= g_max_fd)
+		{
+			if (FD_ISSET(i, &g_all_fds))
+				close(i);
+			++i;
+		}
+	}
 	FD_ZERO(&g_handshake_fds);
 	FD_ZERO(&g_active_player_fds);
 	FD_ZERO(&g_all_fds);
@@ -23,7 +35,7 @@ void	socket_lookup_add(int fd, enum e_socktype type)
 
 	if (is_first_entry)
 	{
-		socket_lookup_init();
+		socket_lookup_init(0);
 		is_first_entry = 0;
 	}
 	if (type == ACTIVE_PLAYER)

@@ -95,7 +95,7 @@ SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))
 MAIN		= src/server.c
 
 TESTMAIN	= test/testmain.c
-TESTS		= $(wildcard test/test_*.c)
+TESTS		= $(wildcard test/test_*.c) test/helpers.c
 
 # ---------------------------------------------------------------------------- #
 

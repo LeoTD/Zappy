@@ -16,7 +16,6 @@ void		listen_for_connections(int port)
 
 	if ((fd = socket(AF_INET, SOCK_STREAM, getprotobyname("tcp")->p_proto)) < 0)
 		ERR_OUT("socket");
-	printf("server starting with fd %d\n", fd);
 	server.sin_family = AF_INET;
 	server.sin_port = htons(port);
 	server.sin_addr.s_addr = INADDR_ANY;
