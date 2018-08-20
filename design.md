@@ -419,6 +419,8 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 
 ## user_commands/incantation.c
 
+*The pdf can be read as meaning several different things here. Our current working interpretation is: only one person starts the incantation; people other than the "chanter" can move around during the incantation; stones are consumed immediately, but only if the incantation will succeed; and if the chanter finishes the incantation alive then everyone who was originally on the square and of the right level will go up to chanter_level + 1.*
+
 	typedef struct s_incant_args {
 		int player_id;
 		int *levelup_group;
