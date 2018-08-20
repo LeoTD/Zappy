@@ -3,6 +3,30 @@
 #include "tile_type.h"
 
 /*
+**	None of these functions are tested.
+**	Remove_pid searches through the array, removes the `current` passed in pid
+**	and returns a realloced array without the pid.
+*/
+
+int		*remove_pid(int *parray, int size, int current)
+{
+	int		i;
+	int		*copy;
+
+	i = 0;
+	size = size - 1;
+	copy = realloc(parray, size);
+	while (i < size)
+	{
+		if (parray[i] != current)
+			copy[i] = parray[i];
+		i++;
+	}
+	free(parray);
+	return (copy);
+}
+
+/*
 **	Kick_em takes an array of pids, the size of the array, and the direction that 
 **	they will be moving. Moves all pids that direction.
 **	May or may not segfault here.
