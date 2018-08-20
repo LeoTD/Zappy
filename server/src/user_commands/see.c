@@ -10,6 +10,7 @@ char	*see(int player_id, void *args)
 {
 	char	*response;
 
+	(void)args;
 	response = see_tiles(player_id);
 	return (response);	
 }
