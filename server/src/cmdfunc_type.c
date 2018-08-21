@@ -1,6 +1,4 @@
 #include "server.h"
-#define MAX_BROADCAST_LENGTH 4096
-#define MAX_OBJ_NAME_LENGTH 11
 
 int					get_cmdfunc_tick_delay(t_cmdfunc f)
 {

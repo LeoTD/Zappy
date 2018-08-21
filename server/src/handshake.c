@@ -88,4 +88,9 @@ void		complete_user_connection_handshake(int cli_fd)
 		abort_handshake(cli_fd);
 	else if ((assign_to_team_if_slot_available(cli_fd, team_id)) == -1)
 		abort_handshake(cli_fd);
+	else
+	{
+		socket_lookup_remove(cli_fd);
+		socket_lookup_add(cli_fd, ACTIVE_PLAYER);
+	}
 }

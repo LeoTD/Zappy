@@ -11,6 +11,8 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+
+# define MAX_COMMANDS		10
 # define ERR_OUT(msg)		({ perror(msg); exit(-1); })
 # define CMD_COUNTDOWN(plr)	(plr->cmd_list->delay_cycles)
 # define CMD_READY(plr)		(CMD_COUNTDOWN(plr) == 0)
@@ -38,6 +40,9 @@
 
 // for command_line_options.c and receive_user_message.c
 # define MAX_TEAM_NAME_LENGTH 63
+# define MAX_BROADCAST_LENGTH 4096
+# define MAX_USER_COMMAND_LENGTH MAX_BROADCAST_LENGTH
+# define MAX_OBJ_NAME_LENGTH 9 // deraumere
 
 typedef char					*(*t_cmdfunc)(int player_id, void *args);
 typedef struct s_command		t_command;
@@ -243,10 +248,12 @@ int						get_server_fd(void);
 
 // cmdfunc_type.c
 int						get_cmdfunc_tick_delay(t_cmdfunc f);
+t_cmdfunc				string_to_cmdfunc(char *string, char **arg_ptr);
 
 // command_type.c
-t_command				*new_cmd(t_cmdfunc, int player_id);
+t_command				*new_cmd(t_cmdfunc);
 void					free_cmd(t_command *cmd);
+t_command				*string_to_command(char *string);
 
 // client_type.c
 t_client				*new_client(int socket_fd, int player_id);
