@@ -24,11 +24,11 @@ void test_parses_error_free_command_line_options(void)
 	for (i = 0; tn[i]; i++)
 		assert(!strcmp(correct_opts.team_names[i], g_opts.team_names[i]));
 	assert(g_opts.team_names[i] == NULL);
-	puts("parsed error free command line options ok");
 }
 
 void test_parse_command_line_options(void)
 {
 	test_parses_error_free_command_line_options();
+	printf("%s: ok\n", __FILE__);
 	// also test error ones
 }

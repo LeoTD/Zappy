@@ -3,6 +3,7 @@
 
 void test_sends_welcome_message(void)
 {
+	test_server_listen();
 	struct timeval timeout = { .tv_sec = 0, .tv_usec = 2000000 };
 	fd_set readable;
 	fd_set master;
@@ -12,12 +13,7 @@ void test_sends_welcome_message(void)
 	char cmd[256] = { 0 };
 	if (!fork())
 	{
-		if (!fork())
-		{
-			sprintf(cmd, "nc localhost %d > client_received.txt", get_port_from_fd(get_server_fd()));
-			system(cmd);
-			exit(0);
-		}
+		fork_and_call_system("nc localhost %d > client_received.txt", get_server_port());
 		while (1)
 		{
 			readable = master;
@@ -25,7 +21,7 @@ void test_sends_welcome_message(void)
 			if (FD_ISSET(get_server_fd(), &readable))
 			{
 				handle_waiting_connection_data(get_server_fd());
-				system("cat client_received.txt");
+				assert(string_equal_file_contents("WELCOME\n", "client_received.txt"));
 				exit(0);
 			}
 		}
@@ -33,30 +29,42 @@ void test_sends_welcome_message(void)
 	}
 }
 
-void test_accepts_valid_teamnames(void)
+void do_client_completion_test(char *test_teamname, char *expect)
 {
-	int port = get_port_from_fd(get_server_fd());
-	char buf[256] = { 0 };
-	char *tn[] = { "zerg", "protoss", "terran", NULL };
-	struct s_opts g_opts = { .team_names = (char*[]){ "zerg", "protoss", "terran", NULL } };
+	test_server_listen();
+	int port = get_server_port();
+	char cmd[256] = { 0 };
 	int fd;
-	while (1)
-	{
-		while ((fd = iter_next_readable_socket()) != -1)
-		{
-			if (fd != get_server_fd())
-			{
-				handle_waiting_connection_data(fd);
-				exit(0);
-			}
-		}
-	}
+	fork_and_call_system("echo %s | nc localhost %d > client_received.txt", test_teamname, get_server_port());
+	quicksleep();
+	while ((fd = iter_next_readable_socket()) == -1)
+		;
+	initiate_user_connection_handshake(fd);
+	while ((fd = iter_next_readable_socket()) != -1)
+		;
+	while ((fd = iter_next_readable_socket()) == -1)
+		;
+	assert(fd != get_server_fd());
+	complete_user_connection_handshake(fd);
+	assert(string_equal_file_contents(expect, "client_received.txt"));
 }
+
+void test_completing_handshake_with_one_client(void)
+{
+	char result[256];
+	g_opts.team_names = (char *[]){ "zerg", "protoss", "terran", NULL };
+	g_opts.world_width = 12;
+	g_opts.world_height = 34;
+	char ok[256] = { 0 };
+	sprintf(ok, "WELCOME\n%d\n%d %d\n", 2, g_opts.world_width, g_opts.world_height);
+	do_client_completion_test("zerg", ok);
+	do_client_completion_test("notateam", "WELCOME\n");
+}
+
 
 void test_handshake(void)
 {
-	socket_lookup_init(1);
-	g_opts.server_port = 0x0;
-	listen_for_connections(g_opts.server_port);
 	test_sends_welcome_message();
+	test_completing_handshake_with_one_client();
+	printf("%s: ok\n", __FILE__);
 }

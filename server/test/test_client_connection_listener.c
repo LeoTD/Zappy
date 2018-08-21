@@ -1,16 +1,6 @@
 #include "server.h"
 #include "test.h"
 
-void test_creates_listen_port(void)
-{
-	test_server_listen();
-	char buf[256] = { 0 };
-	int realport = get_port_from_fd(get_server_fd());
-	sprintf(buf, "lsof -i :%d > /dev/null && echo port %d listening || echo %s failed",
-		realport, realport, __func__);
-	system(buf);
-}
-
 void test_remembers_server_socket(void)
 {
 	assert(get_server_fd() != -1);
@@ -40,7 +30,7 @@ int random_fake_clients(fd_set *yesdata, fd_set *nodata, int nclients, int *yesc
 		rand = random() % nclients;
 		if (rand < *yescount)
 		{
-			fd = open("somefile", O_RDWR | O_CREAT);
+			fd = open("temp_test_file.txt", O_RDONLY | O_CREAT, 0644);
 			FD_SET(fd, yesdata);
 			++actual_yescount;
 		}
@@ -57,39 +47,18 @@ int random_fake_clients(fd_set *yesdata, fd_set *nodata, int nclients, int *yesc
 	return maxfd;
 }
 
-int	do_sockiter_test(fd_set *yes, int yescount, int max)
+void	do_sockiter_test(fd_set *yes, int yescount, int max)
 {
-	int cycles = 0;
-	clock_t begin = clock();
-
 	for (int i = 0; i < 300000; i++)
 	{
 		int fd = iter_next_readable_socket();
 		if (i % (yescount + 1) == yescount)
-		{
-			if (fd != -1)
-			{
-				printf("do_sockiter_test: %d != -1\n", fd);
-				return (-1);
-			}
-			++cycles;
-		}
+			assert(fd == -1);
 		else
-		{
-			if (!(FD_ISSET(fd, yes)))
-			{
-				printf("do_sockiter_test: %d not in readable set\n", fd);
-				return (-1);
-			}
-		}
+			assert(FD_ISSET(fd, yes));
 	}
 	while (iter_next_readable_socket() != -1)
 		;
-	++cycles;
-	clock_t end = clock();
-	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("iterated fd range (0..%d) %d times at %.8f sec/cycle\n", max + 1, cycles, time_spent / cycles);
-	return (0);
 }
 
 void test_can_iterate_through_readable_sockets()
@@ -104,7 +73,8 @@ void test_can_iterate_through_readable_sockets()
 
 void test_client_connection_listener(void)
 {
-	test_creates_listen_port();
+	test_server_listen();
 	test_remembers_server_socket();
 	test_can_iterate_through_readable_sockets();
+	printf("%s: ok\n", __FILE__);
 }

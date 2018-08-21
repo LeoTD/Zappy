@@ -4,6 +4,7 @@ static int	string_to_team_id(char *str)
 {
 	int		i;
 
+	assert(g_opts.team_names != NULL);
 	i = 0;
 	while (g_opts.team_names[i])
 	{
@@ -76,7 +77,7 @@ void		complete_user_connection_handshake(int cli_fd)
 		perror("handshake recv");
 	if (count <= 0)
 	{
-		fputs("client disconnected mid-handshake\n", stderr);
+		fputs("could not complete user connection handshake: cli_fd closed\n", stderr);
 		abort_handshake(cli_fd);
 		return ;
 	}
