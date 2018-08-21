@@ -25,6 +25,7 @@ INC			= inc/$(NAME).h \
 			  inc/tile_type.h \
 			  inc/player_type.h \
 			  inc/vec_type.h \
+			  inc/client_type.h \
 
 
 # ---------------------------------------------------------------------------- #
@@ -85,6 +86,7 @@ FILES		= active_socket_info.c \
 			  send_stringified_responses.c \
 			  time_to_tick.c \
 			  dequeue_commands.c \
+			  client_type.c \
 
 # Add any subfolder SRC's here:
 SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))

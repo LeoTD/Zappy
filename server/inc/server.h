@@ -270,11 +270,12 @@ void					complete_user_connection_handshake(int cli_fd);
 void					receive_user_message(int cli_fd);
 
 // user_clients_lookup.c
+void					initialize_user_clients(void);
 t_client				**get_clients(void);
 void					register_user_client(int sock_fd, int player_id);
 t_client				*get_client_by_player_id(int player_fd);
 t_client				*get_client_by_socket_fd(int sock_fd);
-void					unregister_user_client(t_client *client);
+void					unregister_client_by_player_id(int player_id);
 
 // send_stringified_responses.c
 void					send_stringified_responses(t_command_list *lst);
