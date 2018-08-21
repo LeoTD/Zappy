@@ -102,6 +102,7 @@ TESTS		= $(wildcard test/test_*.c) test/helpers.c
 # ---------------------------------------------------------------------------- #
 
 all: $(SRC) $(INC) $(MAIN)
+	@mkdir -p ../bin
 	@printf "%b" "$(LIB_COLOR)Compiling: $(OK_COLOR)$(NAME)\n$(NO_COLOR)"
 	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o $(NAME) $(MAIN) $(SRC)
 	@mv $(NAME) ../bin/
@@ -124,4 +125,7 @@ norm:
 	@printf "%b" "$(LIB_COLOR)$(NAME): Checking Norm...\n$(NO_COLOR)"
 	@norminette $(SRC) $(INC) $(MAIN)
 
-.PHONY: clean fclean all re test norm
+dev: CFLAGS += -Wno-error
+dev: all
+
+.PHONY: clean fclean all re test norm dev
