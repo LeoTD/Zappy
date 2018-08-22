@@ -12,5 +12,6 @@ char	*inventory(int player_id, void *args)
 	
 	(void)args;
 	str = get_player_inventory(player_id);
+	printf("p%d: %s(%s)\n", player_id, __func__, args ? (char *)args : "");
 	return (str);
 }
