@@ -25,6 +25,7 @@ int	main(int argc, char **argv)
 			free_cmdlist(cmds);
 			decrement_user_command_timers(user_clients);
 		}
+		nanosleep(&(struct timespec){ 0, 500000000 }, NULL);
 	}
 	return (0);
 }

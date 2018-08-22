@@ -6,15 +6,6 @@ void test_remembers_server_socket(void)
 	assert(get_server_fd() != -1);
 }
 
-void	quicksleep(void)
-{
-	struct timespec rqtp;
-
-	rqtp.tv_sec = 0;
-	rqtp.tv_nsec = 100000000;
-	nanosleep(&rqtp, NULL);
-}
-
 int random_fake_clients(fd_set *yesdata, fd_set *nodata, int nclients, int *yescount)
 {
 	int fd;

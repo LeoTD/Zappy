@@ -36,7 +36,7 @@ void do_client_completion_test(char *test_teamname, char *expect)
 	char cmd[256] = { 0 };
 	int fd;
 	fork_and_call_system("echo %s | nc localhost %d > client_received.txt", test_teamname, get_server_port());
-	quicksleep();
+	nanosleep(&(struct timespec){ 0, 100000000 }, NULL);
 	while ((fd = iter_next_readable_socket()) == -1)
 		;
 	initiate_user_connection_handshake(fd);
