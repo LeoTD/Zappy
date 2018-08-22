@@ -1,9 +1,11 @@
 #include "server.h"
 #include "command_type.h"
+#include "command_queue_type.h"
 #include "client_type.h"
 #include "test.h"
 
 t_command *message_extract_next_command(char *msg, char **msg_next);
+void enqueue_commands_from_user_message(t_client *c, char *msg);
 
 void	test_extracts_valid_commands_from_buffer(void)
 {
@@ -60,8 +62,28 @@ see"; // <-- no newline
 	}
 }
 
+void	test_enqueues_commands_from_message_correctly(void)
+{
+	char msg[] = "connect_nbr\n\
+kick\n\
+forgot the newline on the next one:\n\
+see";
+	t_client *c = new_client(0, 0);
+	c->cmdqueue->remaining_space = 3;
+	enqueue_commands_from_user_message(c, msg);
+	assert(c->cmdqueue->remaining_space == 1);
+	assert(c->cmdqueue->tail->cmd->cmdfunc == kick);
+	char msg2[] = "nope\n\
+take thystame\n\
+inventory\n";
+	enqueue_commands_from_user_message(c, msg2);
+	assert(c->cmdqueue->tail->cmd->cmdfunc == take);
+	assert(c->cmdqueue->remaining_space == 0);
+}
+
 void test_receive_user_message(void)
 {
 	test_extracts_valid_commands_from_buffer();
+	test_enqueues_commands_from_message_correctly();
 	printf("%s: ok\n", __FILE__);
 }

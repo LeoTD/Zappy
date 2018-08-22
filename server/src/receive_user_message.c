@@ -1,5 +1,6 @@
 #include "server.h"
 #include "client_type.h"
+#include "command_queue_type.h"
 #include "command_type.h"
 #define MAX_USER_CLIENT_RECV (MAX_USER_COMMAND_LENGTH * MAX_COMMANDS)
 
@@ -32,20 +33,25 @@ t_command	*message_extract_next_command(char *msg, char **msg_next)
 		*nl = '\n';
 		*msg_next = nl + 1;
 	}
+	else
+		*msg_next = strchr(msg, '\0');
 	return (cmd);
 }
 
 void		enqueue_commands_from_user_message(t_client *client, char *msg)
 {
-	char		*msg_parse_head;
+	char		*msg_next;
 	t_command	*cmd;
 
-	msg_parse_head = msg;
-	while ((cmd = message_extract_next_command(msg, &msg_parse_head)))
+	msg_next = msg;
+	while (client->cmdqueue->remaining_space > 0 && *msg_next)
 	{
-		cmd->player_id = client->player_id;
-		enqueue_command(client->cmdqueue, cmd);
-		msg = msg_parse_head;
+		if ((cmd = message_extract_next_command(msg, &msg_next)))
+		{
+			cmd->player_id = client->player_id;
+			enqueue_command(client->cmdqueue, cmd);
+		}
+		msg = msg_next;
 	}
 }
 
