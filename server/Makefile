@@ -101,11 +101,13 @@ TESTS		= $(wildcard test/test_*.c) test/helpers.c
 
 # ---------------------------------------------------------------------------- #
 
-all: $(SRC) $(INC) $(MAIN)
+all: $(NAME)
+
+$(NAME): $(SRC) $(INC) $(MAIN)
 	@mkdir -p ../bin
 	@printf "%b" "$(LIB_COLOR)Compiling: $(OK_COLOR)$(NAME)\n$(NO_COLOR)"
 	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o $(NAME) $(MAIN) $(SRC)
-	@mv $(NAME) ../bin/
+	@cp $(NAME) ../bin/
 
 clean:
 	@printf "Cleaning up $(NAME)...\n"
@@ -113,11 +115,13 @@ clean:
 fclean: clean
 	@rm -f ../bin/$(NAME)
 	@rm -f test_$(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 
 test: CFLAGS += -Wno-error -Wno-unused-parameter -Wno-unused-variable
-test: $(SRC) $(INC) $(TESTMAIN)
+test: test_$(NAME)
+test_$(NAME): $(SRC) $(INC) $(TESTMAIN) $(TESTS)
 	@printf "%b" "$(LIB_COLOR)Compiling Test: $(OK_COLOR)test_$(NAME)\n$(NO_COLOR)"
 	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -Itest -o test_$(NAME) $(TESTMAIN) $(TESTS) $(SRC)
 
