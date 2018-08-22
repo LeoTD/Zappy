@@ -17,6 +17,8 @@ static t_cmdfunc	string_to_cmdfunc_nullary(char *s)
 {
 	if (!strcmp("advance", s))
 		return (advance);
+	if (!strcmp("connect_nbr", s))
+		return (connect_nbr);
 	if (!strcmp("fork", s))
 		return (fork_player);
 	if (!strcmp("incantation", s))

@@ -29,7 +29,6 @@ t_command	*message_extract_next_command(char *msg, char **msg_next)
 	{
 		*nl = '\0';
 		cmd = string_to_command(msg);
-		printf("%s %s a known command\n", msg, cmd ? "matched" : "did not match");
 		*nl = '\n';
 		*msg_next = nl + 1;
 	}
