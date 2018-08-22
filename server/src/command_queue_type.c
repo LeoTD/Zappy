@@ -1,5 +1,7 @@
 #include "server.h"
 #include "command_queue_type.h"
+#include "command_list_type.h"
+#include "command_type.h"
 
 t_command_queue		*new_cmdqueue(void)
 {
@@ -27,7 +29,6 @@ void				free_cmdqueue(t_command_queue *q)
 
 /*
 ** push
-** not specified a way to change the dequeue_timer yet
 */
 int					enqueue_command(t_command_queue *q, t_command *cmd)
 {
@@ -39,6 +40,7 @@ int					enqueue_command(t_command_queue *q, t_command *cmd)
 		{
 			q->head = new_cmdlist(cmd);
 			q->tail = q->head;
+			q->dequeue_timer = get_cmdfunc_tick_delay(q->head->cmd->cmdfunc);
 		}
 		else
 		{
@@ -66,7 +68,12 @@ t_command_list		*dequeue_command(t_command_queue *q)
 			q->tail = NULL;
 		temp = q->head;
 		q->head = q->head->next;
-		q->dequeue_timer--;
-		return(temp);
+		temp->next = NULL;
+		if (q->head)
+			q->dequeue_timer = get_cmdfunc_tick_delay(q->head->cmd->cmdfunc);
+		else
+			q->dequeue_timer = -1;
+		q->remaining_space += 1;
+		return (temp);
 	}
 }

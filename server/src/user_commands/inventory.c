@@ -10,8 +10,8 @@ char	*inventory(int player_id, void *args)
 {
 	char	*str;
 	
-	(void)args;
-	str = get_player_inventory(player_id);
 	printf("p%d: %s(%s)\n", player_id, __func__, args ? (char *)args : "");
-	return (str);
+	return ("placeholder");
+//	str = get_player_inventory(player_id);
+//	return (str);
 }

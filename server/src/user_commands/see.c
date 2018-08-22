@@ -8,10 +8,9 @@
 
 char	*see(int player_id, void *args)
 {
-	char	*response;
+	char	*response = "placeholder";
 
-	(void)args;
-	response = see_tiles(player_id);
 	printf("p%d: %s(%s)\n", player_id, __func__, args ? (char *)args : "");
+	//response = see_tiles(player_id);
 	return (response);	
 }
