@@ -9,6 +9,7 @@ int	main(int argc, char **argv)
 
 	parse_command_line_options(argc, argv);
 	listen_for_connections(g_opts.server_port);
+	init_tick_timer();
 	while (1)
 	{
 		user_clients = get_clients();
@@ -25,7 +26,6 @@ int	main(int argc, char **argv)
 			free_cmdlist(cmds);
 			decrement_user_command_timers(user_clients);
 		}
-		nanosleep(&(struct timespec){ 0, 500000000 }, NULL);
 	}
 	return (0);
 }

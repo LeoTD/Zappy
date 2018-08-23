@@ -288,6 +288,7 @@ void					unregister_client_by_player_id(int player_id);
 void					send_stringified_responses(t_command_list *lst);
 
 // time_to_tick.c
+void					init_tick_timer(void);
 int						have_we_ticked(void);
 
 /*
