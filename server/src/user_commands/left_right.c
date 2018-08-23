@@ -2,14 +2,12 @@
 
 char	*left(int player_id, void *args)
 {
-	//turn_left(player_id);
-	printf("p%d: %s(%s)\n", player_id, __func__, args ? (char *)args : "");
+	turn_left(player_id);
 	return ("ok\n");
 }
 
 char	*right(int player_id, void *args)
 {
-	//turn_right(player_id);
-	printf("p%d: %s(%s)\n", player_id, __func__, args ? (char *)args : "");
+	turn_right(player_id);
 	return ("ok\n");
 }
