@@ -5,6 +5,9 @@
 #define ASSERT_OK(x) assert(!strcmp(x, "ok\n"))
 #define ASSERT_KO(x) assert(!strcmp(x, "ko\n"))
 
+void	test_user_command_inventory(void);
+
+
 void	test_user_command_advance(void)
 {
 	init_user_commands_test_gamestate();
@@ -77,4 +80,5 @@ void	test_user_commands(void)
 	test_user_command_advance();
 	test_user_commands_left_and_right();
 	test_user_commands_put_and_take();
+	test_user_command_inventory();
 }

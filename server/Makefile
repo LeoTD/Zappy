@@ -46,7 +46,7 @@ GAME_FILES	= map_creation.c \
 			  game_init.c \
 			  game_upkeep.c \
 			  see.c \
-			  get_player_inventory.c \
+			  inventory.c \
 			  str_utils.c \
 			  find_resources.c \
 			  kick.c \

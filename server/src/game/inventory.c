@@ -8,7 +8,7 @@
 char	*wrap(char *str)
 {
 	str = strjoin_free(strnew("{"), str);
-	str = strjoin_free(str, strnew("}"));
+	str = strjoin_free(str, strnew("}\n"));
 	return (str);
 }
 

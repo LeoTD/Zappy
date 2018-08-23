@@ -36,9 +36,10 @@ char	*find_stones(t_player *player)
 	char	*stone_array;
 
 	i = 0;
+	stone_array = strnew("");
 	while (i < 6)
 	{
-		stone_array = add_stone(player, i);
+		stone_array = strjoin_free(stone_array, add_stone(player, i));
 		i++;
 	}
 	return (stone_array);
