@@ -6,6 +6,7 @@
 extern int g_make_server_die;
 extern int g_server_fd;
 extern char system_sprintf_buf[4096];
+extern char **stone_names;
 
 #define fork_and_call_system(format, ...)\
 	if (!fork()) {\

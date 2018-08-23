@@ -4,6 +4,8 @@
 #include "player_type.h"
 #include "g_player_list.h"
 
+char **stone_names = (char *[]){ "linemate", "deraumere", "sibur", "mendiane", "phiras", "thystame", NULL };
+
 char system_sprintf_buf[4096] = { 0 };
 int place_food(t_tile *t);
 
@@ -31,9 +33,11 @@ void init_user_commands_test_gamestate(void)
 	place_stone(3, &g_map->tile[0][1]);
 	place_stone(0, &g_map->tile[1][1]);
 	place_stone(4, &g_map->tile[1][1]);
+	p2->stones[3] = 2;
+
 	/* map will look like:
-	 * [food,   stone0] [player1(south), stone1] [player2(west)] [food, food, stone5]
-	 * [stone2, stone3] [stone0, stone4        ] [food         ] [                  ] */
+	 * [food,   stone0] [player1(south), stone1] [player2(west, inventory: stone3(x2))] [food, food, stone5]
+	 * [stone2, stone3] [stone0, stone4        ] [food                                ] [                  ] */
 }
 
 void fill_test_g_opts(void)
