@@ -152,10 +152,12 @@ void					game_upkeep(void);
 
 //	game/player_creation.c
 int						assign_avatar(int team_id);
-t_player				*new_player(int egg, int team_id, int team_pid);
+t_player				*new_player(int team_id, int team_pid);
 
 //	game/player_death.c
-int						kill_player(int pid);
+int						kill_active_player(int pid);
+int						kill_inactive_player(t_player *p);
+void        			reset_obituary(void);
 
 //	game/player_empty_list_funcs.c
 int						get_team_open_slots(int team);

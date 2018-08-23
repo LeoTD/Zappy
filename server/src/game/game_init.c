@@ -25,7 +25,7 @@ void		init_teams(int teams, int players)
 	{
 		while (++j < players)
 		{
-			p = new_player(EGG_TIMER, i, j);
+			p = new_player(i, j);
 			p->tile = get_random_tile();
 		}
 		j = -1;

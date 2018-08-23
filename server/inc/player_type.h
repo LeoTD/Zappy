@@ -12,6 +12,5 @@ struct s_player
 	int					id;
 	int					team_id;
 	int					team_pid;
-	int					egg;
 };
 #endif

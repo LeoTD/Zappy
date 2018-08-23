@@ -1,12 +1,22 @@
 #include "server.h"
 #include "player_type.h"
 
-/*int         *get_dead_players(int *size)
+static int      *dead_pids = NULL;
+static int      dead_num = 0;
+
+void        reset_obituary(void)
+{
+    free(dead_pids);
+    dead_pids = calloc(1, sizeof(int));
+    dead_num = 0;
+}
+
+int         *get_dead_players(int *size)
 {
 
-}*/
+}
 
-int         kill_player(int pid)
+int         kill_active_player(int pid)
 {
     t_player    *p;
 

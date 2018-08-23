@@ -23,19 +23,17 @@ int				assign_avatar(int team_id)
 /*
 ** Take a pointer to a [ t_player * ]
 ** Mallocs and fills the struct with initial values
-**
-** Usage: player_id = new_player((EGG_TIMER || 0), team_id)
 */
 
 int				get_pid(void)
 {
-	static int i = -1;
+	static int i = 0;
 
 	i = i + 1;
 	return (i);
 }
 
-t_player		*new_player(int egg, int team_id, int team_pid)
+t_player		*new_player(int team_id, int team_pid)
 {
 	t_player	*tmp;
 	int			i;
@@ -52,7 +50,6 @@ t_player		*new_player(int egg, int team_id, int team_pid)
 	tmp->level = DEFAULT_LEVEL;
 	tmp->team_id = team_id;
 	tmp->team_pid = team_pid;
-	tmp->egg = egg;
 	tmp->id = get_pid();
 	add_player_to_team_waitlist(tmp);
 	g_map->players++;
