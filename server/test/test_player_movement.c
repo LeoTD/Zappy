@@ -13,7 +13,7 @@ int			test_player_movement(void)
 	create_map(13, 17);
 
 	t_tile *t = &g_map->tile[5][5];
-	p = new_player(0, 1, 0);
+	p = new_player(1, 0);
 	add_player_to_tile(p, t);
 
 	for (int i = 0; i < 34817; i++) //ends at t->x, t->y - 1

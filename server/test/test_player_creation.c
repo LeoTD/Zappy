@@ -19,7 +19,7 @@ int			test_player_creation(void)
 	t = &g_map->tile[0][0];
 	for(int i = 0; i < 4000; i++)
 	{
-		p = new_player(0, 1, 0);
+		p = new_player(1, 0);
 		add_player_to_tile(p, t);
 	//	printf("pid = %d\n", p->id);
 	}
