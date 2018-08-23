@@ -91,6 +91,7 @@ typedef struct			s_game_info
 	int					players;
 	int					*players_on_team;
 	t_plist				**empty_avatars;
+	int					pids;
 }						t_game_info;
 
 t_game_info				*g_map;
@@ -163,6 +164,7 @@ void        			reset_obituary(void);
 
 //	game/player_empty_list_funcs.c
 int						get_team_open_slots(int team);
+int						get_team_open_slots_by_pid(int pid);
 
 //	find_resouces.c
 char					*find_food(t_player *player);

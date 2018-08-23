@@ -24,7 +24,7 @@ void			player_list_init(void)
 
 int				add_player_to_list(t_player *t)
 {
-	if (t->id >= g_list_size)
+	while (t->id >= g_list_size)
 		grow_list();
 	g_player_list[t->id] = t;
 	return (0);

@@ -16,3 +16,11 @@ int             delete_player_from_list(t_player *p)
     g_player_list[pid] = NULL;
     return (0);
 }
+
+int             get_team_by_player(int pid)
+{
+    t_player    *p;
+
+    p = get_player(pid);
+    return (p->team_id);
+}

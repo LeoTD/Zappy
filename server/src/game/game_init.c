@@ -43,6 +43,7 @@ int			game_init(int x, int y, int teams, int players)
 	j = -1;
 	if ((g_map = malloc(sizeof(t_game_info))) == NULL)
 		ERR_OUT("game_init; malloc");
+	g_map->pids = 0;
 	create_map(x, y);
 	g_map->teams = teams;
 	player_list_init();
@@ -53,5 +54,6 @@ int			game_init(int x, int y, int teams, int players)
 	if ((g_map->players_on_team = malloc(sizeof(int) * teams)) == NULL)
 		ERR_OUT("game_init->players_on_team; malloc");
 	init_teams(teams, players);
+	reset_obituary();
 	return (0);
 }

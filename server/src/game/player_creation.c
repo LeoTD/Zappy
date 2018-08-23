@@ -28,10 +28,8 @@ int				assign_avatar(int team_id)
 
 int				get_pid(void)
 {
-	static int i = 0;
-
-	i = i + 1;
-	return (i);
+	g_map->pids += 1;
+	return (g_map->pids);
 }
 
 t_player		*new_player(int team_id, int team_pid)
