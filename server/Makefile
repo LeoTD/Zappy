@@ -39,9 +39,12 @@ GAME_FILES	= map_creation.c \
 			  map_foodfuncs.c \
 			  player_actions.c \
 			  player_creation.c \
+			  player_death.c \
 			  player_data_api.c \
+			  player_data_api_2.c \
 			  player_empty_list_funcs.c \
 			  game_init.c \
+			  game_upkeep.c \
 			  see.c \
 			  get_player_inventory.c \
 			  str_utils.c \

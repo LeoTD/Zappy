@@ -16,8 +16,8 @@ int				assign_avatar(int team_id)
 	new = remove_player_from_waitlist(team_id);
 	if (new == NULL)
 		return (-1);
-
-	return (0);
+	add_player_to_list(new);
+	return (new->id);
 }
 
 /*
@@ -55,5 +55,6 @@ t_player		*new_player(int egg, int team_id, int team_pid)
 	tmp->egg = egg;
 	tmp->id = get_pid();
 	add_player_to_team_waitlist(tmp);
+	g_map->players++;
 	return (tmp);
 }

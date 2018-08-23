@@ -2,6 +2,7 @@
 #include "command_list_type.h"
 #include "command_queue_type.h"
 #include "client_type.h"
+#include "player_type.h"
 
 static void		pop_command(t_command_list **popped_head, t_command_queue *cmd_queue)
 {
@@ -21,13 +22,16 @@ static void		pop_command(t_command_list **popped_head, t_command_queue *cmd_queu
 }
 
 static void print_client_queues(t_client **clients) {
+	t_player	*p;
 	for (int i = 0; clients[i]; i++) {
 		t_command_queue *q = clients[i]->cmdqueue;
-		printf("p%d->(timer: %d, rem_space: %d)%s",
+		p = get_player(clients[i]->player_id);
+		printf("p%d->(timer: %d, rem_space: %d, energy: %d)%s",
 				clients[i]->player_id,
 				q->dequeue_timer,
 				q->remaining_space,
-				clients[i + 1] ? ", " : "]\n");
+				p->energy,
+				clients[i + 1] ? ", " : "\n");
 	}
 }
 

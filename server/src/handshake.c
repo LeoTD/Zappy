@@ -39,21 +39,15 @@ void		initiate_user_connection_handshake(int serv_fd)
 	}
 }
 
-static int assign_avatar(int team, int *num_open_slots_ptr)
-{
-	// TODO: remove when this is a real game function call!
-	*num_open_slots_ptr = 2;
-	return (30);
-}
-
 static int	assign_to_team_if_slot_available(int sock_fd, int team_id)
 {
 	int		player_id;
 	int		open_slots;
 	char	response[256];
 
-	if ((player_id = assign_avatar(team_id, &open_slots)) == -1)
+	if ((open_slots = get_team_open_slots(team_id)) == 0)
 		return (-1);
+	player_id = assign_avatar(team_id);
 	register_user_client(sock_fd, player_id);
 	snprintf(response, sizeof(response), "%d\n%d %d\n",
 			open_slots, g_opts.world_width, g_opts.world_height);

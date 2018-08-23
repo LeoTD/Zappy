@@ -1,4 +1,5 @@
 #include "server.h"
+#include "player_type.h"
 #include "tile_type.h"
 
 t_tile		*get_random_tile(void)
@@ -11,17 +12,24 @@ t_tile		*get_random_tile(void)
 	return (&g_map->tile[rx][ry]);
 }
 
-void		randomize_player_positions(void)
+void		init_teams(int teams, int players)
 {
+	t_player	*p;
 	int			i;
 	int			j;
-	int			k;
 
 	i = -1;
 	j = -1;
-	k = -1;
-	while (++i < g_map->teams)
+	g_map->players = 0;
+	while (++i < teams)
 	{
+		while (++j < players)
+		{
+			p = new_player(EGG_TIMER, i, j);
+			p->tile = get_random_tile();
+		}
+		j = -1;
+		g_map->players_on_team[i] = players;
 	}
 }
 
@@ -38,19 +46,13 @@ int			game_init(int x, int y, int teams, int players)
 	g_map->dim.y = y;
 	create_map(x, y);
 	g_map->teams = teams;
+	player_list_init();
 	if ((g_map->empty_avatars = 
 				malloc(sizeof(t_plist *) * (teams + 1))) == NULL)
 		ERR_OUT("game_init->empty_avatars; malloc");
 	bzero(g_map->empty_avatars, sizeof(t_plist *) * (teams + 1));
 	if ((g_map->players_on_team = malloc(sizeof(int) * teams)) == NULL)
 		ERR_OUT("game_init->players_on_team; malloc");
-	while (++i < teams)
-	{
-		while (++j < players)
-			new_player(EGG_TIMER, i, j);
-		j = -1;
-		g_map->players_on_team[i] = players;
-	}
-	randomize_player_positions();
+	init_teams(teams, players);
 	return (0);
 }

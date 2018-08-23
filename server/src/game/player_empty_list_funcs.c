@@ -35,6 +35,7 @@ int				*new_plist(t_player *p, t_plist **head)
 int				add_player_to_team_waitlist(t_player *p)
 {
 	new_plist(p, &g_map->empty_avatars[p->team_id]);
+	g_map->players_on_team[p->team_id] += 1;
 	return (0);
 }
 

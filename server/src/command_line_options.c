@@ -42,6 +42,7 @@ static void		parse_team_names(char **argv)
 		g_opts.team_names[i + 1] = argv[i];
 		++i;
 	}
+	g_opts.teamcount = teamcount;
 	optind += teamcount - 1;
 }
 

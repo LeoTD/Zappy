@@ -88,6 +88,7 @@ typedef struct			s_game_info
 	t_tile				**tile;
 	t_vec				dim;
 	int					teams;
+	int					players;
 	int					*players_on_team;
 	t_plist				**empty_avatars;
 }						t_game_info;
@@ -101,16 +102,22 @@ extern struct			s_opts
 	int					world_height;
 	int					initial_players_per_team;
 	char				**team_names;
+	int					teamcount;
 }						g_opts;
 
 /*
-** Player api:
+** player_data_api.c
 */
 
+void					player_list_init(void);
 t_player				*get_player(int pid);
+int						get_player_list_size(void);
+
+// player_data_api_2.c
+int             		delete_player_from_list(t_player *p);
 
 /*
-**	player_actions.c:
+** player_actions.c:
 */
 
 void					turn_left(int pid);
@@ -137,6 +144,22 @@ int						player_place_food(t_tile *tile, t_player *player);
 int						pickup_food(t_tile *t, t_player *player);
 int						move_player(t_player *p, int dir);
 
+//	game/game_init.c
+int						game_init(int x, int y, int teams, int players);
+
+//	game/game_upkeep.c
+void					game_upkeep(void);
+
+//	game/player_creation.c
+int						assign_avatar(int team_id);
+t_player				*new_player(int egg, int team_id, int team_pid);
+
+//	game/player_death.c
+int						kill_player(int pid);
+
+//	game/player_empty_list_funcs.c
+int						get_team_open_slots(int team);
+
 //	find_resouces.c
 char					*find_food(t_player *player);
 char					*find_stones(t_player *player);
@@ -149,7 +172,6 @@ int						remove_player_from_tile(t_player *p, t_tile *t);
 int						add_player_to_tile(t_player *p, t_tile *t);
 t_player				*is_player_on_tile(t_player *p, t_tile *t);
 
-t_player				*new_player(int egg, int team_id, int team_pid);
 int						get_new_player_id(void);
 void					cleanup_player_list(void);
 t_player				*get_player(int pid);
