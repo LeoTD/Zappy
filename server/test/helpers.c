@@ -6,6 +6,16 @@ char system_sprintf_buf[4096] = { 0 };
 void test_server_listen(void)
 {
 	socket_lookup_init(1);
+	g_opts.world_width = 23;
+	g_opts.world_height = 19;
+	g_opts.teamcount = 3;
+	g_opts.team_names = calloc(4, sizeof(char *));
+	g_opts.team_names[1] = "zerg";
+	g_opts.team_names[0] = "protoss";
+	g_opts.team_names[2] = "terran";
+	g_opts.initial_players_per_team = 2;
+	game_init(g_opts.world_width, g_opts.world_height,
+			g_opts.teamcount, g_opts.initial_players_per_team);
 	g_opts.server_port = 0x0;
 	listen_for_connections(g_opts.server_port);
 }

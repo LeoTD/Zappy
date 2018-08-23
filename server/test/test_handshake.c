@@ -52,9 +52,6 @@ void do_client_completion_test(char *test_teamname, char *expect)
 void test_completing_handshake_with_one_client(void)
 {
 	char result[256];
-	g_opts.team_names = (char *[]){ "zerg", "protoss", "terran", NULL };
-	g_opts.world_width = 12;
-	g_opts.world_height = 34;
 	char ok[256] = { 0 };
 	sprintf(ok, "WELCOME\n%d\n%d %d\n", 2, g_opts.world_width, g_opts.world_height);
 	do_client_completion_test("zerg", ok);
