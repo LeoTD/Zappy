@@ -1,9 +1,26 @@
 #include "server.h"
 #include "player_type.h"
 
+static int  itadakimasu(t_player *p)
+{
+    p->energy--;
+    if (p->energy <= 0)
+    {
+        if (p->food > 0)
+        {
+            p->food--;
+            p->energy += ENERGY_PER_FOOD;
+        }
+        else
+            return (-1);
+    }
+    return (0);
+}
+
 void        feed_inactive_players(int teams)
 {
     int         i;
+    t_player    *p;
     t_plist     *curr;
 
     i = -1;
@@ -12,18 +29,10 @@ void        feed_inactive_players(int teams)
         curr = g_map->empty_avatars[i];
         while (curr != NULL)
         {
-            curr->p->energy;
-            if (curr->p->energy <= 0)
-            {
-                if (curr->p->food > 0)
-                {
-                    curr->p->food--;
-                    curr->p->energy += ENERGY_PER_FOOD;
-                }
-                else
-                    kill_inactive_player(curr->p);
-            }
+            p = curr->p;
             curr = curr->next;
+            if (itadakimasu(p) == -1)
+                kill_inactive_player(p);
         }
     }
 }
@@ -40,17 +49,8 @@ void        feed_active_players(int list_size, int players)
     {
         if ((p = get_player(pid)) != NULL)
         {
-            p->energy--;
-            if (p->energy <= 0)
-            {
-                if (p->food > 0)
-                {
-                    p->food--;
-                    p->energy += ENERGY_PER_FOOD;
-                }
-                else
-                    kill_active_player(pid);
-            }
+            if (itadakimasu(p) == -1)
+                kill_active_player(pid);
             i++;
         }
         pid++;

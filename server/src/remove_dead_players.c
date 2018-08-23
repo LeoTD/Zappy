@@ -7,13 +7,6 @@ void	send_death_message(int sock_fd)
 		perror("send death message");
 }
 
-int		*get_dead_players(int *pid_count)
-{
-	int *result = calloc(1, sizeof(*result));
-	*pid_count = 1;
-	return result;
-}
-
 void	remove_dead_players(void)
 {
 	int			*player_ids;

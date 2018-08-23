@@ -157,6 +157,7 @@ t_player				*new_player(int team_id, int team_pid);
 //	game/player_death.c
 int						kill_active_player(int pid);
 int						kill_inactive_player(t_player *p);
+int 			        *get_dead_players(int *size);
 void        			reset_obituary(void);
 
 //	game/player_empty_list_funcs.c
