@@ -7,6 +7,15 @@ inline int	get_server_fd(void)
 	return (g_server_fd);
 }
 
+void		increase_rlimit(void)
+{
+	struct rlimit rl;
+
+	getrlimit(RLIMIT_NOFILE, &rl);
+	rl.rlim_cur = OPEN_MAX;
+	setrlimit(RLIMIT_NOFILE, &rl);
+}
+
 void		listen_for_connections(int port)
 {
 	struct sockaddr_in	server;
@@ -14,6 +23,7 @@ void		listen_for_connections(int port)
 	int					fd;
 	int					optval;
 
+	increase_rlimit();
 	if ((fd = socket(AF_INET, SOCK_STREAM, getprotobyname("tcp")->p_proto)) < 0)
 		ERR_OUT("socket");
 	server.sin_family = AF_INET;
