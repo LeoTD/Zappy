@@ -4,9 +4,9 @@
 
 char system_sprintf_buf[4096] = { 0 };
 
-void test_server_listen(void)
+void fill_test_g_opts(void)
 {
-	socket_lookup_init(1);
+	g_opts.server_port = 0x0;
 	g_opts.world_width = 23;
 	g_opts.world_height = 19;
 	g_opts.teamcount = 3;
@@ -15,9 +15,20 @@ void test_server_listen(void)
 	g_opts.team_names[0] = "protoss";
 	g_opts.team_names[2] = "terran";
 	g_opts.initial_players_per_team = 2;
+}
+
+void start_game_with_fake_options(void)
+{
+	fill_test_g_opts();
 	game_init(g_opts.world_width, g_opts.world_height,
 			g_opts.teamcount, g_opts.initial_players_per_team);
-	g_opts.server_port = 0x0;
+
+}
+
+void test_server_listen(void)
+{
+	start_game_with_fake_options();
+	socket_lookup_init(1);
 	listen_for_connections(g_opts.server_port);
 }
 

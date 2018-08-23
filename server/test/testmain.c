@@ -23,7 +23,7 @@ int		main(int argc, char **argv)
 	test_client_lookup();
 	test_receive_user_message();
 	test_map_creation();
-	/* test_map_movement(); */
+	test_map_movement();
 	/* test_player_creation(); */
 	/* test_player_movement(); */
 	return (0);

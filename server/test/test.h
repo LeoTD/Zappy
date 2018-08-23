@@ -20,4 +20,5 @@ int get_server_port(void);
 void test_server_listen(void);
 void quicksleep(void);
 int string_equal_file_contents(char *expect_string, char *filepath);
+void start_game_with_fake_options(void);
 #endif
