@@ -47,7 +47,7 @@ int			test_player_movement(void)
 	
 	printf("%s[ OK ]        \033[0mPlayer's can move!\n", OK_COLOR);
 
-	print_map();
+	//print_map();
 
 	return (0);
 }
