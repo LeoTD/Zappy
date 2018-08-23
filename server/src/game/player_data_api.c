@@ -19,6 +19,7 @@ void			player_list_init(void)
 {
 	if ((g_player_list = calloc(START_SIZE, sizeof(t_player *))) == NULL)
 		ERR_OUT("player list; malloc");
+	g_list_size = START_SIZE;
 }
 
 int				add_player_to_list(t_player *t)

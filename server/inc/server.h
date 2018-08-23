@@ -153,6 +153,7 @@ void					game_upkeep(void);
 //	game/player_creation.c
 int						assign_avatar(int team_id);
 t_player				*new_player(int team_id, int team_pid);
+t_player				*new_player_on_tile(int team_id, int x, int y);
 
 //	game/player_death.c
 int						kill_active_player(int pid);

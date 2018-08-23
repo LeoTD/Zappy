@@ -12,6 +12,7 @@ void	test_handshake(void);
 void	test_parse_command_line_options(void);
 void	test_client_lookup(void);
 void	test_receive_user_message(void);
+void	test_user_commands(void);
 
 int		main(int argc, char **argv)
 {
@@ -26,5 +27,6 @@ int		main(int argc, char **argv)
 	test_map_movement();
 	test_player_creation();
 	test_player_movement();
+	test_user_commands();
 	return (0);
 }

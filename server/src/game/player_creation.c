@@ -1,5 +1,6 @@
 #include "server.h"
 #include "player_type.h"
+#include "tile_type.h"
 
 /*
 ** TODO: Takes avatar on team [ team_id ] off the empty avatar list
@@ -54,4 +55,16 @@ t_player		*new_player(int team_id, int team_pid)
 	add_player_to_team_waitlist(tmp);
 	g_map->players++;
 	return (tmp);
+}
+
+t_player		*new_player_on_tile(int team_id, int x, int y)
+{
+	t_player	*p;
+
+	p = new_player(team_id, 0); // team_pid not in use
+	add_player_to_tile(p, &g_map->tile[x][y]);
+	add_player_to_list(p);
+	g_map->players_on_team[team_id] += 1;
+	g_map->players += 1;
+	return (p);
 }

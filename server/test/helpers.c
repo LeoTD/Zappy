@@ -1,8 +1,40 @@
 #include "server.h"
 #include "test.h"
 #include "tile_type.h"
+#include "player_type.h"
+#include "g_player_list.h"
 
 char system_sprintf_buf[4096] = { 0 };
+int place_food(t_tile *t);
+
+void init_user_commands_test_gamestate(void)
+{
+	int mapx = 4;
+	int mapy = 2;
+	game_init(mapx, mapy, 1, 0);
+	t_player *p1 = new_player_on_tile(0, 1, 0);
+	t_player *p2 = new_player_on_tile(0, 2, 0);
+	g_player_list[0] = p1;
+	g_player_list[1] = p2;
+	p1->id = 0;
+	p2->id = 1;
+	p1->facing = SOUTH;
+	p2->facing = WEST;
+	place_food(&g_map->tile[0][0]);
+	place_food(&g_map->tile[3][0]);
+	place_food(&g_map->tile[3][0]);
+	place_food(&g_map->tile[2][1]);
+	place_stone(0, &g_map->tile[0][0]);
+	place_stone(1, &g_map->tile[1][0]);
+	place_stone(5, &g_map->tile[3][0]);
+	place_stone(2, &g_map->tile[0][1]);
+	place_stone(3, &g_map->tile[0][1]);
+	place_stone(0, &g_map->tile[1][1]);
+	place_stone(4, &g_map->tile[1][1]);
+	/* map will look like:
+	 * [food,   stone0] [player1(south), stone1] [player2(west)] [food, food, stone5]
+	 * [stone2, stone3] [stone0, stone4        ] [food         ] [                  ] */
+}
 
 void fill_test_g_opts(void)
 {

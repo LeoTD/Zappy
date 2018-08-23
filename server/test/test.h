@@ -21,4 +21,5 @@ void test_server_listen(void);
 void quicksleep(void);
 int string_equal_file_contents(char *expect_string, char *filepath);
 void start_game_with_fake_options(void);
+void init_user_commands_test_gamestate(void);
 #endif
