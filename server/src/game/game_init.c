@@ -31,6 +31,7 @@ void		init_teams(int teams, int players)
 		j = -1;
 		g_map->players_on_team[i] = players;
 	}
+	g_map->players = teams * players;
 }
 
 int			game_init(int x, int y, int teams, int players)
