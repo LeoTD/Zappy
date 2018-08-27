@@ -7,7 +7,7 @@
 
 void	test_user_command_inventory(void);
 void	test_user_command_kick(void);
-
+void	test_user_command_see(void);
 
 void	test_user_command_advance(void)
 {
@@ -15,10 +15,11 @@ void	test_user_command_advance(void)
 	t_player *p1 = g_map->tile[1][0].players[0];
 	t_player *p2 = g_map->tile[2][0].players[0];
 
+	p1->facing = EAST;
 	assert(!strcmp(advance(p1->id, NULL), "ok\n"));
-	assert(is_player_on_tile(p1, &g_map->tile[1][1]) == p1);
+	assert(is_player_on_tile(p1, &g_map->tile[2][0]) == p1);
 	assert(!strcmp(advance(p1->id, NULL), "ok\n"));
-	assert(is_player_on_tile(p1, &g_map->tile[1][0]) == p1);
+	assert(is_player_on_tile(p1, &g_map->tile[3][0]) == p1);
 	printf("%s: ok\n", __func__);
 }
 
@@ -83,4 +84,5 @@ void	test_user_commands(void)
 	test_user_commands_put_and_take();
 	test_user_command_inventory();
 	test_user_command_kick();
+	test_user_command_see();
 }

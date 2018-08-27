@@ -11,8 +11,8 @@ int place_food(t_tile *t);
 
 void init_user_commands_test_gamestate(void)
 {
-	int mapx = 4;
-	int mapy = 2;
+	int mapx = 18;
+	int mapy = 18;
 	game_init(mapx, mapy, 1, 0);
 	t_player *p1 = new_player_on_tile(0, 1, 0);
 	t_player *p2 = new_player_on_tile(0, 2, 0);

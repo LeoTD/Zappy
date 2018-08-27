@@ -188,7 +188,7 @@ t_player				*remove_player_from_waitlist(int team);
 **	get_player_inventory.c
 */
 
-char					*wrap(char *str);
+char					*wrap(char *beg, char *str, char *end);
 char					*delimit(char *str1, char *d, char *str2);
 char					*search_inventory(t_player *player);
 char					*get_player_inventory(int pid);
@@ -207,7 +207,7 @@ int						*remove_pid(int *parray, int size, int current);
 char					*see_tiles(int pid);
 // game/existing_counts.c
 char					*existing_food_count(t_tile *tile);
-char					*existing_player_count(t_tile *tile);
+char					*existing_player_count(t_tile *tile, int pid);
 char					*existing_stone_count(t_tile *tile);
 
 /*
