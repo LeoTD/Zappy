@@ -9,7 +9,8 @@
 char	*inventory(int player_id, void *args)
 {
 	char	*str;
-	
+
+	(void)args;	
 	str = get_player_inventory(player_id);
 	return (str);
 }
