@@ -4,7 +4,9 @@
 # include "server.h"
 # include "player_type.h"
 
-# define START_SIZE 64
+// XXX: temporarily increased to a large value because seemingly unrelated
+// tests segfault if it's not huge.
+# define START_SIZE MAX_CLIENTS * 10
 
 t_player        **g_player_list;
 int             g_list_size;
