@@ -41,12 +41,13 @@ t_player		*new_player(int team_id, int team_pid)
 {
 	t_player	*tmp;
 	int			i;
+	static int	faceable_directions[4] = { NORTH, EAST, SOUTH, WEST };
 
 	i = -1;
 	if ((tmp = malloc(sizeof(t_player))) == NULL)
 		ERR_OUT("player creation; malloc");
 	tmp->tile = NULL;
-	tmp->facing = random() % 4;
+	tmp->facing = faceable_directions[random() % 4];
 	while (++i < 6)
 		tmp->stones[i] = 0;
 	tmp->food = DEFAULT_FOOD;
