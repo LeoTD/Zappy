@@ -26,6 +26,8 @@ void		listen_for_connections(int port)
 	increase_rlimit();
 	if ((fd = socket(AF_INET, SOCK_STREAM, getprotobyname("tcp")->p_proto)) < 0)
 		ERR_OUT("socket");
+	if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1)
+		ERR_OUT("setsockopt");
 	server.sin_family = AF_INET;
 	server.sin_port = htons(port);
 	server.sin_addr.s_addr = INADDR_ANY;
@@ -36,8 +38,6 @@ void		listen_for_connections(int port)
 	if (getsockname(fd, (struct sockaddr *)&server, &len) == -1)
 		ERR_OUT("getsockname");
 	optval = 1;
-	if (setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval)) == -1)
-		ERR_OUT("setsockopt");
 	if (listen(fd, 3) == -1)
 		ERR_OUT("listen");
 	g_server_fd = fd;
