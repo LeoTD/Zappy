@@ -132,17 +132,19 @@ int						attempt_to_put(int pid, char *obj);
 */
 
 int						create_map(int, int);
-int						place_stone(int type, t_tile *t);
-int						player_place_stone(int type, t_tile *t, t_player *player);
-int						remove_stone(int type, t_tile *t);
-int						player_pickup_stone(int type, t_tile *t, t_player *player);
 
 t_tile					*get_random_tile(void);
-int						place_random_stones(int type, int pool);
 int						place_random_food(int pool);
 int						player_place_food(t_tile *tile, t_player *player);
 int						pickup_food(t_tile *t, t_player *player);
 int						move_player(t_player *p, int dir);
+
+// game/map_stonefuncs.c
+int						place_stone(int type, t_tile *t);
+void					remove_stones(int stones[6], t_tile *t);
+int						player_place_stone(int type, t_tile *t, t_player *player);
+int						player_pickup_stone(int type, t_tile *t, t_player *player);
+int						place_random_stones(int type, int pool);
 
 //	game/game_init.c
 int						game_init(int x, int y, int teams, int players);
@@ -225,6 +227,7 @@ char 					*put(int player_id, void *arg);
 char 					*kick(int player_id, void *arg);
 char 					*broadcast(int player_id, void *arg);
 char 					*incantation(int player_id, void *arg);
+char					*incantation_finish(int player_id, void *arg);
 char 					*fork_player(int player_id, void *arg);
 char 					*connect_nbr(int player_id, void *arg);
 
@@ -293,6 +296,7 @@ void					free_cmdlist(t_command_list *list);
 t_command_queue			*new_cmdqueue(void);
 void					free_cmdqueue(t_command_queue *q);
 int						enqueue_command(t_command_queue *q, t_command *cmd);
+int						enqueue_front(t_command_queue *q, t_command *cmd);
 t_command_list			*dequeue_command(t_command_queue *q);
 
 // handshake.c
@@ -325,6 +329,8 @@ char					*strnew(char *str);
 char					*strjoin_free(char *str1, char *str2);
 char					*itoa(int n);
 
+// game/tile_data_api.c
 int						*get_current_tile_player_count(int pid, int *count);
+int						*get_current_tile_stones(int pid);
 
 #endif

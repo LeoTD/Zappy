@@ -24,6 +24,7 @@ void quicksleep(void);
 int string_equal_file_contents(char *expect_string, char *filepath);
 void start_game_with_fake_options(void);
 void init_user_commands_test_gamestate(void);
+int lowest_active_player_id(void);
 
 // tests_see.c
 void	fill_col_resources(int x, int y1, int y2, int quantity, int type);

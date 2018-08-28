@@ -52,6 +52,31 @@ int					enqueue_command(t_command_queue *q, t_command *cmd)
 	}
 }
 
+int					enqueue_front(t_command_queue *q, t_command *cmd)
+{
+	t_command_list *prev_head;
+
+	if (!q || q->remaining_space <= 0)
+		return (-1);
+	else
+	{
+		if (!q->head)
+		{
+			q->head = new_cmdlist(cmd);
+			q->tail = q->head;
+		}
+		else
+		{
+			prev_head = q->head;
+			q->head = new_cmdlist(cmd);
+			q->head->next = prev_head;
+		}
+		q->dequeue_timer = get_cmdfunc_tick_delay(q->head->cmd->cmdfunc);
+		q->remaining_space--;
+		return (0);
+	}
+}
+
 /*
 ** pop
 */

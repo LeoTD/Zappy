@@ -111,3 +111,16 @@ void           print_map_info(void)
 		y = -1;
 	}
 }
+
+int		lowest_active_player_id(void)
+{
+	int i = 1;
+	while (1)
+	{
+		if (g_player_list[i])
+		{
+			return i;
+		}
+		++i;
+	}
+}

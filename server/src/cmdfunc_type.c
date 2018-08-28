@@ -9,6 +9,8 @@ int					get_cmdfunc_tick_delay(t_cmdfunc f)
 	if (f == fork_player)
 		return (42);
 	if (f == incantation)
+		return (0);
+	if (f == incantation_finish)
 		return (300);
 	return (7);
 }

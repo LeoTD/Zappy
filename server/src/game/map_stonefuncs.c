@@ -35,6 +35,19 @@ int				player_pickup_stone(int type, t_tile *t, t_player *player)
 	return (0);
 }
 
+void			remove_stones(int stones[6], t_tile *t)
+{
+	int		i;
+
+	i = 0;
+	while (i < 6)
+	{
+		assert(t->stones[i] >= stones[i]);
+		t->stones[i] -= stones[i];
+		++i;
+	}
+}
+
 int				place_stone(int type, t_tile *t)
 {
 	if (!t)

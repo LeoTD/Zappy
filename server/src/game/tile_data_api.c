@@ -47,3 +47,17 @@ int			*get_current_tile_player_count(int pid, int *count)
 			res[++j] = t->players[i]->id;
 	return (res);
 }
+
+int			*get_current_tile_stones(int pid)
+{
+	t_player		*p;
+	t_tile			*t;
+	int				*res;
+
+	p = get_player(pid);
+	t = p->tile;
+	if ((res = malloc(sizeof(int) * 6)) == NULL)
+		ERR_OUT("get_current_tile_stones; malloc");
+	memcpy(res, t->stones, sizeof(t->stones));
+	return (res);
+}
