@@ -6,6 +6,8 @@
 #define DEFAULT_ENERGY 1260
 #define DEFAULT_LEVEL 1
 
+static int		g_pid_count;
+
 /*
 ** TODO: Takes avatar on team [ team_id ] off the empty avatar list
 ** 		 Adds that avatar to the active player list.
@@ -30,12 +32,9 @@ int				assign_avatar(int team_id)
 ** Mallocs and fills the struct with initial values
 */
 
-int				get_pid(void)
+void			reset_pid(void)
 {
-	static int i = 0;
-
-	i = i + 1;
-	return (i);
+	g_pid_count = 1;
 }
 
 t_player		*new_player(int team_id, int team_pid)
@@ -55,7 +54,7 @@ t_player		*new_player(int team_id, int team_pid)
 	tmp->level = DEFAULT_LEVEL;
 	tmp->team_id = team_id;
 	tmp->team_pid = team_pid;
-	tmp->id = get_pid();
+	tmp->id = g_pid_count++;
 	add_player_to_team_waitlist(tmp);
 	g_map->players++;
 	return (tmp);

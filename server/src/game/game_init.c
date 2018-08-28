@@ -46,7 +46,8 @@ int			game_init(int x, int y, int teams, int players)
 	create_map(x, y);
 	g_map->teams = teams;
 	player_list_init();
-	if ((g_map->empty_avatars = 
+	reset_pid();
+	if ((g_map->empty_avatars =
 				malloc(sizeof(t_plist *) * (teams + 1))) == NULL)
 		ERR_OUT("game_init->empty_avatars; malloc");
 	bzero(g_map->empty_avatars, sizeof(t_plist *) * (teams + 1));
