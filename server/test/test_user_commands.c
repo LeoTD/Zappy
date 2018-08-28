@@ -84,4 +84,5 @@ void	test_user_commands(void)
 	test_user_commands_put_and_take();
 	test_user_command_inventory();
 	test_user_command_kick();
+	test_user_command_see();
 }

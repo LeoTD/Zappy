@@ -16,5 +16,6 @@ struct s_player
 
 int		player_right(t_player *player);
 int		player_forward(t_player *player);
+int		player_northwest(t_player *player);
 
 #endif
