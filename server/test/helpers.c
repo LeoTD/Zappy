@@ -16,10 +16,6 @@ void init_user_commands_test_gamestate(void)
 	game_init(mapx, mapy, 1, 0);
 	t_player *p1 = new_player_on_tile(0, 1, 0);
 	t_player *p2 = new_player_on_tile(0, 2, 0);
-	g_player_list[0] = p1;
-	g_player_list[1] = p2;
-	p1->id = 0;
-	p2->id = 1;
 	p1->facing = SOUTH;
 	p2->facing = WEST;
 	place_food(&g_map->tile[0][0]);
