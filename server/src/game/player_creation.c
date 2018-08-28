@@ -64,6 +64,7 @@ t_player		*new_player_on_tile(int team_id, int x, int y)
 {
 	t_player	*p;
 
+	p = new_player(team_id);
 	add_player_to_tile(p, &g_map->tile[x][y]);
 	add_player_to_list(p);
 	g_map->players_on_team[team_id] += 1;
