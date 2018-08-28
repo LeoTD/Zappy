@@ -12,7 +12,7 @@ int		player_northwest(t_player *player)
 	else if (player->facing == EAST)
 		return (NORTHEAST);
 	else
-		printf("player_northwest broken\n");
+		printf("Error: player facing invalid direction\n");
 	return (NORTH);
 }
 

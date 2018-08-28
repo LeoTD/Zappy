@@ -26,39 +26,3 @@ void	test_user_command_inventory(void)
 	assert(!strcmp(inventory(p1->id, NULL), result));
 	printf("%s: ok\n", __func__);
 }
-
-void	test_user_command_kick(void)
-{
-	init_user_commands_test_gamestate();
-	t_player *p1 = g_map->tile[1][0].players[0];
-	t_player *p2 = g_map->tile[2][0].players[0];
-	t_player *p3 = new_player_on_tile(0, 1, 0);
-	t_player *p4 = new_player_on_tile(0, 1, 0);
-	t_player *p6 = new_player_on_tile(0, 1, 0);
-	t_player *p5 = new_player_on_tile(0, 1, 0);
-
-	
-
-	p1->facing = EAST;
-	p2->facing = WEST;
-
-	assert(!strcmp(kick(p1->id, NULL), "ok\n"));
-	assert(!strcmp(kick(p1->id, NULL), "ko\n"));
-	assert(!strcmp(kick(p2->id, NULL), "ok\n"));
-	assert(!strcmp(kick(p2->id, NULL), "ko\n"));
-	
-	printf("%s: ok\n", __func__);
-//	p3->facing = SOUTH;
-
-/*	printf("%d | %d\n", p1->tile->num_players, p2->tile->num_players);
-	printf("%s\n", kick(p1->id, NULL));
-	printf("%d | %d\n", p1->tile->num_players, p2->tile->num_players);
-	printf("%s\n", kick(p1->id, NULL));
-	printf("%d | %d\n", p1->tile->num_players, p2->tile->num_players);
-	printf("%s\n", kick(p2->id, NULL));
-	printf("%d | %d\n", p1->tile->num_players, p2->tile->num_players);
-	printf("%s\n", kick(p2->id, NULL));
-	printf("%d | %d\n", p1->tile->num_players, p2->tile->num_players);
-*/
-
-}

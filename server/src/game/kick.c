@@ -1,9 +1,9 @@
 #include "server.h"
 #include "player_type.h"
 #include "tile_type.h"
+#include "client_type.h"
 
 /*
-**	None of these functions are tested.
 **	Remove_pid searches through the array, removes the `current` passed in pid
 **	and returns a realloced array without the pid.
 */
@@ -26,6 +26,26 @@ int		*remove_pid(int *parray, int size, int current)
 	return (copy);
 }
 
+char	*find_kick_origin(int kick_dir, int player_dir)
+{
+	char	*str;
+	char	*k;
+
+	str = strnew("moving ");
+	if (facing_same(kick_dir, player_dir))
+		k = strnew("<5>\n");
+	else if (facing_opposite(kick_dir, player_dir))
+		k = strnew("<1>\n");
+	else if (kicked_from_left(kick_dir, player_dir))
+		k = strnew("<3>\n");
+	else if (kicked_from_right(kick_dir, player_dir))
+		k = strnew("<7>\n");
+	else
+		k = strnew("<?>\n");
+	str = strjoin_free(str, k);
+	return (str);
+}
+
 /*
 **	Kick_em takes an array of pids, the size of the array, and the direction that 
 **	they will be moving. Moves all pids that direction.
@@ -34,13 +54,18 @@ int		*remove_pid(int *parray, int size, int current)
 
 void	kick_em(int *parray, int dir, int size, int kpid)
 {
-	t_player	*player;
+	char			*msg;
+	t_client		*client;
+	t_player		*player;
 	
 	while (size > 0)
 	{
 		player = get_player(parray[size - 1]);
 		if (player->id != kpid)
 		{
+			assert(client = get_client_by_player_id(player->id));
+			msg = find_kick_origin(dir, player->facing);
+			send(client->socket_fd, msg, strlen(msg), 0);
 			move_player(player, dir);
 		}
 		size--;

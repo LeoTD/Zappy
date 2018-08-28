@@ -50,6 +50,7 @@ GAME_FILES	= map_creation.c \
 			  str_utils.c \
 			  find_resources.c \
 			  kick.c \
+			  kick_utils.c \
 			  direction_utils.c \
 			  existing_counts.c \
 

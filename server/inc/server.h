@@ -189,6 +189,11 @@ char					*get_player_inventory(int pid);
 int						attempt_to_kick(int pid);
 int						*remove_pid(int *parray, int size, int current);
 
+char					facing_same(int kick_dir, int player_dir);
+char					facing_opposite(int kick_dir, int player_dir);
+char					kicked_from_left(int kick_dir, int player_dir);
+char					kicked_from_right(int kick_dir, int player_dir);
+
 // game/see.c
 char					*see_tiles(int pid);
 // game/existing_counts.c
