@@ -37,7 +37,7 @@ void			reset_pid(void)
 	g_pid_count = 1;
 }
 
-t_player		*new_player(int team_id, int team_pid)
+t_player		*new_player(int team_id)
 {
 	t_player	*tmp;
 	int			i;
@@ -54,7 +54,6 @@ t_player		*new_player(int team_id, int team_pid)
 	tmp->energy = DEFAULT_ENERGY;
 	tmp->level = DEFAULT_LEVEL;
 	tmp->team_id = team_id;
-	tmp->team_pid = team_pid;
 	tmp->id = g_pid_count++;
 	add_player_to_team_waitlist(tmp);
 	g_map->players++;
@@ -65,7 +64,6 @@ t_player		*new_player_on_tile(int team_id, int x, int y)
 {
 	t_player	*p;
 
-	p = new_player(team_id, 0); // team_pid not in use
 	add_player_to_tile(p, &g_map->tile[x][y]);
 	add_player_to_list(p);
 	g_map->players_on_team[team_id] += 1;

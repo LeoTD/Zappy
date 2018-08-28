@@ -11,7 +11,6 @@ struct s_player
 	int					level;
 	int					id;
 	int					team_id;
-	int					team_pid;
 };
 
 int		player_right(t_player *player);

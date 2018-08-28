@@ -25,7 +25,7 @@ void		init_teams(int teams, int players)
 	{
 		while (++j < players)
 		{
-			p = new_player(i, j);
+			p = new_player(i);
 			add_player_to_tile(p, get_random_tile());
 		}
 		j = -1;
