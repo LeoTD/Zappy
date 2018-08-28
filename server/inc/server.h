@@ -11,37 +11,25 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-
 # define MAX_COMMANDS		10
 # define ERR_OUT(msg)		({ perror(msg); exit(-1); })
-# define CMD_COUNTDOWN(plr)	(plr->cmd_list->delay_cycles)
-# define CMD_READY(plr)		(CMD_COUNTDOWN(plr) == 0)
-# define DO_CMD_FUNC(cmd)	(cmd->do_cmd(cmd->player_id, cmd->args))
-# define NEXT_CMD(cmd)		(cmd = cmd->next)
 
-# define LINEMATE 0
-# define DERAUMERE 1
-# define SIBUR 2
-# define MENDIANE 3
-# define PHIRAS 4
-# define THYSTAME 5
+enum							e_stonetypes
+{
+	LINEMATE,
+	DERAUMERE,
+	SIBUR,
+	MENDIANE,
+	PHIRAS,
+	THYSTAME
+};
 
 # define MAX_CLIENTS (FD_SETSIZE - 4)
 
-# define DEFAULT_PARRAY 8
-
-# define DEFAULT_FOOD 0
-# define DEFAULT_ENERGY 1260
-# define DEFAULT_LEVEL 1
-# define EGG_TIMER 300
-# define ENERGY_PER_FOOD 126
 # define FATAL(msg) ({ fprintf(stderr, "%s: %s\n", __func__, msg); exit(-1); })
 # define HEREMSG fprintf(stderr, "MADE IT %s:%d\n", __func__, __LINE__)
 
-// for command_line_options.c and receive_user_message.c
 # define MAX_TEAM_NAME_LENGTH 63
-# define MAX_BROADCAST_LENGTH 4096
-# define MAX_USER_COMMAND_LENGTH MAX_BROADCAST_LENGTH
 # define MAX_OBJ_NAME_LENGTH 9 // deraumere
 
 typedef char					*(*t_cmdfunc)(int player_id, void *args);
@@ -109,12 +97,15 @@ extern struct			s_opts
 ** player_data_api.c
 */
 
+int						grow_list(void);
+int						add_player_to_list(t_player *t);
 void					player_list_init(void);
 t_player				*get_player(int pid);
 int						get_player_list_size(void);
 
 // player_data_api_2.c
 int             		delete_player_from_list(t_player *p);
+void					cleanup_player_list(void);
 
 /*
 ** player_actions.c:
@@ -123,21 +114,19 @@ int             		delete_player_from_list(t_player *p);
 void					turn_left(int pid);
 void					turn_right(int pid);
 void					walk_forward(int pid);
-
 int						attempt_to_take(int pid, char *obj);
 int						attempt_to_put(int pid, char *obj);
 
-/*
-** Game Engine Functions:
-*/
+// game/player_movement.c
+int						move_player(t_player *p, int dir);
 
+// game/map_creation.c
 int						create_map(int, int);
 
-t_tile					*get_random_tile(void);
+// game/map_foodfuncs.c
 int						place_random_food(int pool);
 int						player_place_food(t_tile *tile, t_player *player);
 int						pickup_food(t_tile *t, t_player *player);
-int						move_player(t_player *p, int dir);
 
 // game/map_stonefuncs.c
 int						place_stone(int type, t_tile *t);
@@ -148,6 +137,7 @@ int						place_random_stones(int type, int pool);
 
 //	game/game_init.c
 int						game_init(int x, int y, int teams, int players);
+t_tile					*get_random_tile(void);
 
 //	game/game_upkeep.c
 void					game_upkeep(void);
@@ -165,26 +155,23 @@ void        			reset_obituary(void);
 
 //	game/player_empty_list_funcs.c
 int						get_team_open_slots(int team);
+int						add_player_to_team_waitlist(t_player *p);
+t_player				*remove_player_from_waitlist(int team);
 
-//	find_resouces.c
+//	game/find_resouces.c
 char					*find_food(t_player *player);
 char					*find_stones(t_player *player);
 
+// game/map_tile_movement.c
 t_tile					*get_adj_tile(t_tile *home, int dir);
 t_tile					*get_tile_NS(t_tile *home, int v);
 t_tile					*get_tile_EW(t_tile *home, int v);
 
+// game/map_tile_to_player_funcs.c
 int						remove_player_from_tile(t_player *p, t_tile *t);
 int						add_player_to_tile(t_player *p, t_tile *t);
 t_player				*is_player_on_tile(t_player *p, t_tile *t);
 
-int						get_new_player_id(void);
-void					cleanup_player_list(void);
-t_player				*get_player(int pid);
-int						add_player_to_list(t_player *t);
-int						grow_list(void);
-int						add_player_to_team_waitlist(t_player *p);
-t_player				*remove_player_from_waitlist(int team);
 
 /*
 **	get_player_inventory.c
@@ -200,12 +187,9 @@ char					*get_player_inventory(int pid);
 */
 
 int						attempt_to_kick(int pid);
-
-// ?
-
 int						*remove_pid(int *parray, int size, int current);
 
-// game/vision.c
+// game/see.c
 char					*see_tiles(int pid);
 // game/existing_counts.c
 char					*existing_food_count(t_tile *tile);
@@ -217,7 +201,6 @@ char					*existing_stone_count(t_tile *tile);
 */
 
 char					*advance(int player_id, void *arg);
-char 					*turn(int player_id, void *arg);
 char					*left(int player_id, void *args);
 char					*right(int player_id, void *args);
 char 					*see(int player_id, void *arg);
@@ -231,10 +214,7 @@ char					*incantation_finish(int player_id, void *arg);
 char 					*fork_player(int player_id, void *arg);
 char 					*connect_nbr(int player_id, void *arg);
 
-/*
-**	User game helpers:
-*/
-
+// game/inventory.c
 char					*get_player_inventory(int pid);
 
 

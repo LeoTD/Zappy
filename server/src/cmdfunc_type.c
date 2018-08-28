@@ -1,5 +1,7 @@
 #include "server.h"
 
+#define MAX_BROADCAST_LENGTH 4096
+
 int					get_cmdfunc_tick_delay(t_cmdfunc f)
 {
 	if (f == connect_nbr)

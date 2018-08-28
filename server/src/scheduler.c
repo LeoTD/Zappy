@@ -1,5 +1,9 @@
 #include "server.h"
 
+#define CMD_COUNTDOWN(plr)	(plr->cmd_list->delay_cycles)
+#define CMD_READY(plr)		(CMD_COUNTDOWN(plr) == 0)
+#define NEXT_CMD(cmd)		(cmd = cmd->next)
+
 /*
 ** THIS FILE IS FOR REFERENCE.
 ** Don't destroy, Max needs it :)

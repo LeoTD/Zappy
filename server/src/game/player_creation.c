@@ -2,6 +2,10 @@
 #include "player_type.h"
 #include "tile_type.h"
 
+#define DEFAULT_FOOD 0
+#define DEFAULT_ENERGY 1260
+#define DEFAULT_LEVEL 1
+
 /*
 ** TODO: Takes avatar on team [ team_id ] off the empty avatar list
 ** 		 Adds that avatar to the active player list.

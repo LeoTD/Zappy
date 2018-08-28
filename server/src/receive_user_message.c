@@ -2,6 +2,8 @@
 #include "client_type.h"
 #include "command_queue_type.h"
 #include "command_type.h"
+
+#define MAX_USER_COMMAND_LENGTH 4096
 #define MAX_USER_CLIENT_RECV (MAX_USER_COMMAND_LENGTH * MAX_COMMANDS)
 
 char		*read_user_buffer(int cli_fd)

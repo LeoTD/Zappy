@@ -1,5 +1,8 @@
 #include "server.h"
 
+#define DO_CMD_FUNC(cmd)	(cmd->do_cmd(cmd->player_id, cmd->args))
+#define NEXT_CMD(cmd)		(cmd = cmd->next)
+
 int         exec_utioner(t_cmd *cmd_exec_list)
 {
     t_cmd		*current_cmd;

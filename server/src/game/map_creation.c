@@ -1,6 +1,7 @@
-
 #include "server.h"
 #include "tile_type.h"
+
+#define DEFAULT_PARRAY 8
 
 int				init_tile(t_tile *t, int x, int y)
 {

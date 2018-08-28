@@ -1,6 +1,8 @@
 #include "server.h"
 #include "player_type.h"
 
+#define ENERGY_PER_FOOD 126
+
 static int  itadakimasu(t_player *p)
 {
     p->energy--;
