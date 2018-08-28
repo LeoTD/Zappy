@@ -144,8 +144,9 @@ void					game_upkeep(void);
 
 //	game/player_creation.c
 int						assign_avatar(int team_id);
-t_player				*new_player(int team_id, int team_pid);
+t_player				*new_player(int team_id);
 t_player				*new_player_on_tile(int team_id, int x, int y);
+void					reset_pid(void);
 
 //	game/player_death.c
 int						kill_active_player(int pid);
@@ -254,7 +255,7 @@ void					socket_lookup_add(int fd, enum e_socktype type);
 void					socket_lookup_remove(int sock_fd);
 int						socket_lookup_has(int sock_fd, enum e_socktype type);
 int						iter_next_readable_socket(void);
-	
+
 // listen_for_connections.c
 void					listen_for_connections(int port);
 void					handle_waiting_connection_data(int fd);
