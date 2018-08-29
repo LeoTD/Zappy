@@ -4,11 +4,7 @@
 
 int				player_place_stone(int type, t_tile *t, t_player *player)
 {
-	if (!t)
-	{
-		printf("Tried to place stone in NULL tile!\n");
-		return (-1);
-	}
+	assert(t != NULL);
 	if (player->stones[type] < 1)
 		return (1);
 	player->stones[type] -= 1;
@@ -23,11 +19,7 @@ int				player_place_stone(int type, t_tile *t, t_player *player)
 
 int				player_pickup_stone(int type, t_tile *t, t_player *player)
 {
-	if (!t)
-	{
-		printf("Tried to remove stone from NULL tile!\n");
-		return (-1);
-	}
+	assert(t != NULL);
 	if (t->stones[type] < 1)
 		return (1);
 	t->stones[type] -= 1;

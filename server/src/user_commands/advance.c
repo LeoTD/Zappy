@@ -1,8 +1,12 @@
 #include "server.h"
+#include "player_type.h"
 
 char	*advance(int player_id, void *args)
 {
+	t_player	*player;
+
 	(void)args;
-	walk_forward(player_id);
+	player = get_player(player_id);
+	move_player(player, player->facing);
 	return ("ok\n");
 }

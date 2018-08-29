@@ -78,14 +78,6 @@ void	kick_em(int *parray, int dir, int size, int kpid)
 **	and move all players the direction the kicking player is facing.
 */
 
-void	print_parray(int *parray, int size)
-{
-	int i = 0;
-
-	while (i < size)
-		printf("the parray is: |%d|\n", parray[i++]);
-}
-
 int		attempt_to_kick(int pid)
 {
 	int			size;
@@ -96,8 +88,6 @@ int		attempt_to_kick(int pid)
 	if (player->tile->num_players <= 1)
 		return (-1);
 	parray = get_current_tile_player_count(pid, &size);
-//	print_parray(parray, size);
-//	printf("size = %d\n", size);
 	kick_em(parray, player->facing, size, pid);
 	free(parray);
 	return (0);

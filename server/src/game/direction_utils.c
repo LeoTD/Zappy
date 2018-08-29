@@ -16,18 +16,6 @@ int		player_northwest(t_player *player)
 	return (NORTH);
 }
 
-int		player_left(t_player *player)
-{
-	if (player->facing == NORTH)
-		return (WEST);
-	else if (player->facing == WEST)
-		return (SOUTH);
-	else if (player->facing == EAST)
-		return (EAST);
-	else
-		return (NORTH);
-}
-
 int		player_right(t_player *player)
 {
 	if (player->facing == NORTH)
@@ -38,9 +26,4 @@ int		player_right(t_player *player)
 		return (WEST);
 	else
 		return (NORTH);
-}
-
-int		player_forward(t_player *player)
-{
-	return (player->facing);
 }

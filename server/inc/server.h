@@ -94,7 +94,7 @@ extern struct			s_opts
 }						g_opts;
 
 /*
-** player_data_api.c
+** game/player_data_api.c
 */
 
 int						grow_list(void);
@@ -108,12 +108,12 @@ int             		delete_player_from_list(t_player *p);
 void					cleanup_player_list(void);
 
 /*
-** player_actions.c:
+** game/player_actions.c:
 */
 
-void					turn_left(int pid);
-void					turn_right(int pid);
-void					walk_forward(int pid);
+void					turn_left(t_player *p);
+void					turn_right(t_player *p);
+void					walk_forward(t_player *p);
 int						attempt_to_take(int pid, char *obj);
 int						attempt_to_put(int pid, char *obj);
 
@@ -188,7 +188,6 @@ char					*get_player_inventory(int pid);
 */
 
 int						attempt_to_kick(int pid);
-int						*remove_pid(int *parray, int size, int current);
 
 char					facing_same(int kick_dir, int player_dir);
 char					facing_opposite(int kick_dir, int player_dir);

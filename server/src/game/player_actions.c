@@ -1,11 +1,8 @@
 #include "server.h"
 #include "player_type.h"
 
-void	turn_right(int pid)
+void	turn_right(t_player *player)
 {
-	t_player *player;
-
-	player = get_player(pid);
 	if (player->facing == NORTH)
 		player->facing = EAST;
 	else if (player->facing == EAST)
@@ -16,11 +13,8 @@ void	turn_right(int pid)
 		player->facing = NORTH;
 }
 
-void	turn_left(int pid)
+void	turn_left(t_player *player)
 {
-	t_player *player;
-
-	player = get_player(pid);
 	if (player->facing == NORTH)
 		player->facing = WEST;
 	else if (player->facing == WEST)
@@ -31,11 +25,8 @@ void	turn_left(int pid)
 		player->facing = NORTH;
 }
 
-void	walk_forward(int pid)
+void	walk_forward(t_player *player)
 {
-	t_player *player;
-
-	player = get_player(pid);
 	move_player(player, player->facing);
 }
 
