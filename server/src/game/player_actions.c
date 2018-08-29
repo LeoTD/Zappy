@@ -25,11 +25,6 @@ void	turn_left(t_player *player)
 		player->facing = NORTH;
 }
 
-void	walk_forward(t_player *player)
-{
-	move_player(player, player->facing);
-}
-
 /*
 **	Find a way to be able to be able to know exactly what is being taken.
 **	Returns 1 if no resource exists to take. Returns 0 if taken successfully.

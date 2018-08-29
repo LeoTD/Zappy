@@ -97,7 +97,6 @@ extern struct			s_opts
 ** game/player_data_api.c
 */
 
-int						grow_list(void);
 int						add_player_to_list(t_player *t);
 void					player_list_init(void);
 t_player				*get_player(int pid);
@@ -113,7 +112,6 @@ void					cleanup_player_list(void);
 
 void					turn_left(t_player *p);
 void					turn_right(t_player *p);
-void					walk_forward(t_player *p);
 int						attempt_to_take(int pid, char *obj);
 int						attempt_to_put(int pid, char *obj);
 
