@@ -103,7 +103,7 @@ void					player_list_init(void);
 t_player				*get_player(int pid);
 int						get_player_list_size(void);
 
-// player_data_api_2.c
+// game/player_data_api_2.c
 int             		delete_player_from_list(t_player *p);
 void					cleanup_player_list(void);
 
