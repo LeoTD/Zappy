@@ -134,7 +134,8 @@ char					*incantation(int player_id, void *args)
 	finish->args = (char *)create_incant_attempt_args(player_id); // FIXME: change everything to void *
 	finish->player_id = player_id;
 	q = get_client_by_player_id(player_id)->cmdqueue;
-	q->remaining_space += 1;
+	if (q->remaining_space < MAX_COMMANDS)
+		q->remaining_space += 1;
 	enqueue_front(q, finish);
 	return ("elevation in progress\n");
 }
