@@ -26,7 +26,7 @@ INC			= inc/$(NAME).h \
 			  inc/player_type.h \
 			  inc/vec_type.h \
 			  inc/client_type.h \
-
+			  inc/fork_player.h \
 
 # ---------------------------------------------------------------------------- #
 # ----------- SRC/GAME ------------------------------------------------------- #
@@ -94,6 +94,7 @@ FILES		= active_socket_info.c \
 			  dequeue_commands.c \
 			  client_type.c \
 			  ascii_visuals.c \
+			  hatch_queue.c \
 
 # Add any subfolder SRC's here:
 SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))

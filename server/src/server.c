@@ -6,6 +6,7 @@ void	start_server_and_game(void)
 			g_opts.teamcount, g_opts.initial_players_per_team);
 	listen_for_connections(g_opts.server_port);
 	init_tick_timer();
+	init_global_hatch_queue();
 }
 
 void	animate(void); // XXX remove me and delete src/ascii_visuals.c from makefile when gfx exists
@@ -28,6 +29,7 @@ int		main(int argc, char **argv)
 		if (have_we_ticked())
 		{
 			animate();
+			check_and_hatch_eggs();
 			game_upkeep();
 			remove_dead_players();
 			cmds = dequeue_commands(user_clients);

@@ -14,6 +14,7 @@ void	test_client_lookup(void);
 void	test_receive_user_message(void);
 void	test_user_commands(void);
 void	test_user_command_incantation(void);
+void	test_user_command_fork(void);
 
 int		main(int argc, char **argv)
 {
@@ -30,5 +31,6 @@ int		main(int argc, char **argv)
 	test_player_movement();
 	test_user_commands();
 	test_user_command_incantation();
+	test_user_command_fork();
 	return (0);
 }

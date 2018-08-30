@@ -215,6 +215,7 @@ char					*broadcast(int player_id, void *arg);
 char					*incantation(int player_id, void *arg);
 char					*incantation_finish(int player_id, void *arg);
 char					*fork_player(int player_id, void *arg);
+char					*fork_finish(int player_id, void *arg);
 char					*connect_nbr(int player_id, void *arg);
 
 // game/inventory.c
@@ -245,6 +246,12 @@ void					send_results_to_users(t_command_list *lst);
 
 // decrement_user_command_timers.c
 void					decrement_user_command_timers(t_client **clients);
+
+// hatch_queue.c
+void					init_global_hatch_queue(void);
+t_command_queue			*get_hatch_queue(void);
+void					check_and_hatch_eggs(void);
+void					add_egg(int team_id, int x, int y);
 
 //active_socket_info.c
 void					socket_lookup_init(int do_close);
