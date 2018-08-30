@@ -19,26 +19,14 @@ char	*existing_food_count(t_tile *tile)
 	return (str);
 }
 
-char	*existing_player_count(t_tile *tile, int pid)
+char	*existing_player_count(t_tile *tile)
 {
 	int		i;
-	int		*players;
-	int		size;
 	char	*str;
 
 	str = strnew("");
-	if (tile->num_players == 0)
-		return (str);
-	players = get_current_tile_player_count(pid, &size);
-	i = size - 1;
-	while (i >= 0)
-	{
-		if (players[i] == pid)
-			size--;
-		i--;
-	}
 	i = 0;
-	while (i < size)
+	while (i < tile->num_players)
 	{
 		str = strjoin_free(strnew(" player"), str);
 		i++;

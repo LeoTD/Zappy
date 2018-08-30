@@ -2,7 +2,7 @@
 #include "tile_type.h"
 #include "player_type.h"
 
-char	*add_next_tile(char *format, t_tile *temp, int pid, int *first)
+char	*add_next_tile(char *format, t_tile *temp, int *first)
 {
 	if (*first == 1)
 		format = strjoin_free(format, strnew(","));
@@ -11,15 +11,15 @@ char	*add_next_tile(char *format, t_tile *temp, int pid, int *first)
 		format = strnew("");
 		*first = 1;	
 	}
-	format = strjoin_free(format, existing_player_count(temp, pid));
+	format = strjoin_free(format, existing_player_count(temp));
 	format = strjoin_free(format, existing_food_count(temp));
 	format = strjoin_free(format, existing_stone_count(temp));
 	return (format);
 }
 
-char	*first_tile(char *format, t_tile *temp, int pid)
+char	*first_tile(char *format, t_tile *temp)
 {
-	format = strjoin_free(format, existing_player_count(temp, pid));
+	format = strjoin_free(format, existing_player_count(temp));
 	format = strjoin_free(format, existing_food_count(temp));
 	format = strjoin_free(format, existing_stone_count(temp));
 	return (format);
@@ -41,7 +41,7 @@ char	*get_format_string(t_player *player, t_tile *tile)
 		amount_per_row = 0;
 		while (amount_per_row <= vision_distance * 2)
 		{
-			format = add_next_tile(format, temp, player->id, &first);
+			format = add_next_tile(format, temp, &first);
 			temp = get_adj_tile(temp, player_right(player));
 			amount_per_row++;
 		}
@@ -56,8 +56,10 @@ char	*see_tiles(int pid)
 {
 	char		*str;
 	t_player	*player;
-	
+
 	player = get_player(pid);
+	player->tile->num_players -= 1;
 	str = get_format_string(player, player->tile);
+	player->tile->num_players += 1;
 	return (str);
 }

@@ -42,11 +42,7 @@ void			remove_stones(int stones[6], t_tile *t)
 
 int				place_stone(int type, t_tile *t)
 {
-	if (!t)
-	{
-		printf("Tried to place stone in NULL tile!\n");
-		return (-1);
-	}
+	assert(t);
 	t->stones[type] += 1;
 	return (0);
 }

@@ -12,18 +12,8 @@ void	place_resource(int type, int y, int x)
 {
 	if (type == 6)
 		place_food(GM(x,y));
-	else if (type == 0)
-		place_stone(0, GM(x,y));
-	else if (type == 1)
-		place_stone(1, GM(x,y));
-	else if (type == 2)
-		place_stone(2, GM(x,y));
-	else if (type == 3)
-		place_stone(3, GM(x,y));
-	else if (type == 4)
-		place_stone(4, GM(x,y));
-	else if (type == 5)
-		place_stone(5, GM(x,y));
+	else
+		place_stone(type, GM(x,y));
 }
 
 void	fill_row_resources(int y, int x1, int x2, int quantity, int type)
@@ -35,7 +25,6 @@ void	fill_row_resources(int y, int x1, int x2, int quantity, int type)
 		copy = quantity;
 		while (copy-- > 0)
 		{
-		//	printf("placing at: %d %d", x1, y);
 			place_resource(type, y, x1);
 		}
 			x1++;
@@ -45,7 +34,7 @@ void	fill_row_resources(int y, int x1, int x2, int quantity, int type)
 void	fill_col_resources(int x, int y1, int y2, int quantity, int type)
 {
 	int		copy;
-	
+
 	while (y1 <= y2)
 	{
 		copy = quantity;
@@ -72,73 +61,17 @@ void	spin_center(t_player *player)
 	assert(!strcmp(see(player->id, NULL), north));
 }
 
-void	spin(t_player *player)
-{
-	printf("%s\n", see(player->id, NULL));
-	right(player->id, NULL);
-	printf("%s\n", see(player->id, NULL));
-	right(player->id, NULL);
-	printf("%s\n", see(player->id, NULL));
-	right(player->id, NULL);
-	printf("%s\n", see(player->id, NULL));
-	right(player->id, NULL);
-	printf("%s\n", see(player->id, NULL));
-}
-
-/*
-**	Direction
-**	Levels
-**	Correct tiles
-*/
-/*
-void	test_see_big(void)
-{
-	int mapx = 18;
-	int mapy = 18;
-	game_init(mapx, mapy, 1, 0);
-	
-	t_player *p1 = new_player_on_tile(0, 1, 0);
-	g_player_list[0] = p1;
-	p1->id = 0;
-	p1->facing = SOUTH;
-
-}
-*/
-// #define GM(x,y) &g_map->tile[x][y]
-// game_init(x, y, number_of_teams, number_of_players_per_team
-//
 void	test_see_medium(void)
 {
-	game_init(18, 18, 1, 0);
-	t_player *p1 = new_player_on_tile(0, 9, 1);
-	t_player *p2 = new_player_on_tile(0, 0, 0);
-	t_player *p3 = new_player_on_tile(0, 0, 0);
-	g_player_list[0] = p1;
-	g_player_list[1] = p2;
-	g_player_list[2] = p3;
-	p1->id = 0;
-	p2->id = 1;
-	p3->id = 2;
-	p1->facing = SOUTH;
-	p1->level = 7;
+	game_init(2, 2, 1, 0);
+	t_player *p1 = new_player_on_tile(0, 0, 1);
+	t_player *p2 = new_player_on_tile(0, 1, 1);
+	p1->facing = EAST;
+	p1->level = 1;
 
-
-	fill_row_resources(2, 8, 10, 1, 0);	
-	fill_row_resources(3, 7, 11, 1, 1);	
-	fill_row_resources(4, 6, 12, 1, 2);	
-	fill_row_resources(5, 5, 13, 1, 3);	
-	fill_row_resources(6, 4, 14, 1, 4);	
-	fill_row_resources(7, 3, 15, 1, 5);	
-	fill_row_resources(8, 0, 0, 1, 6);
-	
-	printf("%s\n", see(p1->id, NULL));
-
-//	printf("expected result :\n");
-//	print_map_info();
-
-
-//	spin(p1);
-
+	char *expect = "{,, player, }\n";
+	char *got = see(p1->id, NULL);
+	assert(!strcmp(got, expect));
 }
 
 void	test_see_small(void)
@@ -147,58 +80,22 @@ void	test_see_small(void)
 	t_player *p1 = new_player_on_tile(0, 0, 0);
 	t_player *p2 = new_player_on_tile(0, 0, 0);
 	t_player *p3 = new_player_on_tile(0, 0, 0);
-	g_player_list[0] = p1;
-	g_player_list[1] = p2;
-	g_player_list[2] = p3;
-	p1->id = 0;
-	p2->id = 1;
-	p3->id = 2;
-	p1->facing = NORTH;
-	p1->level = 2;
 
-	fill_col_resources(0, 0, 0, 1, 0);	
-	fill_col_resources(0, 0, 0, 1, 1);	
-	fill_col_resources(0, 0, 0, 1, 2);	
-	fill_col_resources(0, 0, 0, 1, 3);	
-	fill_col_resources(0, 0, 0, 1, 4);	
-	fill_col_resources(0, 0, 0, 1, 5);	
+	p1->facing = NORTH;
+	p1->level = 1;
+
+	fill_col_resources(0, 0, 0, 1, 0);
+	fill_col_resources(0, 0, 0, 1, 1);
+	fill_col_resources(0, 0, 0, 1, 2);
+	fill_col_resources(0, 0, 0, 1, 3);
+	fill_col_resources(0, 0, 0, 1, 4);
+	fill_col_resources(0, 0, 0, 1, 5);
 	fill_col_resources(0, 0, 0, 1, 6);
 
-	printf("expected result :\n");
-	print_map_info();
+	char *expect = "{ player player food linemate deraumere sibur mendiane phiras thystame, player player food linemate deraumere sibur mendiane phiras thystame, player player food linemate deraumere sibur mendiane phiras thystame, player player food linemate deraumere sibur mendiane phiras thystame }\n";
 
-	spin(p1);
-
-}
-
-void	test_see_blindspot(void)
-{
-	game_init(5, 5, 1, 0);
-	t_player *p1 = new_player_on_tile(0, 0, 0);
-	t_player *p2 = new_player_on_tile(0, 0, 0);
-	t_player *p3 = new_player_on_tile(0, 0, 0);
-	g_player_list[0] = p1;
-	g_player_list[1] = p2;
-	g_player_list[2] = p3;
-	p1->id = 0;
-	p2->id = 1;
-	p3->id = 2;
-	p1->facing = NORTH;
-	p1->level = 2;
-
-	fill_col_resources(0, 0, 0, 1, 0);	
-	fill_col_resources(0, 0, 0, 1, 1);	
-	fill_col_resources(0, 0, 0, 1, 2);	
-	fill_col_resources(0, 0, 0, 1, 3);	
-	fill_col_resources(0, 0, 0, 1, 4);	
-	fill_col_resources(0, 0, 0, 1, 5);	
-	fill_col_resources(0, 0, 0, 1, 6);
-
-	printf("expected result :\n");
-	print_map_info();
-
-	spin(p1);
-
+	char *got = see(p1->id, NULL);
+	assert(!strcmp(got, expect));
 }
 
 void	test_see_center(void)
@@ -207,12 +104,6 @@ void	test_see_center(void)
 	t_player *p1 = new_player_on_tile(0, 4, 4);
 	t_player *p2 = new_player_on_tile(0, 4, 4);
 	t_player *p3 = new_player_on_tile(0, 4, 4);
-	g_player_list[0] = p1;
-	g_player_list[1] = p2;
-	g_player_list[2] = p3;
-	p1->id = 0;
-	p2->id = 1;
-	p3->id = 2;
 	p1->facing = NORTH;
 	p1->level = 7;
 
@@ -233,9 +124,8 @@ void	test_see_center(void)
 }
 void	test_user_command_see(void)
 {
-//	test_see_small();
-//	test_see_medium();
-//	test_see_blindspot();
+	test_see_small();
+	test_see_medium();
 	test_see_center();
-	printf("%s: ok\n", __func__);	
+	printf("%s: ok\n", __func__);
 }

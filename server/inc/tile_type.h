@@ -12,9 +12,4 @@ struct s_tile
 	int					x;
 	int					y;
 };
-
-char	*existing_food_count(t_tile *tile);
-char	*existing_player_count(t_tile *tile, int pid);
-char	*add_existing_stone(t_tile *tile, int n);
-
 #endif
