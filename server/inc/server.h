@@ -103,7 +103,7 @@ t_player				*get_player(int pid);
 int						get_player_list_size(void);
 
 // game/player_data_api_2.c
-int             		delete_player_from_list(t_player *p);
+int						delete_player_from_list(t_player *p);
 void					cleanup_player_list(void);
 
 /*
@@ -149,8 +149,8 @@ void					reset_pid(void);
 //	game/player_death.c
 int						kill_active_player(int pid);
 int						kill_inactive_player(t_player *p);
-int 			        *get_dead_players(int *size);
-void        			reset_obituary(void);
+int				        *get_dead_players(int *size);
+void					reset_obituary(void);
 
 //	game/player_empty_list_funcs.c
 int						get_team_open_slots(int team);
@@ -206,16 +206,16 @@ char					*existing_stone_count(t_tile *tile);
 char					*advance(int player_id, void *arg);
 char					*left(int player_id, void *args);
 char					*right(int player_id, void *args);
-char 					*see(int player_id, void *arg);
-char 					*inventory(int player_id, void *arg);
-char 					*take(int player_id, void *arg);
-char 					*put(int player_id, void *arg);
-char 					*kick(int player_id, void *arg);
-char 					*broadcast(int player_id, void *arg);
-char 					*incantation(int player_id, void *arg);
+char					*see(int player_id, void *arg);
+char					*inventory(int player_id, void *arg);
+char					*take(int player_id, void *arg);
+char					*put(int player_id, void *arg);
+char					*kick(int player_id, void *arg);
+char					*broadcast(int player_id, void *arg);
+char					*incantation(int player_id, void *arg);
 char					*incantation_finish(int player_id, void *arg);
-char 					*fork_player(int player_id, void *arg);
-char 					*connect_nbr(int player_id, void *arg);
+char					*fork_player(int player_id, void *arg);
+char					*connect_nbr(int player_id, void *arg);
 
 // game/inventory.c
 char					*get_player_inventory(int pid);
@@ -231,7 +231,7 @@ int						have_we_ticked(void);
 void					remove_dead_players(void);
 
 // dequeue_commands.c
-t_command_list 			*dequeue_commands(t_client **clients);
+t_command_list			*dequeue_commands(t_client **clients);
 
 // execute_command_list.c
 void					execute_command_list(t_command_list *lst);
