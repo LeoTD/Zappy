@@ -93,6 +93,7 @@ FILES		= active_socket_info.c \
 			  time_to_tick.c \
 			  dequeue_commands.c \
 			  client_type.c \
+			  ascii_visuals.c \
 
 # Add any subfolder SRC's here:
 SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))

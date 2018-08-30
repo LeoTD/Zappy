@@ -1,23 +1,5 @@
 #include "server.h"
 
-#include "client_type.h" // XXX
-#include "player_type.h" // XXX
-#include "command_queue_type.h" // XXX
-void			print_client_queues(t_client **clients)
-{
-	for (int i = 0; clients[i]; i++)
-	{
-		t_player *p = get_player(clients[i]->player_id);
-		t_command_queue *q = clients[i]->cmdqueue;
-		printf("p%d->(timer: %d, rem_space: %d, energy: %d)%s",
-				clients[i]->player_id,
-				q->dequeue_timer,
-				q->remaining_space,
-				p->energy,
-				clients[i + 1] ? ", " : "\n");
-	}
-}
-
 void	start_server_and_game(void)
 {
 	game_init(g_opts.world_width, g_opts.world_height,
@@ -26,6 +8,8 @@ void	start_server_and_game(void)
 	init_tick_timer();
 }
 
+void	animate(void); // XXX remove me and delete src/ascii_visuals.c from makefile when gfx exists
+
 int		main(int argc, char **argv)
 {
 	t_command_list	*cmds;
@@ -33,6 +17,7 @@ int		main(int argc, char **argv)
 	int				fd;
 	t_client		**user_clients;
 
+	//srandomdev();
 	parse_command_line_options(argc, argv);
 	start_server_and_game();
 	while (1)
@@ -42,9 +27,9 @@ int		main(int argc, char **argv)
 			handle_waiting_connection_data(fd);
 		if (have_we_ticked())
 		{
-			print_client_queues(user_clients);
+			animate();
 			game_upkeep();
-		//	remove_dead_players();
+			remove_dead_players();
 			cmds = dequeue_commands(user_clients);
 			execute_command_list(cmds);
 			if (is_game_over(&winning_team_id))
