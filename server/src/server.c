@@ -28,9 +28,7 @@ int		main(int argc, char **argv)
 			handle_waiting_connection_data(fd);
 		if (have_we_ticked())
 		{
-#ifdef ASCII_ANIMATIONS
 			animate();
-#endif
 			check_and_hatch_eggs();
 			game_upkeep();
 			remove_dead_players();

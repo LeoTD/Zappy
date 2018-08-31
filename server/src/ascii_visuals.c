@@ -36,9 +36,10 @@ void			animate(void)
 {
 	static int ticks = 0;
 
+#ifdef ASCII_ANIMATIONS
 	system("clear");
 	printf("[0-9] = num empty bodies, (? if > 9), >^<v = connected client\n\n");
-	printf("x = %d, y = %d. tick %d\n", g_map->dim.x, g_map->dim.y, ticks);
+	printf("x = %d, y = %d. port = %d. tick %d\n", g_map->dim.x, g_map->dim.y, g_opts.server_port, ticks);
 	for (int row = 0; row < g_map->dim.y; row++)
 	{
 		for (int col = 0; col < g_map->dim.x; col++)
@@ -48,5 +49,17 @@ void			animate(void)
 		}
 		printf("\n");
 	}
+#else
+	if (ticks == 0)
+		printf("each . = 126 ticks, or | for 1260. server port = %d\n", g_opts.server_port);
+	else if (ticks % 126 == 0)
+	{
+		if (ticks % 1260 == 0)
+			printf("|");
+		else
+			printf(".");
+	}
+	fflush(stdout);
+#endif
 	++ticks;
 }
