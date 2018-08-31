@@ -140,4 +140,7 @@ norm:
 dev: CFLAGS += -Wno-error
 dev: all
 
-.PHONY: clean fclean all re test norm dev
+ascii: CFLAGS += -DASCII_ANIMATIONS
+ascii: dev
+
+.PHONY: clean fclean all re test norm dev ascii
