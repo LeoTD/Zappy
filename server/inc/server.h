@@ -192,6 +192,15 @@ char					facing_opposite(int kick_dir, int player_dir);
 char					kicked_from_left(int kick_dir, int player_dir);
 char					kicked_from_right(int kick_dir, int player_dir);
 
+/*
+**	broadcast.c
+*/
+
+char					*get_direction(int pid, int *origin);
+int						get_relative_direction(int pid, int direction);
+void					send_broadcast(int player_id, char *msg);
+int						find_sound_direction(int x, int y);
+
 // game/see.c
 char					*see_tiles(int pid);
 // game/existing_counts.c

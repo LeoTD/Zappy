@@ -51,7 +51,11 @@ GAME_FILES	= map_creation.c \
 			  find_resources.c \
 			  kick.c \
 			  kick_utils.c \
+			  broadcast.c \
 			  direction_utils.c \
+			  relative_directions.c \
+			  distance_formula.c \
+			  sound.c \
 			  existing_counts.c \
 
 

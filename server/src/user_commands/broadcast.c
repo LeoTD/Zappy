@@ -2,6 +2,6 @@
 
 char	*broadcast(int player_id, void *args)
 {
-	printf("p%d: %s(%s)\n", player_id, __func__, args ? (char *)args : "");
-	return "placeholder broadcast response\n";
+	send_broadcast(player_id, (char*)args);
+	return ("ok\n");
 }
