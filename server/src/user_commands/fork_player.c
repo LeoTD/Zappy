@@ -22,6 +22,7 @@ char				*fork_finish(int player_id, void *args)
 	struct s_hatch_args	*a;
 	t_player			*p;
 
+	(void)player_id;
 	a = args;
 	p = new_player(a->team_id);
 	add_player_to_tile(p, &g_map->tile[a->x][a->y]);

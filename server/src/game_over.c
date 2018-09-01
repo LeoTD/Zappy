@@ -20,10 +20,12 @@ int		logic_game_over(void);
 
 int		is_game_over(int *winning_team_id_ptr)
 {
+	(void)winning_team_id_ptr;
 	return (0);
 }
 
 void	handle_game_over(int winning_team_id)
 {
+	(void)winning_team_id;
 	return ;
 }
