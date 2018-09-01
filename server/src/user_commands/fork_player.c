@@ -20,9 +20,11 @@ struct s_hatch_args	*create_hatch_args(t_player *p)
 char				*fork_finish(int player_id, void *args)
 {
 	struct s_hatch_args	*a;
+	t_player			*p;
 
 	a = args;
-	new_player_on_tile(a->team_id, a->x, a->y);
+	p = new_player(a->team_id);
+	add_player_to_tile(p, &g_map->tile[a->x][a->y]);
 	free(a);
 	return (NULL);
 }
