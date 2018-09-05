@@ -4,11 +4,7 @@
 
 int				player_place_food(t_tile *t, t_player *player)
 {
-	if (!t)
-	{
-		printf("Tried to place food in NULL tile!\n");
-		return (-1);
-	}
+	assert(t != NULL);
 	if (player->food < 1)
 		return (1);
 	player->food -= 1;
@@ -18,11 +14,7 @@ int				player_place_food(t_tile *t, t_player *player)
 
 int				place_food(t_tile *t)
 {
-	if (!t)
-	{
-		printf("Tried to place food in NULL tile!\n");
-		return (-1);
-	}
+	assert(t != NULL);
 	t->food += 1;
 	return (0);
 }
@@ -34,11 +26,7 @@ int				place_food(t_tile *t)
 
 int				pickup_food(t_tile *t, t_player *player)
 {
-	if (!t)
-	{
-		printf("Tried to remove food from NULL tile!\n");
-		return (-1);
-	}
+	assert(t != NULL);
 	if (t->food < 1)
 		return (1);
 	t->food -= 1;
