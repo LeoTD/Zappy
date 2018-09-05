@@ -4,6 +4,7 @@ void	start_server_and_game(void)
 {
 	game_init(g_opts.world_width, g_opts.world_height,
 			g_opts.teamcount, g_opts.initial_players_per_team);
+	seed_tiles_initial_resources();
 	listen_for_connections(g_opts.server_port);
 	init_tick_timer();
 	init_global_hatch_queue();

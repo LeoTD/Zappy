@@ -64,4 +64,5 @@ void        game_upkeep(void)
     reset_obituary();
     feed_active_players(get_player_list_size(), g_map->players);
     feed_inactive_players(g_map->teams);
+	do_per_tick_resource_generation();
 }

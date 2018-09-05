@@ -175,6 +175,9 @@ int						remove_player_from_tile(t_player *p, t_tile *t);
 int						add_player_to_tile(t_player *p, t_tile *t);
 t_player				*is_player_on_tile(t_player *p, t_tile *t);
 
+// game/resource_spawning.c
+void					do_per_tick_resource_generation(void);
+void					seed_tiles_initial_resources(void);
 
 /*
 **	get_player_inventory.c

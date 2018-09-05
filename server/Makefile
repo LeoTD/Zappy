@@ -52,6 +52,7 @@ GAME_FILES	= map_creation.c \
 			  kick.c \
 			  kick_utils.c \
 			  existing_counts.c \
+			  resource_spawning.c \
 
 
 
