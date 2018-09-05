@@ -13,8 +13,4 @@ struct s_player
 	int					team_id;
 };
 
-int		player_right(t_player *player);
-int		player_forward(t_player *player);
-int		player_northwest(t_player *player);
-
 #endif

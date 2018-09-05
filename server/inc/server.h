@@ -31,6 +31,7 @@ enum							e_stonetypes
 
 # define MAX_TEAM_NAME_LENGTH 63
 # define MAX_OBJ_NAME_LENGTH 9 // deraumere
+# define MAX_BROADCAST_LENGTH 4096
 
 typedef char					*(*t_cmdfunc)(int player_id, void *args);
 typedef struct s_command		t_command;
@@ -55,15 +56,18 @@ enum			e_socktype
 
 enum			e_directions
 {
-	NORTH,
-	NORTHEAST,
-	EAST,
-	SOUTHEAST,
-	SOUTH,
-	SOUTHWEST,
-	WEST,
-	NORTHWEST
+	NORTH = 1,
+	NORTHWEST = 2,
+	WEST = 3,
+	SOUTHWEST = 4,
+	SOUTH = 5,
+	SOUTHEAST = 6,
+	EAST = 7,
+	NORTHEAST = 8
 };
+
+# define MIN_DIRECTION NORTH
+# define NUM_DIRECTIONS 8
 
 typedef struct			s_plist
 {
@@ -191,15 +195,6 @@ char					facing_same(int kick_dir, int player_dir);
 char					facing_opposite(int kick_dir, int player_dir);
 char					kicked_from_left(int kick_dir, int player_dir);
 char					kicked_from_right(int kick_dir, int player_dir);
-
-/*
-**	broadcast.c
-*/
-
-char					*get_direction(int pid, int *origin);
-int						get_relative_direction(int pid, int direction);
-void					send_broadcast(int player_id, char *msg);
-int						find_sound_direction(int x, int y);
 
 // game/see.c
 char					*see_tiles(int pid);

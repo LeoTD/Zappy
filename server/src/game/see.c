@@ -2,6 +2,12 @@
 #include "tile_type.h"
 #include "player_type.h"
 
+int		player_relative_direction(t_player *player, enum e_directions d)
+{
+	d += player->facing - MIN_DIRECTION * 2;
+	return (d % NUM_DIRECTIONS + MIN_DIRECTION);
+}
+
 char	*add_next_tile(char *format, t_tile *temp, int *first)
 {
 	if (*first == 1)
@@ -42,10 +48,10 @@ char	*get_format_string(t_player *player, t_tile *tile)
 		while (amount_per_row <= vision_distance * 2)
 		{
 			format = add_next_tile(format, temp, &first);
-			temp = get_adj_tile(temp, player_right(player));
+			temp = get_adj_tile(temp, player_relative_direction(player, EAST));
 			amount_per_row++;
 		}
-		tile = get_adj_tile(tile, player_northwest(player));
+		tile = get_adj_tile(tile, player_relative_direction(player, NORTHWEST));
 		vision_distance++;
 	}
 	format = wrap("{", format, " }\n");
