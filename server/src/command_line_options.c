@@ -80,5 +80,7 @@ void			parse_command_line_options(int argc, char **argv)
 		else
 			usage();
 	}
+	if (g_opts.tickrate <= 0)
+		g_opts.tickrate = 100;
 	ensure_all_options_present();
 }
