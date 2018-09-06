@@ -158,6 +158,7 @@ void					reset_obituary(void);
 
 //	game/player_empty_list_funcs.c
 int						get_team_open_slots(int team);
+int						get_team_open_slots_by_pid(int pid);
 int						add_player_to_team_waitlist(t_player *p);
 t_player				*remove_player_from_waitlist(int team);
 
