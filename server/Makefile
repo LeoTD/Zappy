@@ -53,6 +53,7 @@ GAME_FILES	= map_creation.c \
 			  kick_utils.c \
 			  existing_counts.c \
 			  resource_spawning.c \
+			  levelups_and_gameovers.c \
 
 
 

@@ -84,7 +84,7 @@ char					*incantation_finish(int player_id, void *args)
 	{
 		player = get_player(incant_args->levelup_group[i]);
 		if (player != NULL && player->level < incant_args->new_level)
-			player->level = incant_args->new_level;
+			increase_player_level(player, incant_args->new_level);
 		++i;
 	}
 	asprintf(&response, "current level %d\n", incant_args->new_level);

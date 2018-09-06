@@ -156,6 +156,10 @@ int						kill_inactive_player(t_player *p);
 int				        *get_dead_players(int *size);
 void					reset_obituary(void);
 
+// game/levelups_and_gameovers.c
+void					increase_player_level(t_player *p, int new_level);
+int						get_winning_teams(int **team_ids_ptr);
+
 //	game/player_empty_list_funcs.c
 int						get_team_open_slots(int team);
 int						get_team_open_slots_by_pid(int pid);
@@ -246,8 +250,7 @@ t_command_list			*dequeue_commands(t_client **clients);
 void					execute_command_list(t_command_list *lst);
 
 // game_over.c
-int						is_game_over(int *winning_team_id_ptr);
-void					handle_game_over(int winning_team_id);
+void					handle_possible_gameover(void);
 
 // send_stringified_responses.c
 void					send_results_to_users(t_command_list *lst);

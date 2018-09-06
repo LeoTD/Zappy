@@ -15,7 +15,6 @@ void	animate(void); // XXX remove me and delete src/ascii_visuals.c from makefil
 int		main(int argc, char **argv)
 {
 	t_command_list	*cmds;
-	int				winning_team_id;
 	int				fd;
 	t_client		**user_clients;
 
@@ -35,8 +34,7 @@ int		main(int argc, char **argv)
 			remove_dead_players();
 			cmds = dequeue_commands(user_clients);
 			execute_command_list(cmds);
-			if (is_game_over(&winning_team_id))
-				handle_game_over(winning_team_id);
+			handle_possible_gameover();
 			send_stringified_responses(cmds);
 			free_cmdlist(cmds);
 			decrement_user_command_timers(user_clients);
