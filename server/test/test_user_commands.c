@@ -91,15 +91,16 @@ void	test_user_command_connect_nbr(void)
 			assert(!strcmp(res, expected));
 		}
 	}
+	printf("%s: ok\n", __func__);
 }
 
 void	test_user_commands(void)
 {
-	/*test_user_command_advance();
+	test_user_command_advance();
 	test_user_commands_left_and_right();
 	test_user_commands_put_and_take();
 	test_user_command_inventory();
 	test_user_command_kick();
-	test_user_command_see();*/
+	test_user_command_see();
 	test_user_command_connect_nbr();
 }

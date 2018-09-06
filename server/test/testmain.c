@@ -18,7 +18,7 @@ void	test_user_command_fork(void);
 
 int		main(int argc, char **argv)
 {
-	/*srandomdev();
+	srandomdev();
 	puts("hello world");
 	test_parse_command_line_options();
 	test_client_connection_listener();
@@ -28,9 +28,9 @@ int		main(int argc, char **argv)
 	test_map_creation();
 	test_map_movement();
 	test_player_creation();
-	test_player_movement();*/
+	test_player_movement();
 	test_user_commands();
-/*	test_user_command_incantation();
-	test_user_command_fork();*/
+	test_user_command_incantation();
+	test_user_command_fork();
 	return (0);
 }
