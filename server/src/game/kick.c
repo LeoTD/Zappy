@@ -3,29 +3,6 @@
 #include "tile_type.h"
 #include "client_type.h"
 
-/*
-**	Remove_pid searches through the array, removes the `current` passed in pid
-**	and returns a realloced array without the pid.
-*/
-
-int		*remove_pid(int *parray, int size, int current)
-{
-	int		i;
-	int		*copy;
-
-	i = 0;
-	size = size - 1;
-	copy = realloc(parray, size);
-	while (i < size)
-	{
-		if (parray[i] != current)
-			copy[i] = parray[i];
-		i++;
-	}
-	free(parray);
-	return (copy);
-}
-
 char	*find_kick_origin(int kick_dir, int player_dir)
 {
 	char	*str;
