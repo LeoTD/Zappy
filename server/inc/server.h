@@ -123,7 +123,6 @@ int						move_player(t_player *p, int dir);
 int						create_map(int, int);
 
 // game/map_foodfuncs.c
-int						place_random_food(int pool);
 int						player_place_food(t_tile *tile, t_player *player);
 int						pickup_food(t_tile *t, t_player *player);
 
@@ -132,7 +131,6 @@ int						place_stone(int type, t_tile *t);
 void					remove_stones(int stones[6], t_tile *t);
 int						player_place_stone(int type, t_tile *t, t_player *player);
 int						player_pickup_stone(int type, t_tile *t, t_player *player);
-int						place_random_stones(int type, int pool);
 
 //	game/game_init.c
 int						game_init(int x, int y, int teams, int players);

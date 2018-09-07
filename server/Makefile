@@ -24,7 +24,6 @@ INC			= inc/$(NAME).h \
 			  inc/command_queue_type.h \
 			  inc/tile_type.h \
 			  inc/player_type.h \
-			  inc/vec_type.h \
 			  inc/client_type.h \
 			  inc/fork_player.h \
 

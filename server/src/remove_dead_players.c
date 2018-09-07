@@ -18,7 +18,6 @@ void	remove_dead_players(void)
 	i = 0;
 	while (i < pid_count)
 	{
-		client = get_client_by_player_id(player_ids[i]);
 		if ((client = get_client_by_player_id(player_ids[i])))
 		{
 			send_death_message(client->socket_fd);

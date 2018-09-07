@@ -1,6 +1,5 @@
 #include "server.h"
 #include "player_type.h"
-#include "tile_type.h"
 #include "client_type.h"
 
 char	*kick_origin_message(int kick_dir, t_player *p)

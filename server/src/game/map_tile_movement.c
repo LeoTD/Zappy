@@ -1,65 +1,31 @@
-
 #include "server.h"
 #include "tile_type.h"
 
-t_tile			*get_adj_tile(t_tile *home, int dir)
+static int g_direction_vecs[][2] = {
+	[NORTH] = { 0, -1 },
+	[NORTHWEST] = { -1, -1 },
+	[WEST] = { -1, 0 },
+	[SOUTHWEST] = { -1, 1 },
+	[SOUTH] = { 0, 1 },
+	[SOUTHEAST] = { 1, 1 },
+	[EAST] ={ 1, 0 },
+	[NORTHEAST] = { 1, -1 }
+};
+
+t_tile	*get_tile_at_offset(t_tile *home, int dx, int dy)
 {
-	if (dir == NORTH)
-		return (get_tile_NS(home, -1));
-	else if (dir == SOUTH)
-		return (get_tile_NS(home, 1));
-	else if (dir == EAST)
-		return (get_tile_EW(home, 1));
-	else if (dir == WEST)
-		return (get_tile_EW(home, -1));
-	if (dir == NORTHEAST)
-		return (get_tile_EW(get_tile_NS(home, -1), 1));
-	if (dir == NORTHWEST)
-		return (get_tile_EW(get_tile_NS(home, -1), -1));
-	if (dir == SOUTHEAST)
-		return (get_tile_EW(get_tile_NS(home, 1), 1));
-	if (dir == SOUTHWEST)
-		return (get_tile_EW(get_tile_NS(home, 1), -1));
-	return (NULL);
+	int tx;
+	int ty;
+
+	tx = (home->x + dx + g_map->dim.x) % g_map->dim.x;
+	ty = (home->y + dy + g_map->dim.y) % g_map->dim.y;
+	return (&g_map->tile[tx][ty]);
 }
 
-/*
-** Takes [ int v(ector) ]
-** (0, 0) is the NORTHWEST corner of the map.
-**
-** So, +1 moves one tile SOUTH. -1 moves on tile NORTH.
-** This is not limited to increments of 1, however the common use will
-** move one tile at a time.
-**
-** EAST-WEST funciton works similarly.
-*/
-
-t_tile			*get_tile_NS(t_tile *home, int v)
+t_tile	*get_adj_tile(t_tile *home, int dir)
 {
-	int			newy;
+	int *vec;
 
-	if (abs(v) > g_map->dim.y)
-		v = v % g_map->dim.y;
-	newy = home->y;
-	newy += v;
-	if (newy >= g_map->dim.y)
-		newy = newy - g_map->dim.y;
-	else if (newy < 0)
-		newy = newy + g_map->dim.y;
-	return (&g_map->tile[home->x][newy]);
-}
-
-t_tile			*get_tile_EW(t_tile *home, int v)
-{
-	int			newx;
-
-	if (abs(v) > g_map->dim.x)
-		v = v % g_map->dim.x;
-	newx = home->x;
-	newx += v;
-	if (newx >= g_map->dim.x)
-		newx = newx - g_map->dim.x;
-	else if (newx < 0)
-		newx = newx + g_map->dim.x;
-	return (&g_map->tile[newx][home->y]);
+	vec = g_direction_vecs[dir];
+	return (get_tile_at_offset(home, vec[0], vec[1]));
 }

@@ -27,9 +27,6 @@ void				free_cmdqueue(t_command_queue *q)
 	free(q);
 }
 
-/*
-** push
-*/
 int					enqueue_command(t_command_queue *q, t_command *cmd)
 {
 	if (!q || q->remaining_space <= 0)
@@ -77,9 +74,6 @@ int					enqueue_front(t_command_queue *q, t_command *cmd)
 	}
 }
 
-/*
-** pop
-*/
 t_command_list		*dequeue_command(t_command_queue *q)
 {
 	t_command_list	*temp;

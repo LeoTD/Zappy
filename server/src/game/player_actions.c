@@ -1,30 +1,6 @@
 #include "server.h"
 #include "player_type.h"
 
-void	turn_right(t_player *player)
-{
-	if (player->facing == NORTH)
-		player->facing = EAST;
-	else if (player->facing == EAST)
-		player->facing = SOUTH;
-	else if (player->facing == SOUTH)
-		player->facing = WEST;
-	else if (player->facing == WEST)
-		player->facing = NORTH;
-}
-
-void	turn_left(t_player *player)
-{
-	if (player->facing == NORTH)
-		player->facing = WEST;
-	else if (player->facing == WEST)
-		player->facing = SOUTH;
-	else if (player->facing == SOUTH)
-		player->facing = EAST;
-	else if (player->facing == EAST)
-		player->facing = NORTH;
-}
-
 /*
 **	Find a way to be able to be able to know exactly what is being taken.
 **	Returns 1 if no resource exists to take. Returns 0 if taken successfully.

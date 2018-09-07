@@ -2,10 +2,6 @@
 #include "player_type.h"
 #include "tile_type.h"
 
-#define OK_COLOR "\033[1;35m"
-
-void		print_map(void);
-
 int			test_player_movement(void)
 {
 	t_player		*p;
@@ -19,19 +15,15 @@ int			test_player_movement(void)
 	for (int i = 0; i < 34817; i++) //ends at t->x, t->y - 1
 		move_player(p, NORTH);
 	assert(p->tile->x == t->x && p->tile->y == t->y - 1);
-	printf("%s[ OK ] ", OK_COLOR);
 	for (int i = 0; i < 26625; i++) //ends at t->x + 1, t->y - 1
 		move_player(p, EAST);
 	assert(p->tile->x == t->x + 1 && p->tile->y == t->y - 1);
-	printf("%s[ OK ] ", OK_COLOR);
 	for (int i = 0; i < 34817; i++) //ends at t->x + 1, t->y
 		move_player(p, SOUTH);
 	assert(p->tile->x == t->x + 1 && p->tile->y == t->y);
-	printf("%s[ OK ] ", OK_COLOR);
 	for (int i = 0; i < 26625; i++) //ends at t->x, t->y
 		move_player(p, WEST);
 	assert(p->tile->x == t->x && p->tile->y == t->y);
-	printf("%s[ OK ] ", OK_COLOR);
 
 	move_player(p, NORTH);
 	move_player(p, NORTH);
@@ -44,10 +36,6 @@ int			test_player_movement(void)
 	move_player(p, WEST);
 	move_player(p, WEST);
 	assert(p->tile->x == t->x - 5 && p->tile->y == t->y - 5);
-	
-	printf("%s[ OK ]        \033[0mPlayer's can move!\n", OK_COLOR);
-
-	//print_map();
-
+	printf("%s: ok\n", __FILE__);
 	return (0);
 }
