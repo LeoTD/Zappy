@@ -23,7 +23,6 @@ int				assign_avatar(int team_id)
 	new = remove_player_from_waitlist(team_id);
 	if (new == NULL)
 		return (-1);
-	add_player_to_list(new);
 	return (new->id);
 }
 
@@ -55,6 +54,7 @@ t_player		*new_player(int team_id)
 	tmp->level = DEFAULT_LEVEL;
 	tmp->team_id = team_id;
 	tmp->id = g_pid_count++;
+	add_player_to_list(tmp);
 	add_player_to_team_waitlist(tmp);
 	g_map->players++;
 	return (tmp);
@@ -66,7 +66,6 @@ t_player		*new_player_on_tile(int team_id, int x, int y)
 
 	p = new_player(team_id);
 	add_player_to_tile(p, &g_map->tile[x][y]);
-	add_player_to_list(p);
 	g_map->players_on_team[team_id] += 1;
 	g_map->players += 1;
 	return (p);

@@ -63,9 +63,11 @@ void	kick_em(int *parray, int dir, int size, int kpid)
 		player = get_player(parray[size - 1]);
 		if (player->id != kpid)
 		{
-			assert(client = get_client_by_player_id(player->id));
-			msg = find_kick_origin(dir, player->facing);
-			send(client->socket_fd, msg, strlen(msg), 0);
+			if ((client = get_client_by_player_id(player->id)))
+			{
+				msg = find_kick_origin(dir, player->facing);
+				send(client->socket_fd, msg, strlen(msg), 0);
+			}
 			move_player(player, dir);
 		}
 		size--;
