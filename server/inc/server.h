@@ -66,9 +66,6 @@ enum			e_directions
 	NORTHEAST = 8
 };
 
-# define MIN_DIRECTION NORTH
-# define NUM_DIRECTIONS 8
-
 typedef struct			s_plist
 {
 	t_player			*p;
@@ -329,6 +326,12 @@ int						have_we_ticked(void);
 char					*strnew(char *str);
 char					*strjoin_free(char *str1, char *str2);
 char					*itoa(int n);
+
+// game/direction.c
+int						perceived_direction(enum e_directions d, t_player *p);
+int						opposite_direction(enum e_directions d);
+int						direction_add(enum e_directions d1, enum e_directions d2);
+int						direction_sub(enum e_directions d1, enum e_directions d2);
 
 // game/tile_data_api.c
 int						*get_current_tile_player_count(int pid, int *count);

@@ -26,11 +26,6 @@ int		*point_to_greater_abs_value(int *a, int *b)
 		return (b);
 }
 
-int		perceived_direction(enum e_directions d, t_player *p)
-{
-	return ((d - p->facing + NUM_DIRECTIONS) % NUM_DIRECTIONS + MIN_DIRECTION);
-}
-
 int		get_message_transmission_direction(int sourcex, int sourcey, int destx, int desty)
 {
 	int	dx;

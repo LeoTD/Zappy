@@ -49,11 +49,10 @@ GAME_FILES	= map_creation.c \
 			  inventory.c \
 			  str_utils.c \
 			  find_resources.c \
-			  kick.c \
-			  kick_utils.c \
 			  existing_counts.c \
 			  resource_spawning.c \
 			  levelups_and_gameovers.c \
+			  direction.c \
 
 
 

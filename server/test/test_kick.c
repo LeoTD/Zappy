@@ -3,7 +3,7 @@
 #include "tile_type.h"
 #include <assert.h>
 
-char	*find_kick_origin(int kick_dir, int player_dir);
+char	*kick_origin_message(int kick_dir, t_player *p);
 
 void	init_user_commands_test_gamestate(void);
 
@@ -35,34 +35,34 @@ void	test_user_command_kick(void)
 	register_user_client(8, p8->id);
 
 	
-	assert(!strcmp(find_kick_origin(p1->facing, p5->facing), "moving <3>\n"));
-	assert(!strcmp(find_kick_origin(p1->facing, p6->facing), "moving <1>\n"));
-	assert(!strcmp(find_kick_origin(p1->facing, p7->facing), "moving <7>\n"));
-	assert(!strcmp(find_kick_origin(p1->facing, p8->facing), "moving <5>\n"));
+	assert(!strcmp(kick_origin_message(p1->facing, p5), "moving <3>\n"));
+	assert(!strcmp(kick_origin_message(p1->facing, p6), "moving <1>\n"));
+	assert(!strcmp(kick_origin_message(p1->facing, p7), "moving <7>\n"));
+	assert(!strcmp(kick_origin_message(p1->facing, p8), "moving <5>\n"));
 
 	assert(!strcmp(kick(p1->id, NULL), "ok\n"));
 	assert(!strcmp(kick(p1->id, NULL), "ko\n"));
 	
-	assert(!strcmp(find_kick_origin(p2->facing, p5->facing), "moving <1>\n"));
-	assert(!strcmp(find_kick_origin(p2->facing, p6->facing), "moving <7>\n"));
-	assert(!strcmp(find_kick_origin(p2->facing, p7->facing), "moving <5>\n"));
-	assert(!strcmp(find_kick_origin(p2->facing, p8->facing), "moving <3>\n"));
+	assert(!strcmp(kick_origin_message(p2->facing, p5), "moving <1>\n"));
+	assert(!strcmp(kick_origin_message(p2->facing, p6), "moving <7>\n"));
+	assert(!strcmp(kick_origin_message(p2->facing, p7), "moving <5>\n"));
+	assert(!strcmp(kick_origin_message(p2->facing, p8), "moving <3>\n"));
 
 	assert(!strcmp(kick(p2->id, NULL), "ok\n"));
 	assert(!strcmp(kick(p2->id, NULL), "ko\n"));
 	
-	assert(!strcmp(find_kick_origin(p3->facing, p5->facing), "moving <7>\n"));
-	assert(!strcmp(find_kick_origin(p3->facing, p6->facing), "moving <5>\n"));
-	assert(!strcmp(find_kick_origin(p3->facing, p7->facing), "moving <3>\n"));
-	assert(!strcmp(find_kick_origin(p3->facing, p8->facing), "moving <1>\n"));
+	assert(!strcmp(kick_origin_message(p3->facing, p5), "moving <7>\n"));
+	assert(!strcmp(kick_origin_message(p3->facing, p6), "moving <5>\n"));
+	assert(!strcmp(kick_origin_message(p3->facing, p7), "moving <3>\n"));
+	assert(!strcmp(kick_origin_message(p3->facing, p8), "moving <1>\n"));
 
 	assert(!strcmp(kick(p3->id, NULL), "ok\n"));
 	assert(!strcmp(kick(p3->id, NULL), "ko\n"));
 
-	assert(!strcmp(find_kick_origin(p4->facing, p5->facing), "moving <5>\n"));
-	assert(!strcmp(find_kick_origin(p4->facing, p6->facing), "moving <3>\n"));
-	assert(!strcmp(find_kick_origin(p4->facing, p7->facing), "moving <1>\n"));
-	assert(!strcmp(find_kick_origin(p4->facing, p8->facing), "moving <7>\n"));
+	assert(!strcmp(kick_origin_message(p4->facing, p5), "moving <5>\n"));
+	assert(!strcmp(kick_origin_message(p4->facing, p6), "moving <3>\n"));
+	assert(!strcmp(kick_origin_message(p4->facing, p7), "moving <1>\n"));
+	assert(!strcmp(kick_origin_message(p4->facing, p8), "moving <7>\n"));
 	
 	assert(!strcmp(kick(p4->id, NULL), "ok\n"));
 	assert(!strcmp(kick(p4->id, NULL), "ko\n"));
