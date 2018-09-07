@@ -11,7 +11,7 @@ char	*kick_origin_message(int kick_dir, t_player *p)
 	return (msg);
 }
 
-void	kick_and_alert_player(t_player *p, enum e_directions dir)
+void	kick_and_alert_player(t_player *p, int dir)
 {
 	t_client	*client;
 	char		*msg;

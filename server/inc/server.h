@@ -328,10 +328,10 @@ char					*strjoin_free(char *str1, char *str2);
 char					*itoa(int n);
 
 // game/direction.c
-int						perceived_direction(enum e_directions d, t_player *p);
-int						opposite_direction(enum e_directions d);
-int						direction_add(enum e_directions d1, enum e_directions d2);
-int						direction_sub(enum e_directions d1, enum e_directions d2);
+int						perceived_direction(int d, t_player *p);
+int						opposite_direction(int d);
+int						direction_add(int d1, int d2);
+int						direction_sub(int d1, int d2);
 
 // game/tile_data_api.c
 int						*get_current_tile_player_count(int pid, int *count);
