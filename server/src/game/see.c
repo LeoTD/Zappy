@@ -17,14 +17,6 @@ char	*add_next_tile(char *format, t_tile *temp, int *first)
 	return (format);
 }
 
-char	*first_tile(char *format, t_tile *temp)
-{
-	format = strjoin_free(format, existing_player_count(temp));
-	format = strjoin_free(format, existing_food_count(temp));
-	format = strjoin_free(format, existing_stone_count(temp));
-	return (format);
-}
-
 char	*get_format_string(t_player *player, t_tile *tile)
 {
 	char	*format;
