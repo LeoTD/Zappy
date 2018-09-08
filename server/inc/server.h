@@ -28,6 +28,7 @@ enum							e_stonetypes
 
 # define FATAL(msg) ({ fprintf(stderr, "%s: %s\n", __func__, msg); exit(-1); })
 # define HEREMSG fprintf(stderr, "MADE IT %s:%d\n", __func__, __LINE__)
+# define WEAK_ASSERT(exp) ({ if (!(exp)) { fprintf(stderr, "Assertion failed (nonfatal): (%s), function %s, file %s, line %d.\n", #exp, __func__, __FILE__, __LINE__); } })
 
 # define MAX_TEAM_NAME_LENGTH 63
 # define MAX_OBJ_NAME_LENGTH 9 // deraumere
