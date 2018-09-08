@@ -8,10 +8,4 @@ struct s_incant_args
 	int		group_size;
 	int		new_level;
 };
-
-struct s_incant_req
-{
-	int		group_size;
-	int		stones[6];
-};
 #endif

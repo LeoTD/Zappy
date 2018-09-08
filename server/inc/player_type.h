@@ -11,6 +11,7 @@ struct s_player
 	int					level;
 	int					id;
 	int					team_id;
+	t_objcount			count;
 };
 
 #endif

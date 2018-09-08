@@ -57,23 +57,23 @@ void	test_user_commands_put_and_take(void)
 	t_player *p2 = g_map->tile[2][0].players[0];
 
 	ASSERT_OK(take(p1->id, stone_names[1]));
-	assert(p1->stones[1] == 1);
-	assert(p1->tile->stones[1] == 0);
+	assert(p1->count[DERAUMERE] == 1);
+	assert(p1->tile->count[DERAUMERE] == 0);
 
 	ASSERT_KO(take(p1->id, stone_names[1]));
-	assert(p1->stones[1] == 1);
+	assert(p1->count[DERAUMERE] == 1);
 
 	ASSERT_KO(take(p1->id, stone_names[2]));
-	assert(p1->stones[2] == 0);
+	assert(p1->count[SIBUR] == 0);
 
 	ASSERT_OK(put(p1->id, stone_names[1]));
-	assert(p1->stones[1] == 0);
-	assert(p1->tile->stones[1] == 1);
+	assert(p1->count[DERAUMERE] == 0);
+	assert(p1->tile->count[DERAUMERE] == 1);
 
 	ASSERT_OK(put(p2->id, stone_names[3]));
 	ASSERT_OK(put(p2->id, stone_names[3]));
 	ASSERT_KO(put(p2->id, stone_names[3]));
-	assert(p2->tile->stones[3] == 2);
+	assert(p2->tile->count[MENDIANE] == 2);
 
 	printf("%s: ok\n", __func__);
 }

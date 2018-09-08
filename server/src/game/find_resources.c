@@ -5,7 +5,7 @@ char	*find_food(t_player *player)
 {
 	char	*count;
 
-	count = itoa(player->food * 126 + player->energy);
+	count = itoa(player->count[FOOD] * 126 + player->energy);
 	count = strjoin_free(strnew("food "), count);
 	return (count);
 }
@@ -14,7 +14,7 @@ char	*add_stone(t_player *player, int n)
 {
 	char	*count;
 
-	count = itoa(player->stones[n]);
+	count = itoa(player->count[n]);
 	if (n == 0)
 		count = strjoin_free(strnew(", linemate "), count);
 	else if (n == 1)

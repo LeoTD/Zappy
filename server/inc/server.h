@@ -14,15 +14,23 @@
 # define MAX_COMMANDS		10
 # define ERR_OUT(msg)		({ perror(msg); exit(-1); })
 
-enum							e_stonetypes
+enum							e_objtypes
 {
 	LINEMATE,
 	DERAUMERE,
 	SIBUR,
 	MENDIANE,
 	PHIRAS,
-	THYSTAME
+	THYSTAME,
+	FOOD,
+	PLAYERS,
+	NUM_ENUMERATED_OBJECTS
 };
+
+typedef int t_objcount[NUM_ENUMERATED_OBJECTS];
+
+# define MIN_STONE LINEMATE
+# define MAX_STONE THYSTAME
 
 # define MAX_CLIENTS (FD_SETSIZE - 4)
 
@@ -129,7 +137,6 @@ int						pickup_food(t_tile *t, t_player *player);
 
 // game/map_stonefuncs.c
 int						place_stone(int type, t_tile *t);
-void					remove_stones(int stones[6], t_tile *t);
 int						player_place_stone(int type, t_tile *t, t_player *player);
 int						player_pickup_stone(int type, t_tile *t, t_player *player);
 

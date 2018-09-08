@@ -48,8 +48,8 @@ t_player		*new_player(int team_id)
 	tmp->tile = NULL;
 	tmp->facing = faceable_directions[random() % 4];
 	while (++i < 6)
-		tmp->stones[i] = 0;
-	tmp->food = DEFAULT_FOOD;
+		tmp->count[i] = 0;
+	tmp->count[FOOD] = DEFAULT_FOOD;
 	tmp->energy = DEFAULT_ENERGY;
 	tmp->level = DEFAULT_LEVEL;
 	tmp->team_id = team_id;
@@ -57,6 +57,7 @@ t_player		*new_player(int team_id)
 	add_player_to_list(tmp);
 	add_player_to_team_waitlist(tmp);
 	g_map->players++;
+	bzero(tmp->count, sizeof(tmp->count));
 	return (tmp);
 }
 

@@ -14,10 +14,11 @@ int				init_tile(t_tile *t, int x, int y)
 		ERR_OUT("init_tile; malloc");
 	t->parray_size = DEFAULT_PARRAY;
 	bzero(t->players, sizeof(t_player *) * t->parray_size);
-	t->num_players = 0;
+	t->count[PLAYERS] = 0;
 	while (++i < 6)
-		t->stones[i] = 0;
-	t->food = 0;
+		t->count[i] = 0;
+	t->count[FOOD] = 0;
+	bzero(t->count, sizeof(t->count));
 	return (0);
 }
 

@@ -6,10 +6,9 @@ struct s_tile
 {
 	t_player			**players;
 	int					parray_size;
-	int					num_players;
-	int					stones[6];
-	int					food;
 	int					x;
 	int					y;
+	t_objcount			count;
 };
+
 #endif

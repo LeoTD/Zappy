@@ -24,14 +24,14 @@ int			add_player_to_tile(t_player *p, t_tile *t)
 	i = 0;
 	if (!p || !t)
 		ERR_OUT("add_player_to_tile; null tile/player");
-	if (t->num_players + 1 > t->parray_size)
+	if (t->count[PLAYERS] + 1 > t->parray_size)
 		grow_parray(t);
 	while (i < t->parray_size && t->players[i] != NULL)
 		i++;
 	if (i == t->parray_size)
 		ERR_OUT("add_player_to_tile; Uhhh, this should never happen. wtf.");
 	t->players[i] = p;
-	t->num_players++;
+	t->count[PLAYERS]++;
 	p->tile = t;
 	return (0);
 }
@@ -46,8 +46,9 @@ int			remove_player_from_tile(t_player *p, t_tile *t)
 			break ;
 	if (i == t->parray_size)
 		ERR_OUT("remove_player_from_tile; This shouldn't happen.");
-	t->players[i] = NULL;
-	t->num_players--;
+	t->players[i] = t->players[t->count[PLAYERS] - 1];
+	t->players[t->count[PLAYERS] - 1] = NULL;
+	t->count[PLAYERS]--;
 	p->tile = NULL;
 	return (0);
 }

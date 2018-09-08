@@ -9,9 +9,9 @@ void	test_one_player_can_fork_once(void)
 	fork_player(p->id, NULL);
 	for (int ticks = 0; ticks < 600; ticks++)
 		check_and_hatch_eggs();
-	assert(p->tile->num_players == 1);
+	assert(p->tile->count[PLAYERS] == 1);
 	check_and_hatch_eggs();
-	assert(p->tile->num_players == 2);
+	assert(p->tile->count[PLAYERS] == 2);
 }
 
 void	test_many_forks(void)
@@ -26,7 +26,7 @@ void	test_many_forks(void)
 			fork_player(p->id, NULL);
 		check_and_hatch_eggs();
 	}
-	assert(p->tile->num_players == 21);
+	assert(p->tile->count[PLAYERS] == 21);
 }
 
 void	test_user_command_fork(void)

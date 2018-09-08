@@ -32,28 +32,28 @@ void		print_map(void)
 				switch (type)
 				{
 					case 1 :
-						printf("%3d ", t->num_players);
+						printf("%3d ", t->count[PLAYERS]);
 						break ;
 					case 2 :
-						printf("%3d ", t->food);
+						printf("%3d ", t->count[FOOD]);
 						break ;
 					case 3 :
-						printf("%3d ", t->stones[0]);
+						printf("%3d ", t->count[LINEMATE]);
 						break ;
 					case 4 :
-						printf("%3d ", t->stones[1]);
+						printf("%3d ", t->count[DERAUMERE]);
 						break ;
 					case 5 :
-						printf("%3d ", t->stones[2]);
+						printf("%3d ", t->count[SIBUR]);
 						break ;
 					case 6 :
-						printf("%3d ", t->stones[3]);
+						printf("%3d ", t->count[MENDIANE]);
 						break ;
 					case 7 :
-						printf("%3d ", t->stones[4]);
+						printf("%3d ", t->count[PHIRAS]);
 						break ;
 					case 8 :
-						printf("%3d ", t->stones[5]);
+						printf("%3d ", t->count[THYSTAME]);
 						break ;
 					default :
 						printf("(%2d, %2d) ", t->x, t->y);

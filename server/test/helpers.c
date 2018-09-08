@@ -29,7 +29,7 @@ void init_user_commands_test_gamestate(void)
 	place_stone(3, &g_map->tile[0][1]);
 	place_stone(0, &g_map->tile[1][1]);
 	place_stone(4, &g_map->tile[1][1]);
-	p2->stones[3] = 2;
+	p2->count[MENDIANE] = 2;
 
 	/* map will look like:
 	 * [food,   stone0] [player1(south), stone1] [player2(west, inventory: stone3(x2))] [food, food, stone5]
@@ -104,8 +104,8 @@ void           print_map_info(void)
 		{
 			t = &g_map->tile[x][y];
 			printf("(%d, %d)", t->x, t->y);
-			printf(" \tStones: [  %d,  %d,  %d,  %d,  %d,  %d ]", t->stones[0], t->stones[1], t->stones[2], t->stones[3], t->stones[4], t->stones[5]);
-			printf(" Food: [ %d ] Players: %d", t->food, t->num_players);
+			printf(" \tStones: [  %d,  %d,  %d,  %d,  %d,  %d ]", t->count[LINEMATE], t->count[DERAUMERE], t->count[SIBUR], t->count[MENDIANE], t->count[PHIRAS], t->count[THYSTAME]);
+			printf(" Food: [ %d ] Players: %d", t->count[FOOD], t->count[PLAYERS]);
 			printf("\n");
 		}
 		y = -1;

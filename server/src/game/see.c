@@ -50,8 +50,8 @@ char	*see_tiles(int pid)
 	t_player	*player;
 
 	player = get_player(pid);
-	player->tile->num_players -= 1;
+	player->tile->count[PLAYERS] -= 1;
 	str = get_format_string(player, player->tile);
-	player->tile->num_players += 1;
+	player->tile->count[PLAYERS] += 1;
 	return (str);
 }

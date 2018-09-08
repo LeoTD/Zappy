@@ -8,10 +8,10 @@ char	*existing_food_count(t_tile *tile)
 	char	*str;
 
 	str = strnew("");
-	if (tile->food == 0)
+	if (tile->count[FOOD] == 0)
 		return (str);
 	i = 0;
-	while (i < tile->food)
+	while (i < tile->count[FOOD])
 	{
 		str = strjoin_free(strnew(" food"), str);
 		i++;
@@ -26,7 +26,7 @@ char	*existing_player_count(t_tile *tile)
 
 	str = strnew("");
 	i = 0;
-	while (i < tile->num_players)
+	while (i < tile->count[PLAYERS])
 	{
 		str = strjoin_free(strnew(" player"), str);
 		i++;
@@ -39,11 +39,11 @@ char	*add_existing_stone(t_tile *tile, int n)
 	int		i;
 	char	*count;
 
-	if (tile->stones[n] == 0)
+	if (tile->count[n] == 0)
 		return (strnew(""));
 	i = 0;
 	count = strnew("");
-	while (i < tile->stones[n])
+	while (i < tile->count[n])
 	{
 		if (n == 0)
 			count = strjoin_free(strnew(" linemate"), count);
@@ -72,7 +72,7 @@ char	*existing_stone_count(t_tile *tile)
 	str = strnew("");
 	while (i < 6)
 	{
-		if (tile->stones[i] > 0)
+		if (tile->count[i] > 0)
 		{
 			temp = add_existing_stone(tile, i);
 			str = strjoin_free(str, temp);

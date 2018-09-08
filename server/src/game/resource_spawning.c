@@ -21,7 +21,7 @@ void	spawn_random_resource_on_tile(t_tile *t)
 	accumulator = 0;
 	r = random() % SUM_RESOURCE_CHANCES;
 	if (r < (accumulator += FOOD_CHANCE))
-		t->food += 1;
+		t->count[FOOD] += 1;
 	else if (r < (accumulator += LINEMATE_CHANCE))
 		place_stone(LINEMATE, t);
 	else if (r < (accumulator += DERAUMERE_CHANCE))
