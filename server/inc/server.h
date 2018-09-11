@@ -206,13 +206,6 @@ char					facing_opposite(int kick_dir, int player_dir);
 char					kicked_from_left(int kick_dir, int player_dir);
 char					kicked_from_right(int kick_dir, int player_dir);
 
-// game/see.c
-char					*see_tiles(int pid);
-// game/existing_counts.c
-char					*existing_food_count(t_tile *tile);
-char					*existing_player_count(t_tile *tile);
-char					*existing_stone_count(t_tile *tile);
-
 /*
 ** User commands:
 */
