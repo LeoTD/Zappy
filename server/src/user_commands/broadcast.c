@@ -3,9 +3,13 @@
 #include "tile_type.h"
 #include "client_type.h"
 
+static char	g_broadcast_buf[MAX_BROADCAST_LENGTH + 10 + 2]; // 10 = starting "message K ", 2 = ending "\n\0"
+static size_t g_broadcast_len;
+
 int		distance_along_wrapped_dimension(int p1, int p2, int dim)
 {
 	int	d;
+
 	d = p2 - p1;
 	if (abs(d) > dim / 2)
 	{
@@ -26,7 +30,8 @@ int		*point_to_greater_abs_value(int *a, int *b)
 		return (b);
 }
 
-int		get_message_transmission_direction(int sourcex, int sourcey, int destx, int desty)
+int		get_message_transmission_direction(int sourcex, int sourcey,
+											int destx, int desty)
 {
 	int	dx;
 	int	dy;
@@ -56,25 +61,24 @@ int		get_message_transmission_direction(int sourcex, int sourcey, int destx, int
 
 char	*broadcast(int player_id, void *args)
 {
-	static char	buf[MAX_BROADCAST_LENGTH + 10 + 2]; // 10 = starting "message K ", 2 = ending "\n\0"
-	int			len;
 	int			direction;
 	t_client	**clients;
 	t_player	*sender;
+	t_player	*p;
 
 	clients = get_clients();
-	snprintf(buf, MAX_BROADCAST_LENGTH, "message K %s\n", (char *)args);
-	len = strlen(buf);
+	snprintf(g_broadcast_buf, MAX_BROADCAST_LENGTH, "message K %s\n", args);
+	g_broadcast_len = strlen(g_broadcast_buf);
 	sender = get_player(player_id);
 	while (clients[0])
 	{
-		t_player *p = get_player(clients[0]->player_id);
+		p = get_player(clients[0]->player_id);
 		direction = get_message_transmission_direction(
 				sender->tile->x, sender->tile->y, p->tile->x, p->tile->y);
 		if (direction > 0)
 			direction = perceived_direction(direction, p);
-		buf[8] = direction + '0';
-		send(clients[0]->socket_fd, buf, len, 0);
+		g_broadcast_buf[8] = direction + '0';
+		send(clients[0]->socket_fd, g_broadcast_buf, g_broadcast_len, 0);
 		++clients;
 	}
 	return ("ok\n");
