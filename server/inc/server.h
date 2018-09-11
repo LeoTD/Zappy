@@ -154,8 +154,7 @@ t_player				*new_player_on_tile(int team_id, int x, int y);
 void					reset_pid(void);
 
 //	game/player_death.c
-int						kill_active_player(int pid);
-int						kill_inactive_player(t_player *p);
+int						kill_player(t_player *p);
 int				        *get_dead_players(int *size);
 void					reset_obituary(void);
 

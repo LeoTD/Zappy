@@ -80,11 +80,9 @@ struct s_incant_args	*create_incant_attempt_args(t_player *priest)
 	struct s_incant_args	*outcome;
 	int						*reqs;
 
-	HEREMSG;
 	outcome = malloc(sizeof(*outcome));
 	get_ritual_pids(priest, outcome);
 	reqs = g_incant_reqs[priest->level - 1];
-	HEREMSG;
 	if (priest->level < 8
 			&& reqs[PLAYERS] <= outcome->group_size
 			&& reqs[LINEMATE] <= priest->tile->count[LINEMATE]

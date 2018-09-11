@@ -2,11 +2,6 @@
 #include "player_type.h"
 #include "g_player_list.h"
 
-void			cleanup_player_list(void)
-{
-	free(g_player_list);
-}
-
 int             delete_player_from_list(t_player *p)
 {
     int         pid;
