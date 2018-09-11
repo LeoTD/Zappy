@@ -16,9 +16,9 @@ void        feed_players(void)
 			p->energy--;
 			if (p->energy <= 0)
 			{
-				if (p->food > 0)
+				if (p->count[FOOD] > 0)
 				{
-					p->food--;
+					p->count[FOOD]--;
 					p->energy += ENERGY_PER_FOOD;
 				}
 				else

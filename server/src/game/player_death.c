@@ -53,7 +53,8 @@ int			kill_player(t_player *p)
     remove_player_from_tile(p, p->tile);
     g_map->players -= 1;
 	g_map->players_on_team[p->team_id] -= 1;
-    g_dead_pids[g_dead_num++] = p->id;
+    g_dead_pids[g_dead_num] = p->id;
+	g_dead_num++;
     remove_dead_plist_node(p);
     delete_player_from_list(p);
 	return (0);
