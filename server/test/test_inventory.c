@@ -21,7 +21,7 @@ void	test_user_command_inventory(void)
 	p1->count[MENDIANE] = 4;
 	p1->count[PHIRAS] = 5;
 	p1->count[THYSTAME] = 6;
-	char *result = "{ food 9126, linemate 1, deraumere 2, sibur 0, mendiane 4, phiras 5, thystame 6 }\n";
+	char *result = "{food 9126, linemate 1, deraumere 2, sibur 0, mendiane 4, phiras 5, thystame 6}\n";
 
 	assert(!strcmp(inventory(p1->id, NULL), result));
 	printf("%s: ok\n", __func__);

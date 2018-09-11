@@ -42,6 +42,8 @@ typedef int t_objcount[NUM_ENUMERATED_OBJECTS];
 # define MAX_OBJ_NAME_LENGTH 9 // deraumere
 # define MAX_BROADCAST_LENGTH 4096
 
+# define ENERGY_PER_FOOD 126
+
 typedef char					*(*t_cmdfunc)(int player_id, void *args);
 typedef struct s_command		t_command;
 typedef struct s_command_list	t_command_list;
@@ -185,26 +187,6 @@ t_player				*is_player_on_tile(t_player *p, t_tile *t);
 // game/resource_spawning.c
 void					do_per_tick_resource_generation(void);
 void					seed_tiles_initial_resources(void);
-
-/*
-**	get_player_inventory.c
-*/
-
-char					*wrap(char *beg, char *str, char *end);
-char					*delimit(char *str1, char *d, char *str2);
-char					*search_inventory(t_player *player);
-char					*get_player_inventory(int pid);
-
-/*
-**	game/kick.c
-*/
-
-int						attempt_to_kick(int pid);
-
-char					facing_same(int kick_dir, int player_dir);
-char					facing_opposite(int kick_dir, int player_dir);
-char					kicked_from_left(int kick_dir, int player_dir);
-char					kicked_from_right(int kick_dir, int player_dir);
 
 /*
 ** User commands:

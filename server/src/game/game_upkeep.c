@@ -1,8 +1,6 @@
 #include "server.h"
 #include "player_type.h"
 
-#define ENERGY_PER_FOOD 126
-
 void        feed_players(void)
 {
     int         fed;

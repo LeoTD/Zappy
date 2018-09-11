@@ -44,9 +44,7 @@ GAME_FILES	= map_creation.c \
 			  player_empty_list_funcs.c \
 			  game_init.c \
 			  game_upkeep.c \
-			  inventory.c \
 			  str_utils.c \
-			  find_resources.c \
 			  resource_spawning.c \
 			  levelups_and_gameovers.c \
 			  direction.c \

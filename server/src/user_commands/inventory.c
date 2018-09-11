@@ -1,16 +1,20 @@
 #include "server.h"
-
-/*
-**	Takes the food and resources and displays them in a nice format delimited by
-**	spaces, and enclosed by brackets.
-**	May or may not convert food to energy.
-*/
+#include "player_type.h"
 
 char	*inventory(int player_id, void *args)
 {
-	char	*str;
+	char		*str;
+	t_player	*p;
 
-	(void)args;	
-	str = get_player_inventory(player_id);
+	(void)args;
+	p = get_player(player_id);
+	asprintf(&str, "{food %d, linemate %d, deraumere %d, sibur %d, mendiane %d, phiras %d, thystame %d}\n",
+			p->count[FOOD] * ENERGY_PER_FOOD + p->energy,
+			p->count[LINEMATE],
+			p->count[DERAUMERE],
+			p->count[SIBUR],
+			p->count[MENDIANE],
+			p->count[PHIRAS],
+			p->count[THYSTAME]);
 	return (str);
 }
