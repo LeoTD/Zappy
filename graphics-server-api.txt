@@ -1,0 +1,85 @@
+game_start
+---
+"WORLD x y nteams tickrate\n"
+"TILE x y eggs food stone1 s2 s3 s4 s5 s6 , TILE x y ...\n"
+"TEAMNAMES team1, team2, ...\n"
+"PLAYER id team_id level x y facing stone1 s2 s3 s4 s5 s6 \n"
+"PLAYER ..."
+"CONNECT id1\n"
+"CONNECT id2\n"
+
+game_end
+---
+"GAME_END winning_team_id (or -1 if all died) [,...more team_ids if tie]\n"
+
+spawn_resource
+---
+"GEN_RESOURCE obj_type x y\n"
+
+player_connects
+---
+"CONNECT player_id\n"
+
+see
+---
+"SEE player_id\n"
+
+advance
+---
+"ADVANCE player_id\n"
+
+right
+---
+"RIGHT player_id\n"
+
+left
+---
+"LEFT player_id\n"
+
+incantation_start
+---
+"INCANTATION_START priest_id other_player_id1 other_player_id2..."
+
+incantation_finish
+---
+"INCANTATION_FINISH level player_id1 player_id2...\n"
+
+death
+---
+"DEATH player_id\n"
+
+kick
+---
+"KICK kicker_id kickee1 kickee2...\n"
+
+broadcast
+---
+"BROADCAST sender_id first_256_chars_of_msg\n"
+
+take
+---
+"TAKE player_id obj_type is_success\n"
+
+put
+---
+"PUT player_id obj_type is_success\n"
+
+bad_command
+---
+"BAD_COMMAND player_id first_24_chars_of_command\n"
+
+inventory
+---
+"INVENTORY player_id\n"
+
+fork_start
+---
+"FORK_START player_id\n"
+
+finished_laying_egg
+---
+"LAY_EGG player_id\n"
+
+egg_hatch
+---
+"HATCH id team_id level x y facing stone1 s2 s3 s4 s5 s6\n"
