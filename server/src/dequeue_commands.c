@@ -30,10 +30,13 @@ t_command_list	*dequeue_commands(t_client **user_clients)
 	i = -1;
 	while (user_clients[++i])
 	{
-		while (user_clients[i]->cmdqueue->dequeue_timer == 0)
+		if (user_clients[i]->type == ACTIVE_PLAYER)
 		{
-			assert(user_clients[i]->cmdqueue->head);
-			pop_command(&popped_cmds, user_clients[i]->cmdqueue);
+			while (user_clients[i]->cmdqueue->dequeue_timer == 0)
+			{
+				assert(user_clients[i]->cmdqueue->head);
+				pop_command(&popped_cmds, user_clients[i]->cmdqueue);
+			}
 		}
 	}
     return (popped_cmds);

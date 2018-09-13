@@ -48,6 +48,7 @@ GAME_FILES	= map_creation.c \
 			  resource_spawning.c \
 			  levelups_and_gameovers.c \
 			  direction.c \
+			  iterators.c \
 
 
 
@@ -78,7 +79,7 @@ FILES		= active_socket_info.c \
 			  command_queue_type.c \
 			  listen_for_connections.c \
 			  receive_user_message.c \
-			  user_clients_lookup.c \
+			  clients_lookup.c \
 			  handshake.c \
 			  decrement_user_command_timers.c \
 			  execute_command_list.c \
@@ -90,6 +91,7 @@ FILES		= active_socket_info.c \
 			  client_type.c \
 			  ascii_visuals.c \
 			  hatch_queue.c \
+			  gfx_event_messages.c \
 
 # Add any subfolder SRC's here:
 SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))

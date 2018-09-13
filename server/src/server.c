@@ -16,28 +16,29 @@ int		main(int argc, char **argv)
 {
 	t_command_list	*cmds;
 	int				fd;
-	t_client		**user_clients;
+	t_client		**clients;
 
 	//srandomdev();
 	parse_command_line_options(argc, argv);
 	start_server_and_game();
 	while (1)
 	{
-		user_clients = get_clients();
+		clients = get_clients();
 		while ((fd = iter_next_readable_socket()) != -1)
 			handle_waiting_connection_data(fd);
 		if (have_we_ticked())
 		{
+			gfx_sendall("TICK %d\n", get_elapsed_ticks()); // could just send "tick"?
 			animate();
 			check_and_hatch_eggs();
 			game_upkeep();
 			remove_dead_players();
-			cmds = dequeue_commands(user_clients);
+			cmds = dequeue_commands(clients);
 			execute_command_list(cmds);
-			handle_possible_gameover();
 			send_stringified_responses(cmds);
 			free_cmdlist(cmds);
-			decrement_user_command_timers(user_clients);
+			decrement_user_command_timers(clients);
+			handle_possible_gameover();
 		}
 	}
 	return (0);

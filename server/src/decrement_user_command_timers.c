@@ -9,8 +9,11 @@ void	decrement_user_command_timers(t_client **clients)
 	i = 0;
 	while (clients[i])
 	{
-		if (clients[i]->cmdqueue->dequeue_timer > 0)
+		if (clients[i]->type == ACTIVE_PLAYER
+				&& clients[i]->cmdqueue->dequeue_timer > 0)
+		{
 			clients[i]->cmdqueue->dequeue_timer -= 1;
+		}
 		++i;
 	}
 }

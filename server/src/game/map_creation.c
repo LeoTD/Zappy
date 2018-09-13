@@ -18,6 +18,7 @@ int				init_tile(t_tile *t, int x, int y)
 	while (++i < 6)
 		t->count[i] = 0;
 	t->count[FOOD] = 0;
+	t->eggs = 0;
 	bzero(t->count, sizeof(t->count));
 	return (0);
 }

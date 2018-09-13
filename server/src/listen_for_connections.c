@@ -1,4 +1,5 @@
 #include "server.h"
+#include "client_type.h"
 
 static int	g_server_fd = -1;
 
@@ -50,6 +51,8 @@ void		handle_waiting_connection_data(int fd)
 		initiate_user_connection_handshake(fd);
 	else if (socket_lookup_has(fd, HANDSHAKE))
 		complete_user_connection_handshake(fd);
+	else if (socket_lookup_has(fd, GFX))
+		unregister_client_by_id(get_client_by_socket_fd(fd)->id);
 	else
 	{
 		assert(socket_lookup_has(fd, ACTIVE_PLAYER));

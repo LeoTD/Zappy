@@ -4,6 +4,7 @@
 # include <assert.h>
 # include <limits.h>
 # include <netdb.h>
+# include <stdarg.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -35,7 +36,6 @@ typedef int t_objcount[NUM_ENUMERATED_OBJECTS];
 # define MAX_CLIENTS (FD_SETSIZE - 4)
 
 # define FATAL(msg) ({ fprintf(stderr, "%s: %s\n", __func__, msg); exit(-1); })
-# define HEREMSG fprintf(stderr, "MADE IT %s:%d\n", __func__, __LINE__)
 # define WEAK_ASSERT(exp) ({ if (!(exp)) { fprintf(stderr, "Assertion failed (nonfatal): (%s), function %s, file %s, line %d.\n", #exp, __func__, __FILE__, __LINE__); } })
 
 # define MAX_TEAM_NAME_LENGTH 63
@@ -138,7 +138,6 @@ int						player_place_food(t_tile *tile, t_player *player);
 int						pickup_food(t_tile *t, t_player *player);
 
 // game/map_stonefuncs.c
-int						place_stone(int type, t_tile *t);
 int						player_place_stone(int type, t_tile *t, t_player *player);
 int						player_pickup_stone(int type, t_tile *t, t_player *player);
 
@@ -187,6 +186,10 @@ t_player				*is_player_on_tile(t_player *p, t_tile *t);
 // game/resource_spawning.c
 void					do_per_tick_resource_generation(void);
 void					seed_tiles_initial_resources(void);
+
+// game/iterators.c
+t_tile					*iter_tiles(void);
+t_player				*iter_players(void);
 
 /*
 ** User commands:
@@ -263,7 +266,7 @@ void					free_cmd(t_command *cmd);
 t_command				*string_to_command(char *string);
 
 // client_type.c
-t_client				*new_client(int socket_fd, int player_id);
+t_client				*new_client(int socket_fd, int player_id, int type);
 void					free_client(t_client *client);
 
 // command_list_type.c
@@ -284,13 +287,17 @@ void					complete_user_connection_handshake(int cli_fd);
 // receive_user_message.c
 void					receive_user_message(int cli_fd);
 
-// user_clients_lookup.c
-void					initialize_user_clients(void);
+// clients_lookup.c
+void					initialize_clients(void);
 t_client				**get_clients(void);
-void					register_user_client(int sock_fd, int player_id);
-t_client				*get_client_by_player_id(int player_fd);
+void					register_client(int sock_fd, int id, int type);
+t_client				*get_client_by_id(int id);
 t_client				*get_client_by_socket_fd(int sock_fd);
-void					unregister_client_by_player_id(int player_id);
+void					unregister_client_by_id(int id);
+
+// gfx_event_messages.c
+void					gfx_sendone(int fd, char *format, ...);
+void					gfx_sendall(char *format, ...);
 
 // send_stringified_responses.c
 void					send_stringified_responses(t_command_list *lst);
@@ -298,6 +305,7 @@ void					send_stringified_responses(t_command_list *lst);
 // time_to_tick.c
 void					init_tick_timer(void);
 int						have_we_ticked(void);
+int						get_elapsed_ticks(void);
 
 /*
 **	str_utils.c:

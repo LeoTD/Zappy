@@ -11,7 +11,7 @@ void	send_stringified_responses(t_command_list *lst)
 	while (lst)
 	{
 		cmd = lst->cmd;
-		client = get_client_by_player_id(cmd->player_id);
+		client = get_client_by_id(cmd->player_id);
 		assert(client != NULL);
 		if (send(client->socket_fd, cmd->response, strlen(cmd->response), 0) <= 0)
 			perror("send stringified response");

@@ -13,6 +13,12 @@
 #define SPAWN_CHANCE_DENOMINATOR 600
 #define PREGAME_RESOURCE_SPAWNING_ROUNDS 1000
 
+static void	spawn_resource(t_tile *t, int type)
+{
+	gfx_sendall("SPAWN_RESOURCE %d %d %d\n", t->x, t->y, type);
+	t->count[type] += 1;
+}
+
 void	spawn_random_resource_on_tile(t_tile *t)
 {
 	unsigned int	r;
@@ -21,19 +27,19 @@ void	spawn_random_resource_on_tile(t_tile *t)
 	accumulator = 0;
 	r = random() % SUM_RESOURCE_CHANCES;
 	if (r < (accumulator += FOOD_CHANCE))
-		t->count[FOOD] += 1;
+		spawn_resource(t, FOOD);
 	else if (r < (accumulator += LINEMATE_CHANCE))
-		place_stone(LINEMATE, t);
+		spawn_resource(t, LINEMATE);
 	else if (r < (accumulator += DERAUMERE_CHANCE))
-		place_stone(DERAUMERE, t);
+		spawn_resource(t, DERAUMERE);
 	else if (r < (accumulator += SIBUR_CHANCE))
-		place_stone(SIBUR, t);
+		spawn_resource(t, SIBUR);
 	else if (r < (accumulator += MENDIANE_CHANCE))
-		place_stone(MENDIANE, t);
+		spawn_resource(t, MENDIANE);
 	else if (r < (accumulator += PHIRAS_CHANCE))
-		place_stone(PHIRAS, t);
+		spawn_resource(t, PHIRAS);
 	else
-		place_stone(THYSTAME, t);
+		spawn_resource(t, THYSTAME);
 }
 
 void	do_per_tick_resource_generation(void)

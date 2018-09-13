@@ -18,11 +18,12 @@ void	remove_dead_players(void)
 	i = 0;
 	while (i < pid_count)
 	{
-		if ((client = get_client_by_player_id(player_ids[i])))
+		if ((client = get_client_by_id(player_ids[i])))
 		{
+			gfx_sendall("DEATH %d\n", client->id);
 			send_death_message(client->socket_fd);
 			socket_lookup_remove(client->socket_fd);
-			unregister_client_by_player_id(player_ids[i]);
+			unregister_client_by_id(player_ids[i]);
 		}
 		++i;
 	}

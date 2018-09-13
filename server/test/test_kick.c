@@ -29,10 +29,10 @@ void	test_user_command_kick(void)
 	p6->facing = WEST;
 	p7->facing = SOUTH;
 	p8->facing = EAST;
-	register_user_client(5, p5->id);
-	register_user_client(6, p6->id);
-	register_user_client(7, p7->id);
-	register_user_client(8, p8->id);
+	register_client(5, p5->id, ACTIVE_PLAYER);
+	register_client(6, p6->id, ACTIVE_PLAYER);
+	register_client(7, p7->id, ACTIVE_PLAYER);
+	register_client(8, p8->id, ACTIVE_PLAYER);
 
 	
 	assert(!strcmp(kick_origin_message(p1->facing, p5), "moving <3>\n"));

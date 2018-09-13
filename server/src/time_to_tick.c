@@ -5,9 +5,16 @@
 
 static struct timespec	g_timestamp;
 static long				g_next_tick_nsec;
+static int				g_ticks;
+
+int						get_elapsed_ticks(void)
+{
+	return (g_ticks);
+}
 
 void					init_tick_timer(void)
 {
+	g_ticks = 0;
 	g_next_tick_nsec = NSEC_PER_TICK;
 	clock_gettime(CLOCK_MONOTONIC_RAW, &g_timestamp);
 }
@@ -30,6 +37,7 @@ int						have_we_ticked(void)
 	memcpy(&g_timestamp, &now, sizeof(now));
 	if (g_next_tick_nsec <= 0)
 	{
+		g_ticks += 1;
 		g_next_tick_nsec = NSEC_PER_TICK;
 		return (1);
 	}

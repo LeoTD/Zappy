@@ -1,43 +1,30 @@
 #include "server.h"
 
-static void one_team_wins(int team_id)
-{
-	printf("team '%s' won!\n", g_opts.team_names[team_id]);
-}
-
-static void	many_teams_win(int num_winners, int *team_ids)
+static void	gfx_eventmsg_game_end(int num_winners, int *team_ids)
 {
 	int		i;
 
-	printf("It's a tie! %d teams won:\n", num_winners);
+	gfx_sendall("GAME_END %d\n", num_winners);
 	i = 0;
 	while (i < num_winners)
 	{
-		printf("%s\n", g_opts.team_names[team_ids[i]]);
+		gfx_sendall("WINNING_TEAM %d\n", team_ids[i]);
 		++i;
 	}
-}
-
-static void	everyone_loses(void)
-{
-	printf("Everyone died. No one wins.\n");
 }
 
 void	handle_possible_gameover(void)
 {
 	int		*winning_team_ids;
+	int		game_end_state;
 	int		num_winners;
 
 	winning_team_ids = NULL;
-	num_winners = get_winning_teams(&winning_team_ids);
-	if (num_winners != 0)
+	game_end_state = get_winning_teams(&winning_team_ids);
+	if (game_end_state != 0)
 	{
-		if (num_winners == -1)
-			everyone_loses();
-		else if (num_winners == 1)
-			one_team_wins(winning_team_ids[0]);
-		else
-			many_teams_win(num_winners, winning_team_ids);
+		num_winners = (game_end_state == -1 ? 0 : game_end_state);
+		gfx_eventmsg_game_end(num_winners, winning_team_ids);
 		exit(0);
 	}
 	free(winning_team_ids);

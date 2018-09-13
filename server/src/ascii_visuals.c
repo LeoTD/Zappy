@@ -6,9 +6,10 @@
 t_player	*client_controlled_player_on_tile(t_tile *t)
 {
 	t_player *p;
+	t_client *c;
 
 	for (int i = 0; i < t->count[PLAYERS]; i++)
-		if ((p = t->players[i]) && get_client_by_player_id(p->id))
+		if ((p = t->players[i]) && (c = get_client_by_id(p->id)) && c->type == ACTIVE_PLAYER)
 			return (p);
 	return (NULL);
 }

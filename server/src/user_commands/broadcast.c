@@ -3,6 +3,7 @@
 #include "tile_type.h"
 #include "client_type.h"
 
+#define GFX_BROADCAST_MSG_MAX_LEN 31
 static char	g_broadcast_buf[MAX_BROADCAST_LENGTH + 10 + 2]; // 10 = starting "message K ", 2 = ending "\n\0"
 static size_t g_broadcast_len;
 
@@ -59,6 +60,14 @@ int		get_message_transmission_direction(int sourcex, int sourcey,
 	return (8);
 }
 
+static void	send_gfx_client_broadcast_msg(int player_id, char *msg)
+{
+	char	buf[GFX_BROADCAST_MSG_MAX_LEN + 1];
+
+	snprintf(buf, sizeof(buf), "%s", msg);
+	gfx_sendall("BROADCAST %d %s\n", player_id, buf);
+}
+
 char	*broadcast(int player_id, void *args)
 {
 	int			direction;
@@ -67,19 +76,25 @@ char	*broadcast(int player_id, void *args)
 	t_player	*p;
 
 	clients = get_clients();
+	// FIXME: this doesn't limit the message length to MAX_BROADCAST_LENGTH
+	// but to MAX_BROADCAST_LENGTH - strlen("message K\n") - 1
 	snprintf(g_broadcast_buf, MAX_BROADCAST_LENGTH, "message K %s\n", args);
 	g_broadcast_len = strlen(g_broadcast_buf);
 	sender = get_player(player_id);
 	while (clients[0])
 	{
-		p = get_player(clients[0]->player_id);
-		direction = get_message_transmission_direction(
-				sender->tile->x, sender->tile->y, p->tile->x, p->tile->y);
-		if (direction > 0)
-			direction = perceived_direction(direction, p);
-		g_broadcast_buf[8] = direction + '0';
-		send(clients[0]->socket_fd, g_broadcast_buf, g_broadcast_len, 0);
-		++clients;
+		if (clients[0]->type == ACTIVE_PLAYER)
+		{
+			p = get_player(clients[0]->id);
+			direction = get_message_transmission_direction(
+					sender->tile->x, sender->tile->y, p->tile->x, p->tile->y);
+			if (direction > 0)
+				direction = perceived_direction(direction, p);
+			g_broadcast_buf[8] = direction + '0';
+			send(clients[0]->socket_fd, g_broadcast_buf, g_broadcast_len, 0);
+		}
+		clients++;
 	}
+	send_gfx_client_broadcast_msg(player_id, args);
 	return ("ok\n");
 }

@@ -10,22 +10,24 @@ inline t_client		**get_clients(void)
 	return (g_clients);
 }
 
-void				register_user_client(int sock_fd, int player_id)
+void				register_client(int sock_fd, int id, int type)
 {
 	if (g_count == g_capacity)
-		FATAL("rewrite user_clients_lookup.c before making that many clients.");
-	g_clients[g_count] = new_client(sock_fd, player_id);
+		FATAL("rewrite clients_lookup.c before making that many clients.");
+	g_clients[g_count] = new_client(sock_fd, id, type);
 	++g_count;
+	socket_lookup_remove(sock_fd);
+	socket_lookup_add(sock_fd, type);
 	return ;
 }
 
-void				initialize_user_clients(void)
+void				initialize_clients(void)
 {
 	bzero(g_clients, sizeof(g_clients));
 	g_count = 0;
 }
 
-t_client			*get_client_by_player_id(int player_id)
+t_client			*get_client_by_id(int id)
 {
 	int		i;
 
@@ -33,7 +35,7 @@ t_client			*get_client_by_player_id(int player_id)
 	while (i < g_count)
 	{
 		assert(g_clients[i]);
-		if (g_clients[i]->player_id == player_id)
+		if (g_clients[i]->id == id)
 			return (g_clients[i]);
 		++i;
 	}
@@ -55,7 +57,7 @@ t_client			*get_client_by_socket_fd(int sock_fd)
 	return (NULL);
 }
 
-void				unregister_client_by_player_id(int player_id)
+void				unregister_client_by_id(int id)
 {
 	int			i;
 	t_client	*c;
@@ -65,9 +67,11 @@ void				unregister_client_by_player_id(int player_id)
 	while (i < g_count)
 	{
 		assert(g_clients[i]);
-		if (g_clients[i]->player_id == player_id)
+		if (g_clients[i]->id == id)
 		{
 			c = g_clients[i];
+			socket_lookup_remove(c->socket_fd);
+			close(c->socket_fd);
 			last_in_array = g_clients[g_count - 1];
 			g_clients[i] = last_in_array;
 			g_clients[g_count - 1] = NULL;

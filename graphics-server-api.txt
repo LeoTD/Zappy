@@ -1,24 +1,34 @@
-game_start
+greeting
 ---
 "WORLD x y nteams tickrate\n"
+"TICK num_elapsed_ticks\n"
 "TILE x y eggs food stone1 s2 s3 s4 s5 s6\n"
 "TILE ..."
-"TEAMNAMES team1, team2, ...\n"
+"TEAMNAME team1\n"
+"TEAMNAME team2\n"
 "PLAYER id team_id level x y energy facing food stone1 s2 s3 s4 s5 s6\n"
 "PLAYER ..."
 "CONNECT id1\n"
 "CONNECT id2\n"
-"TICKS ADVANCE 7\n" (or whatever)
-"TICKS INCANTATION_START 300\n" (or whatever)
-"TICKS ..."
+"CONNECT ...\n"
+"DELAY_TIME ADVANCE 7\n" (or whatever)
+"DELAY_TIME INCANTATION_START 300\n" (or whatever)
+"DELAY_TIME ..."
+
+tick
+---
+"TICK num_elapsed_ticks\n"
 
 game_end
 ---
-"GAME_END winning_team_id (or -1 if all died) [,...more team_ids if tie]\n"
+"GAME_END num_winners\n"
+(if any winners):
+"WINNING_TEAM team_id\n"
+"WINNING_TEAM..."
 
 spawn_resource
 ---
-"GEN_RESOURCE obj_type x y\n"
+"SPAWN_RESOURCE obj_type x y\n"
 
 player_connects
 ---
@@ -40,13 +50,17 @@ left
 ---
 "LEFT player_id\n"
 
-incantation_start
+ritual_leader
 ---
-"INCANTATION_START priest_id other_player_id1 other_player_id2..."
+"LEAD_RITUAL priest_id will_succeed\n"
 
-incantation_finish
+ritual_participant
 ---
-"INCANTATION_FINISH level player_id1 player_id2...\n"
+"JOIN_RITUAL player_id\n"
+
+level_up
+---
+"LEVEL_UP player_id new_level\n"
 
 death
 ---
@@ -54,11 +68,15 @@ death
 
 kick
 ---
-"KICK kicker_id kickee1 kickee2...\n"
+"KICK kicker_id is_success\n"
+
+get_kicked
+---
+"GET_KICKED player_id direction\n"
 
 broadcast
 ---
-"BROADCAST sender_id first_256_chars_of_msg\n"
+"BROADCAST sender_id first_31_chars_of_msg\n"
 
 take
 ---
@@ -70,20 +88,20 @@ put
 
 bad_command
 ---
-"BAD_COMMAND player_id first_24_chars_of_command\n"
+"BAD_COMMAND player_id first_31_chars_of_command\n"
 
 inventory
 ---
 "INVENTORY player_id\n"
 
-fork_start
----
-"FORK_START player_id\n"
-
-finished_laying_egg
+start_laying_egg
 ---
 "LAY_EGG player_id\n"
 
+egg_laid
+---
+"DONE_LAYING_EGG player_id team_id x y\n"
+
 egg_hatch
 ---
-"HATCH id team_id level x y facing stone1 s2 s3 s4 s5 s6\n"
+"EGG_HATCH id team_id level x y facing stone1 s2 s3 s4 s5 s6\n"

@@ -16,5 +16,6 @@ char	*inventory(int player_id, void *args)
 			p->count[MENDIANE],
 			p->count[PHIRAS],
 			p->count[THYSTAME]);
+	gfx_sendall("INVENTORY %d\n", player_id);
 	return (str);
 }

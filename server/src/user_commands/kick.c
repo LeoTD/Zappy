@@ -16,8 +16,9 @@ void	kick_and_alert_player(t_player *p, int dir)
 	char		*msg;
 
 	move_player(p, dir);
-	if ((client = get_client_by_player_id(p->id)))
+	if ((client = get_client_by_id(p->id)))
 	{
+		gfx_sendall("GET_KICKED %d %d\n", p->id, dir);
 		msg = kick_origin_message(dir, p);
 		send(client->socket_fd, msg, strlen(msg), 0);
 	}
@@ -33,10 +34,15 @@ char	*kick(int player_id, void *args)
 	tile_pids = get_current_tile_player_count(player_id, &i);
 	kick_dir = get_player(player_id)->facing;
 	if (i == 1)
+	{
+		gfx_sendall("KICK %d %d\n", player_id, 0);
 		return ("ko\n");
+	}
 	while (i--)
 		if (tile_pids[i] != player_id)
 			kick_and_alert_player(get_player(tile_pids[i]), kick_dir);
+		else
+			gfx_sendall("KICK %d %d\n", player_id, 1);
 	free(tile_pids);
 	return ("ok\n");
 }

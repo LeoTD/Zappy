@@ -68,7 +68,7 @@ void	test_enqueues_commands_from_message_correctly(void)
 kick\n\
 forgot the newline on the next one:\n\
 see";
-	t_client *c = new_client(0, 0);
+	t_client *c = new_client(0, 0, ACTIVE_PLAYER);
 	c->cmdqueue->remaining_space = 3;
 	enqueue_commands_from_user_message(c, msg);
 	assert(c->cmdqueue->remaining_space == 1);

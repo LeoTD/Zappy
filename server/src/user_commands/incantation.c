@@ -67,10 +67,16 @@ char					*incantation_finish(int player_id, void *args)
 	{
 		player = get_player(incant_args->levelup_group[i]);
 		if (player != NULL && player->level < incant_args->new_level)
+		{
 			increase_player_level(player, incant_args->new_level);
+			gfx_sendall("LEVEL_UP %d %d\n", player->id, incant_args->new_level);
+		}
 		++i;
 	}
-	asprintf(&response, "current level %d\n", incant_args->new_level);
+	// Use get_player() instead of incant_args->new_level.
+	// Handles the case where the leader of the current (failing) ritual is
+	// also a participant in an ongoing (successful) ritual.
+	asprintf(&response, "current level %d\n", get_player(player_id)->level);
 	free(incant_args);
 	return (response);
 }
@@ -107,15 +113,26 @@ char					*incantation(int player_id, void *args)
 {
 	t_command				*finish;
 	t_command_queue			*q;
+	int						i;
+	struct s_incant_args	*incant_args;
 
 	(void)args;
 	finish = new_cmd(incantation_finish);
 	assert(get_player(player_id));
-	finish->args = create_incant_attempt_args(get_player(player_id)); // FIXME: change everything to void *
+	incant_args = create_incant_attempt_args(get_player(player_id));
+	finish->args = incant_args; // FIXME: change everything to void *
 	finish->player_id = player_id;
-	q = get_client_by_player_id(player_id)->cmdqueue;
+	q = get_client_by_id(player_id)->cmdqueue;
 	if (q->remaining_space < MAX_COMMANDS)
 		q->remaining_space += 1;
 	enqueue_front(q, finish);
+	gfx_sendall("LEAD_RITUAL %d %d\n", player_id, incant_args->new_level > get_player(player_id)->level);
+	i = 0;
+	while (i < incant_args->group_size)
+	{
+		if (incant_args->levelup_group[i] != player_id)
+			gfx_sendall("JOIN_RITUAL %d\n", incant_args->levelup_group[i]);
+		i++;
+	}
 	return ("elevation in progress\n");
 }

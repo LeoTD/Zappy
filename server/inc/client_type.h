@@ -2,11 +2,18 @@
 # define CLIENT_TYPE_H
 # include "server.h"
 
-struct s_client
+enum	e_client_types
 {
-	int				socket_fd;
-	int				player_id;
-	t_command_queue	*cmdqueue;
+	PLAYER_CLIENT,
+	GFX_CLIENT
+};
+
+struct	s_client
+{
+	int					socket_fd;
+	int					id;
+	int					type;
+	t_command_queue		*cmdqueue;
 };
 
 #endif

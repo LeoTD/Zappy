@@ -16,33 +16,33 @@ void test_can_make_and_free_client(void)
 {
 	t_client *c, *c2;
 
-	c = new_client(9, 5);
-	c2 = new_client(13, 2);
+	c = new_client(9, 5, ACTIVE_PLAYER);
+	c2 = new_client(13, 2, ACTIVE_PLAYER);
 	assert(c->socket_fd == 9 && c2->socket_fd == 13);
-	assert(c->player_id == 5 && c2->player_id == 2);
+	assert(c->id == 5 && c2->id == 2);
 }
 
 void populate_client_lookup_with_fake_data(void)
 {
-	initialize_user_clients();
-	register_user_client(1, 99);
-	register_user_client(63, 729);
-	register_user_client(107, 24);
+	initialize_clients();
+	register_client(1, 99, ACTIVE_PLAYER);
+	register_client(63, 729, ACTIVE_PLAYER);
+	register_client(107, 24, ACTIVE_PLAYER);
 }
 
-void test_can_register_user_clients(void)
+void test_can_register_clients(void)
 {
 	populate_client_lookup_with_fake_data();
 	assert(check_lookup_size(get_clients()) == 3);
 }
 
-void test_getting_client_by_player_id(void)
+void test_getting_client_by_id(void)
 {
 	populate_client_lookup_with_fake_data();
 	t_client **gc = get_clients();
-	assert(get_client_by_player_id(99) == gc[0]);
-	assert(get_client_by_player_id(729) == gc[1]);
-	assert(get_client_by_player_id(24) == gc[2]);
+	assert(get_client_by_id(99) == gc[0]);
+	assert(get_client_by_id(729) == gc[1]);
+	assert(get_client_by_id(24) == gc[2]);
 }
 
 void test_getting_client_by_socket_fd(void)
@@ -54,12 +54,12 @@ void test_getting_client_by_socket_fd(void)
 	assert(get_client_by_socket_fd(107) == gc[2]);
 }
 
-void test_unregister_client_by_player_id()
+void test_unregister_client_by_id()
 {
 	t_client **gc = get_clients();
 	t_client *to_remove = gc[1];
 	populate_client_lookup_with_fake_data();
-	unregister_client_by_player_id(to_remove->player_id);
+	unregister_client_by_id(to_remove->id);
 	assert(gc[1] != to_remove);
 	assert(gc[2] == NULL);
 }
@@ -67,9 +67,9 @@ void test_unregister_client_by_player_id()
 void test_client_lookup(void)
 {
 	test_can_make_and_free_client();
-	test_can_register_user_clients();
-	test_getting_client_by_player_id();
+	test_can_register_clients();
+	test_getting_client_by_id();
 	test_getting_client_by_socket_fd();
-	test_unregister_client_by_player_id();
+	test_unregister_client_by_id();
 	printf("%s: ok\n", __FILE__);
 }

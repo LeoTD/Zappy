@@ -26,6 +26,12 @@ char				*fork_finish(int player_id, void *args)
 	a = args;
 	p = new_player(a->team_id);
 	add_player_to_tile(p, &g_map->tile[a->x][a->y]);
+	p->tile->eggs -= 1;
+	gfx_sendall("EGG_HATCH %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+		p->id, p->team_id, p->level, p->tile->x, p->tile->y, p->energy,
+		p->facing, p->count[FOOD],
+		p->count[LINEMATE], p->count[DERAUMERE], p->count[SIBUR],
+		p->count[MENDIANE], p->count[PHIRAS], p->count[THYSTAME]);
 	free(a);
 	return (NULL);
 }
@@ -34,10 +40,12 @@ char				*fork_player(int player_id, void *args)
 {
 	t_command		*hatch_event;
 	t_command_queue	*hatch_queue;
+	t_player		*p;
 
 	(void)args;
 	hatch_event = new_cmd(fork_finish);
-	hatch_event->args = (char *)create_hatch_args(get_player(player_id)); // FIXME make commands "events", make args void *
+	p = get_player(player_id);
+	hatch_event->args = create_hatch_args(p); // FIXME make commands "events", make args void *
 	hatch_queue = get_hatch_queue();
 	if (hatch_queue->remaining_space < MAX_COMMANDS)
 		hatch_queue->remaining_space += 1;
@@ -57,5 +65,8 @@ char				*fork_player(int player_id, void *args)
 	 */
 	hatch_event->player_id = get_cmdfunc_tick_delay(fork_finish);
 	enqueue_command(hatch_queue, hatch_event);
+	p->tile->eggs += 1;
+	gfx_sendall("DONE_LAYING_EGG %d\n",
+			p->id, p->team_id, p->tile->x, p->tile->y);
 	return ("ok\n");
 }

@@ -8,6 +8,7 @@ struct s_tile
 	int					parray_size;
 	int					x;
 	int					y;
+	int					eggs;
 	t_objcount			count;
 };
 

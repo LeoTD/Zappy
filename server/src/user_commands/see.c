@@ -124,6 +124,7 @@ char		*see(int player_id, void *args)
 	cts = get_visible_tile_objcounts(player);
 	str = stringify_seen_tiles(cts);
 	player->tile->count[PLAYERS] += 1;
+	gfx_sendall("SEE %d\n", player->id);
 	free(cts);
 	return (str);
 }

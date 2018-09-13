@@ -4,6 +4,13 @@
 #include "player_type.h"
 #include "g_player_list.h"
 
+int				place_stone(int type, t_tile *t)
+{
+	assert(t);
+	t->count[type] += 1;
+	return (0);
+}
+
 char **stone_names = (char *[]){ "linemate", "deraumere", "sibur", "mendiane", "phiras", "thystame", NULL };
 
 char system_sprintf_buf[4096] = { 0 };
