@@ -1,9 +1,10 @@
 game_start
 ---
 "WORLD x y nteams tickrate\n"
-"TILE x y eggs food stone1 s2 s3 s4 s5 s6 , TILE x y ...\n"
+"TILE x y eggs food stone1 s2 s3 s4 s5 s6\n"
+"TILE ..."
 "TEAMNAMES team1, team2, ...\n"
-"PLAYER id team_id level x y facing stone1 s2 s3 s4 s5 s6 \n"
+"PLAYER id team_id level x y energy facing food stone1 s2 s3 s4 s5 s6\n"
 "PLAYER ..."
 "CONNECT id1\n"
 "CONNECT id2\n"
