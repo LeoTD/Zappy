@@ -8,6 +8,9 @@ game_start
 "PLAYER ..."
 "CONNECT id1\n"
 "CONNECT id2\n"
+"TICKS ADVANCE 7\n" (or whatever)
+"TICKS INCANTATION_START 300\n" (or whatever)
+"TICKS ..."
 
 game_end
 ---
