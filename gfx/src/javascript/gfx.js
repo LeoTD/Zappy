@@ -13,34 +13,30 @@ function initGfx() {
 	var scene = createScene(engine);
 	
 	// Types of Cameras:
-	createArcCamera(canvas, scene); // Mouse control around a point.
+	createArcCamera(canvas, scene); // Mouse control around a point. Arrows to pan.
 //	createCustomCamera(canvas, scene); // fixed angle and height. No mouse. Panning with arrow keys.
+
+	// Display x, y, z axis arrows at origin.
+	displayAxes(scene, 50);
 
 	// Different types of boards:
 	createBoardSingleMesh(scene);
 //	createBoardTiledGround(scene);
 
-
-
+	// Create sprite manager. This loads the texture and sets sprites to clickable.
 	var sprite_manager = prepareSpriteManager(scene);
+
 	var test_player = new playerAvatar(sprite_manager, {x:0, y:0, inv:[1260, 0, 0, 0, 0, 0, 0], level:1, team:1});
-//	test_player.createSprite();
+
+	test_player.createSprite();
 //	test_player.createAvatar(scene);
-	test_player.createCreatureAvatar(scene);
+//	test_player.createCreatureAvatar(scene);
 
-	displayAxes(scene, 50);
 
-	sprite_manager.isPickable = true;
-	scene.onPointerDown = function (evt) {
-		var pickResult = scene.pickSprite(this.pointerX, this.pointerY);
-		if (pickResult.hit) {
-			pickResult.pickedSprite.position.x += TileSize;
-		}
-	};
 
 	// Register a render loop to repeatedly render the scene
-	engine.runRenderLoop(function () { 
-			scene.render();
+	engine.runRenderLoop(function () {
+			if (scene) scene.render();
 	});
 
 	// Watch for browser/canvas resize events
@@ -66,6 +62,14 @@ function prepareSpriteManager(scene) {
 	var img_dimensions = {height:24, width:24};
 
 	var dinoSpriteManager = new BABYLON.SpriteManager("dinoManager", "assets/dino_blue.png", MAX_SPRITES, img_dimensions, scene);
+
+	dinoSpriteManager.isPickable = true;
+	scene.onPointerDown = function (evt) {
+		var pickResult = scene.pickSprite(this.pointerX, this.pointerY);
+		if (pickResult.hit) {
+			pickResult.pickedSprite.position.x += TileSize;
+		}
+	};
 
 	return dinoSpriteManager;
 }
