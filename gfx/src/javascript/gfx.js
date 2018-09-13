@@ -1,4 +1,4 @@
-var TileSize = 2;
+var TileSize = 25;
 var MapInfo = {rows:16, cols:16};
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -10,9 +10,33 @@ function initGfx() {
 	var canvas = document.getElementById("renderCanvas"); // Get the canvas element 
 	var engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
 
-	var scene = createScene(engine, canvas); //Get the scene variable. Day 1. Let there be light.
-	createBoard(scene);
-	createSprites(scene);
+	var scene = createScene(engine);
+	
+	// Types of Cameras:
+	createArcCamera(canvas, scene); // Mouse control around a point.
+//	createCustomCamera(canvas, scene); // fixed angle and height. No mouse. Panning with arrow keys.
+
+	// Different types of boards:
+	createBoardSingleMesh(scene);
+//	createBoardTiledGround(scene);
+
+
+
+	var sprite_manager = prepareSpriteManager(scene);
+	var test_player = new playerAvatar(sprite_manager, {x:0, y:0, inv:[1260, 0, 0, 0, 0, 0, 0], level:1, team:1});
+//	test_player.createSprite();
+//	test_player.createAvatar(scene);
+	test_player.createCreatureAvatar(scene);
+
+	displayAxes(scene, 50);
+
+	sprite_manager.isPickable = true;
+	scene.onPointerDown = function (evt) {
+		var pickResult = scene.pickSprite(this.pointerX, this.pointerY);
+		if (pickResult.hit) {
+			pickResult.pickedSprite.position.x += TileSize;
+		}
+	};
 
 	// Register a render loop to repeatedly render the scene
 	engine.runRenderLoop(function () { 
@@ -25,45 +49,23 @@ function initGfx() {
 	});
 }
 
-function createScene() {
+function createScene(engine) {
 
 	// Create the scene space
-	var scene = new BABYLON.Scene(arguments[0]);
-
-	// Add a camera to the scene and attach it to the canvas
-	var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 50, new BABYLON.Vector3(0,0,0), scene);
-	camera.attachControl(arguments[1], true);
+	var scene = new BABYLON.Scene(engine);
 
 	// Add lights to the scene
 	var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
-	var light2 = new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
+//	var light2 = new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
 
 	return scene;
 };
 
-function createBoard(scene) {
-
-	var box = BABYLON.MeshBuilder.CreateBox("box", {height:0.5, width:TileSize * MapInfo.rows, depth:TileSize * MapInfo.cols}, scene);
-	box.position = {x:((MapInfo.rows / 2) - 0.5) * TileSize, y:-0.7, z:((MapInfo.cols / 2) - 0.5) * TileSize};
-
-	var materialPlane = new BABYLON.StandardMaterial("texturePlane", scene);
-	materialPlane.diffuseTexture = new BABYLON.Texture("assets/tile.png", scene);
-	materialPlane.diffuseTexture.uScale = MapInfo.rows;//Repeat 1 times on the Vertical Axes
-	materialPlane.diffuseTexture.vScale = MapInfo.cols;//Repeat 1 times on the Horizontal Axes
-	box.material = materialPlane;
-
-}
-
-function createSprites(scene) {
+function prepareSpriteManager(scene) {
 	var MAX_SPRITES = 350000;
 	var img_dimensions = {height:24, width:24};
 
 	var dinoSpriteManager = new BABYLON.SpriteManager("dinoManager", "assets/dino_blue.png", MAX_SPRITES, img_dimensions, scene);
 
-    // First animated player
-    var player = new BABYLON.Sprite("player", dinoSpriteManager);
-    player.playAnimation(0, 3, true, 100);
-    player.position.y = 0;
-    player.size = 1;
-    player.isPickable = true;
+	return dinoSpriteManager;
 }
