@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 greeting
 ---
 "WORLD x y nteams tickrate\n"
@@ -6,10 +7,19 @@ greeting
 "TILE ..."
 "TEAMNAME team1\n"
 "TEAMNAME team2\n"
+=======
+game_start
+---
+"WORLD x y nteams tickrate\n"
+"TILE x y eggs food stone1 s2 s3 s4 s5 s6\n"
+"TILE ..."
+"TEAMNAMES team1, team2, ...\n"
+>>>>>>> bringing in socket.io
 "PLAYER id team_id level x y energy facing food stone1 s2 s3 s4 s5 s6\n"
 "PLAYER ..."
 "CONNECT id1\n"
 "CONNECT id2\n"
+<<<<<<< HEAD
 "CONNECT ...\n"
 "DELAY_TIME ADVANCE 7\n" (or whatever)
 "DELAY_TIME INCANTATION_START 300\n" (or whatever)
@@ -29,6 +39,19 @@ game_end
 spawn_resource
 ---
 "SPAWN_RESOURCE obj_type x y\n"
+=======
+"TICKS ADVANCE 7\n" (or whatever)
+"TICKS INCANTATION_START 300\n" (or whatever)
+"TICKS ..."
+
+game_end
+---
+"GAME_END winning_team_id (or -1 if all died) [,...more team_ids if tie]\n"
+
+spawn_resource
+---
+"GEN_RESOURCE obj_type x y\n"
+>>>>>>> bringing in socket.io
 
 player_connects
 ---
@@ -40,6 +63,7 @@ see
 
 advance
 ---
+<<<<<<< HEAD
 "ADVANCE player_id x y\n"
 
 right
@@ -61,6 +85,25 @@ ritual_participant
 level_up
 ---
 "LEVEL_UP player_id new_level\n"
+=======
+"ADVANCE player_id\n"
+
+right
+---
+"RIGHT player_id\n"
+
+left
+---
+"LEFT player_id\n"
+
+incantation_start
+---
+"INCANTATION_START priest_id other_player_id1 other_player_id2..."
+
+incantation_finish
+---
+"INCANTATION_FINISH level player_id1 player_id2...\n"
+>>>>>>> bringing in socket.io
 
 death
 ---
@@ -68,6 +111,7 @@ death
 
 kick
 ---
+<<<<<<< HEAD
 "KICK kicker_id is_success\n"
 
 get_kicked
@@ -89,11 +133,31 @@ put
 bad_command
 ---
 "BAD_COMMAND player_id first_31_chars_of_command\n"
+=======
+"KICK kicker_id kickee1 kickee2...\n"
+
+broadcast
+---
+"BROADCAST sender_id first_256_chars_of_msg\n"
+
+take
+---
+"TAKE player_id obj_type is_success\n"
+
+put
+---
+"PUT player_id obj_type is_success\n"
+
+bad_command
+---
+"BAD_COMMAND player_id first_24_chars_of_command\n"
+>>>>>>> bringing in socket.io
 
 inventory
 ---
 "INVENTORY player_id\n"
 
+<<<<<<< HEAD
 start_laying_egg
 ---
 "LAY_EGG player_id\n"
@@ -105,3 +169,16 @@ egg_laid
 egg_hatch
 ---
 "EGG_HATCH id team_id level x y facing stone1 s2 s3 s4 s5 s6\n"
+=======
+fork_start
+---
+"FORK_START player_id\n"
+
+finished_laying_egg
+---
+"LAY_EGG player_id\n"
+
+egg_hatch
+---
+"HATCH id team_id level x y facing stone1 s2 s3 s4 s5 s6\n"
+>>>>>>> bringing in socket.io

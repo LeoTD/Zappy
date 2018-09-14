@@ -16,9 +16,9 @@ class playerAvatar {
 
 		this.sprite.playAnimation(0, 3, true, 100);
 		this.sprite.position.y = 5;
-		this.sprite.position.x = this.x + (Math.random * TileSize) - (TileSize / 2);
-		this.sprite.position.z = this.y + (Math.random * TileSize) - (TileSize / 2);
-		this.sprite.size = 10;
+		this.sprite.position.x = this.x; //+ (Math.random * TileSize) - (TileSize / 2);
+		this.sprite.position.z = this.y;// + (Math.random * TileSize) - (TileSize / 2);
+		this.sprite.size = 100;
 		this.sprite.isPickable = true;
 	}
 
@@ -36,11 +36,11 @@ class playerAvatar {
 			that._mesh 	= newMesh[0];
 		});
 
-		this._mesh.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
-		this._mesh.color = new BABYLON.Color3(1, 1, 0);
+//		this._mesh.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
+//		this._mesh.color = new BABYLON.Color3(1, 1, 0);
 
-		this._mesh.getPhysicsImpostor().setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
-		this._mesh.getPhysicsImpostor().setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
+//		this._mesh.getPhysicsImpostor().setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
+//		this._mesh.getPhysicsImpostor().setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
 
 	}
 
