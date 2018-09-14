@@ -40,15 +40,15 @@ see
 
 advance
 ---
-"ADVANCE player_id\n"
+"ADVANCE player_id x y\n"
 
 right
 ---
-"RIGHT player_id\n"
+"RIGHT player_id new_facing\n"
 
 left
 ---
-"LEFT player_id\n"
+"LEFT player_id new_facing\n"
 
 ritual_leader
 ---
@@ -80,11 +80,11 @@ broadcast
 
 take
 ---
-"TAKE player_id obj_type is_success\n"
+"TAKE player_id obj_type x y is_success\n"
 
 put
 ---
-"PUT player_id obj_type is_success\n"
+"PUT player_id obj_type x y is_success\n"
 
 bad_command
 ---
