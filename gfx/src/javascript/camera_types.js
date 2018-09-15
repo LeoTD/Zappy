@@ -1,5 +1,5 @@
 function createArcCamera(canvas, scene) {
-	var camera = new BABYLON.ArcRotateCamera("Camera", -(Math.PI / 2), Math.PI / 3, 50, new BABYLON.Vector3(0,0,0), scene);
+	var camera = new BABYLON.ArcRotateCamera("Camera", (Math.PI / 2), (Math.PI / 3), 50, new BABYLON.Vector3(0,0,0), scene);
     camera.attachControl(canvas, true);
     
     // Remove default keyboard:
@@ -110,6 +110,7 @@ function createArcCamera(canvas, scene) {
 
     // Connect to camera:
     camera.inputs.add(new customCameraInput());
+    return camera;
 }
 
 function createCustomCamera(canvas, scene) {

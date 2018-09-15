@@ -6,4 +6,6 @@ class tile {
 		this.eggs				= opts.eggs;
 		this.inventory			= opts.inventory;
 	}
+
+	
 }
