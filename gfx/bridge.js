@@ -4,6 +4,9 @@ var path = require('path');
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var split2 = require('split2');
+var TickEventParser = require('./tick-event-parser.js');
+var TickEventCollection = require('./tick-event-collection.js');
 
 var key = "banana";
 var client;
@@ -14,18 +17,18 @@ app.get('/', (req, res) => {
 	res.sendFile( __dirname +  '/example.html');
 })
 
-io.on('connection', (socket) => {
-	console.log('A user connected');
-
-	// if (connected)
-	setTimeout( () => {
-		socket.emit('testerEvent', { description: 'Sent a message 4 seccond after connection' });
-	}, 4000)
-
-	socket.on('disconnect', () => {
-		console.log('A user disconnected');
+io.sockets.on('connection', (frontend) => {
+	const parser = new TickEventParser({
+		onTickParsed: ev => { frontend.emit('tick', JSON.stringify(ev)) },
 	})
-})
+
+	const zappy = new net.Socket()
+	zappy.pipe(split2())
+		.on('data', parser.parse)
+	zappy.connect(5555, 'localhost', () => {
+		zappy.write('banana\n')
+	})
+});
 
 const usage = () => {
 	let mess = "Usage: \n";

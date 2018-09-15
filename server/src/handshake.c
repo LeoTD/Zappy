@@ -78,9 +78,9 @@ static void	gfx_eventmsg_greeting(int fd)
 	t_tile		*t;
 	int			i;
 
-	gfx_sendone(fd, "WORLD %d %d %d %d\n", g_opts.world_width,
-			g_opts.world_height, g_opts.teamcount, g_opts.tickrate);
 	gfx_sendone(fd, "TICK %d\n", get_elapsed_ticks());
+	gfx_sendone(fd, "WORLD %d %d %d\n", g_opts.world_width,
+			g_opts.world_height, g_opts.tickrate);
 	while ((t = iter_tiles()))
 		gfx_sendone(fd, "TILE %d %d %d %d %d %d %d %d %d %d\n",
 				t->x, t->y, t->eggs, t->count[FOOD],
@@ -92,13 +92,11 @@ static void	gfx_eventmsg_greeting(int fd)
 	while ((p = iter_players()))
 		gfx_sendone(fd, "PLAYER %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
 			p->id, p->team_id, p->level, p->tile->x, p->tile->y, p->energy,
-			p->facing, p->count[FOOD],
+			p->facing, p->count[FOOD], get_client_by_id(p->id) != NULL,
 			p->count[LINEMATE], p->count[DERAUMERE], p->count[SIBUR],
 			p->count[MENDIANE], p->count[PHIRAS], p->count[THYSTAME]);
-	while ((p = iter_players()))
-		if (get_client_by_id(p->id))
-			gfx_sendone(fd, "CONNECT %d\n", p->id);
 	send_command_tick_delays(fd);
+	gfx_sendone(fd, "%s", "DONE\n");
 }
 
 void		complete_user_connection_handshake(int cli_fd)

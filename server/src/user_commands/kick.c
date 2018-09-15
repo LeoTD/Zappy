@@ -28,21 +28,21 @@ char	*kick(int player_id, void *args)
 {
 	int			*tile_pids;
 	int			kick_dir;
+	int			npids;
 	int			i;
 
 	(void)args;
-	tile_pids = get_current_tile_player_count(player_id, &i);
+	tile_pids = get_current_tile_player_count(player_id, &npids);
 	kick_dir = get_player(player_id)->facing;
-	if (i == 1)
+	gfx_sendall("KICK %d %d %d\n", player_id, kick_dir, npids - 1);
+	i = 0;
+	while (i < npids)
 	{
-		gfx_sendall("KICK %d %d\n", player_id, 0);
-		return ("ko\n");
-	}
-	while (i--)
 		if (tile_pids[i] != player_id)
 			kick_and_alert_player(get_player(tile_pids[i]), kick_dir);
-		else
-			gfx_sendall("KICK %d %d\n", player_id, 1);
+		i++;
+	}
 	free(tile_pids);
-	return ("ok\n");
+	gfx_sendall("%s", "DONE\n");
+	return (npids > 1 ? "ok\n" : "ko\n");
 }

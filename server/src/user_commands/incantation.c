@@ -63,6 +63,7 @@ char					*incantation_finish(int player_id, void *args)
 	(void)player_id;
 	incant_args = (struct s_incant_args *)args;
 	i = 0;
+	gfx_sendall("INCANT_FINISH %d %d\n", incant_args->player_id, incant_args->new_level);
 	while (i < incant_args->group_size)
 	{
 		player = get_player(incant_args->levelup_group[i]);
@@ -73,6 +74,7 @@ char					*incantation_finish(int player_id, void *args)
 		}
 		++i;
 	}
+	gfx_sendall("%s", "DONE\n");
 	// Use get_player() instead of incant_args->new_level.
 	// Handles the case where the leader of the current (failing) ritual is
 	// also a participant in an ongoing (successful) ritual.
@@ -126,7 +128,7 @@ char					*incantation(int player_id, void *args)
 	if (q->remaining_space < MAX_COMMANDS)
 		q->remaining_space += 1;
 	enqueue_front(q, finish);
-	gfx_sendall("LEAD_RITUAL %d %d\n", player_id, incant_args->new_level > get_player(player_id)->level);
+	gfx_sendall("LEAD_RITUAL %d %d %d %d\n", player_id, incant_args->new_level > get_player(player_id)->level, incant_args->new_level, incant_args->group_size);
 	i = 0;
 	while (i < incant_args->group_size)
 	{
@@ -134,5 +136,6 @@ char					*incantation(int player_id, void *args)
 			gfx_sendall("JOIN_RITUAL %d\n", incant_args->levelup_group[i]);
 		i++;
 	}
+	gfx_sendall("%s", "DONE\n");
 	return ("elevation in progress\n");
 }

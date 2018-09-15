@@ -66,7 +66,7 @@ char				*fork_player(int player_id, void *args)
 	hatch_event->player_id = get_cmdfunc_tick_delay(fork_finish);
 	enqueue_command(hatch_queue, hatch_event);
 	p->tile->eggs += 1;
-	gfx_sendall("DONE_LAYING_EGG %d\n",
+	gfx_sendall("DONE_LAYING_EGG %d %d %d %d\n",
 			p->id, p->team_id, p->tile->x, p->tile->y);
 	return ("ok\n");
 }
