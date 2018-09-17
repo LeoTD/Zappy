@@ -1,13 +1,16 @@
 const TickEventCollection = require('./TickEventCollection.js')
 const assert = require('assert')
+const stream = require('stream')
 
-class TickEventParser {
-	constructor(options) {
-		this.events = null
+class TickEventParser extends stream.Transform {
+	constructor(options = {}) {
+		options.writableObjectMode = true
+		options.readableObjectMode = true
+		super(options)
+		this.currentTick = null
 		this.multi = { pool: null, info: null }
-		this.callback = options.onTickParsed
-		console.log(this.onConnect)
 		this.parse = this.parse.bind(this)
+		this.completedTicks = []
 	}
 
 	addEventToPool(eventObject, eventPool) {
@@ -26,8 +29,16 @@ class TickEventParser {
 		this.multi.info = eventInfo
 	}
 
+	_transform(line, _, callback) {
+		if (this.completedTicks.length)
+			callback(null, this.completedTicks.shift())
+		else {
+			this.parse(line)
+			callback()
+		}
+	}
+
 	parse(line) {
-		let newTick = null
 		const msg = line.toString().split(' ')
 		switch(msg[0]) {
 			case 'SEE':
@@ -42,7 +53,7 @@ class TickEventParser {
 						type: msg[0],
 						playerId: msg[1]
 					},
-					this.events.player
+					this.currentTick.player
 				)
 				break
 
@@ -57,7 +68,7 @@ class TickEventParser {
 						y: msg[4],
 						isSuccess: msg[5]
 					},
-					this.events.player
+					this.currentTick.player
 				)
 				break
 
@@ -69,7 +80,7 @@ class TickEventParser {
 						playerId: msg[1],
 						message: msg.slice(2).join(' ')
 					},
-					this.events.player
+					this.currentTick.player
 				)
 				break
 
@@ -79,7 +90,7 @@ class TickEventParser {
 						type: 'CONNECT',
 						playerId: msg[1]
 					},
-					this.events.global.acceptClient
+					this.currentTick.global.acceptClient
 				)
 				break
 
@@ -92,7 +103,7 @@ class TickEventParser {
 						x: msg[3],
 						y: msg[4]
 					},
-					this.events.player
+					this.currentTick.player
 				)
 				break
 
@@ -109,7 +120,7 @@ class TickEventParser {
 						facing: msg[7],
 						inventory: msg.slice(8)
 					},
-					this.events.global.hatch
+					this.currentTick.global.hatch
 				)
 				break
 
@@ -121,7 +132,7 @@ class TickEventParser {
 						y: msg[2],
 						objType: msg[3]
 					},
-					this.events.global.spawnResource
+					this.currentTick.global.spawnResource
 				)
 				break
 
@@ -134,7 +145,7 @@ class TickEventParser {
 						participants: [msg[1]],
 						newLevel: msg[3]
 					},
-					this.events.player
+					this.currentTick.player
 				)
 				break
 			case 'JOIN_RITUAL':
@@ -149,7 +160,7 @@ class TickEventParser {
 						newLevel: msg[2],
 						levelupPids: []
 					},
-					this.events.global.incantDone
+					this.currentTick.global.incantDone
 				)
 				break
 			case 'LEVEL_UP':
@@ -164,7 +175,7 @@ class TickEventParser {
 						direction: msg[2],
 						kickees: []
 					},
-					this.events.player
+					this.currentTick.player
 				)
 				break
 			case 'GET_KICKED':
@@ -177,7 +188,7 @@ class TickEventParser {
 						type: 'GAME_END',
 						winningTeamIds: []
 					},
-					this.events.global.gameEnd
+					this.currentTick.global.gameEnd
 				)
 				break
 			case 'WINNING_TEAM':
@@ -197,7 +208,7 @@ class TickEventParser {
 						teamNames: [],
 						players: []
 					},
-					this.events.global.gameStart
+					this.currentTick.global.gameStart
 				)
 				break
 			case 'TILE':
@@ -240,7 +251,9 @@ class TickEventParser {
 				break
 
 			case 'TICK':
-				newTick = new TickEventCollection(msg[1])
+				if (this.currentTick)
+					this.completedTicks.push(this.currentTick)
+				this.currentTick = new TickEventCollection(msg[1])
 				break
 
 			case 'DONE':
@@ -250,10 +263,6 @@ class TickEventParser {
 			default:
 				console.log("not handled", msg)
 				//assert.fail('unhandled message type')
-		}
-		if (newTick) {
-			this.callback(this.events)
-			this.events = newTick
 		}
 	}
 }

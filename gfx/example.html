@@ -3,26 +3,8 @@
    <head>
       <title>Hello world</title>
 
-   </head>
    <script src = "/socket.io/socket.io.js"></script>
-   
-   <script>
-      var socket = io();
-      socket.on('testerEvent', function(data){document.write(data.description)});
-      socket.on('tick', (data) => {
-		  const events = JSON.parse(data)
-		  if (events) {
-			  const item = document.createElement('li')
-			  const { gameStart, hatch, spawnResource, incantDone, connectClient, gameEnd } = events.global
-			  const numEvents = [events.player, gameStart, hatch, spawnResource, incantDone, connectClient, gameEnd].map(a => a.length).reduce((a, b) => a + b)
-			  if (numEvents > 0) {
-				  item.innerHTML = `something happened on tick ${events.tickNum}\n`
-				  document.getElementById('ticks').appendChild(item)
-				  console.log(events)
-			  }
-		  }
-	  })
-   </script>
+   </head>
    <body>
 	   <ul id='ticks'>
 	   </ul>

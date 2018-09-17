@@ -33,7 +33,7 @@ class playerAvatar {
 
 	createCreatureAvatar(scene) {
 		var that = this;
-		BABYLON.SceneLoader.ImportMesh("", "assets/models/", "pikachu.obj", scene, function (newMesh){
+		BABYLON.SceneLoader.ImportMesh("", "models/", "pikachu.obj", scene, function (newMesh){
 			that._mesh 	= newMesh[0];
 		});
 	}

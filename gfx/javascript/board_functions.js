@@ -1,5 +1,5 @@
 const TILE_SIZE 	= 25;
-const TILE_ASSET	= "assets/tile.png";
+const TILE_ASSET	= "tile.png";
 
 class Board {
 	constructor(opts) {

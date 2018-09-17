@@ -1,19 +1,19 @@
 const MAX_SPRITES					= 256;
 const SPRITE_DIMENSIONS				= {height:24, width:24};
 const AVATAR_SPRITE_ASSET_STRINGS	= [
-	"assets/dino_blue.png",
-	"assets/dino_red.png",
-	"assets/dino_yellow.png",
-	"assets/dino_green.png"
+	"dino_blue.png",
+	"dino_red.png",
+	"dino_yellow.png",
+	"dino_green.png"
 ];
 const STONE_ASSET_STRINGS			= [
-	"assets/temp_stone.png",	// Stone0, ...
-	"assets/temp_stone.png",
-	"assets/temp_stone.png",
-	"assets/temp_stone.png",
-	"assets/temp_stone.png",
-	"assets/temp_stone.png",
-	"assets/temp_stone.png"		// Food
+	"temp_stone.png",	// Stone0, ...
+	"temp_stone.png",
+	"temp_stone.png",
+	"temp_stone.png",
+	"temp_stone.png",
+	"temp_stone.png",
+	"temp_stone.png"		// Food
 ];
 
 class Game {
