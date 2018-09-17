@@ -8,5 +8,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		game.add_player({x:Math.floor(Math.random() * (game.x - 1)), y:Math.floor(Math.random() * (game.y - 1)),
 						inv:[0, 0, 0, 0, 0, 0, 1260], level:1, team:(i % game.teams.length), id:i});
 	}
-
 });

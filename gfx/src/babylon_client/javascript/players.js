@@ -16,8 +16,8 @@ class playerAvatar {
 		this.sprite 	= new BABYLON.Sprite("player", this.manager);
 
 		this.sprite.position.y = 5;
-		this.sprite.position.x = (this.x * TILE_SIZE) + (Math.random() * TILE_SIZE) - (TILE_SIZE / 2);;
-		this.sprite.position.z = (this.y * TILE_SIZE) + (Math.random() * TILE_SIZE) - (TILE_SIZE / 2);;
+		this.sprite.position.x = (this.x * TILE_SIZE) + (Math.random() * (TILE_SIZE / 2)) - (TILE_SIZE / 2);;
+		this.sprite.position.z = (this.y * TILE_SIZE) + (Math.random() * (TILE_SIZE / 2)) - (TILE_SIZE / 2);;
 		this.sprite.size = 10;
 		this.sprite.isPickable = true;
 	}

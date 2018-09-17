@@ -1,49 +1,56 @@
-const MAX_SPRITES			= 256;
-const SPRITE_DIMENSIONS		= {height:24, width:24};
-const SPRITE_ASSET_STRINGS	= [
+const MAX_SPRITES					= 256;
+const SPRITE_DIMENSIONS				= {height:24, width:24};
+const AVATAR_SPRITE_ASSET_STRINGS	= [
 	"assets/dino_blue.png",
 	"assets/dino_red.png",
 	"assets/dino_yellow.png",
 	"assets/dino_green.png"
-]
+];
+const STONE_ASSET_STRINGS			= [
+	"assets/temp_stone.png",	// Stone0, ...
+	"assets/temp_stone.png",
+	"assets/temp_stone.png",
+	"assets/temp_stone.png",
+	"assets/temp_stone.png",
+	"assets/temp_stone.png",
+	"assets/temp_stone.png"		// Food
+];
 
 class Game {
 	constructor(opts) {
 		
 		// General information:
-		this.x				= opts.x;
-		this.y				= opts.y;
-		this.teams			= opts.teams;
-		this.tickrate		= opts.tickrate;
-		this.current_tick	= opts.num_elapsed_ticks;
+		this.x						= opts.x;
+		this.y						= opts.y;
+		this.teams					= opts.teams;
+		this.tickrate				= opts.tickrate;
+		this.current_tick			= opts.num_elapsed_ticks;
 
 		// Player and tile arrays for detailed game state
 		//     management and for deploying animations.
-		this.players		= [];
-		this.tiles			= undefined;
+		this.players				= [];
+		this.tiles					= undefined;
 
 // ------- Constructs required by the BABYLON graphics engine ------- //
 // -------	   or created to better manage BABYLON resources: ------- //
-		this.canvas			= undefined;
-		this.engine			= undefined;
-		this.scene			= undefined;
+		this.canvas					= undefined;
+		this.engine					= undefined;
+		this.scene					= undefined;
 
-		// Array of sprite managers. One per team.
-		this.spriteManagers	= [];
+		// Various Sprite Managers
+		this.tileContentsSM			= []; // One per stone sprite + one for food.
+		this.avatarSM				= []; // One per team. Handles the main avatar sprite.
+		
+		// Space saved for action/reaction sprite assets
+		//
+		//
+		//
 
 		// Graphical entities with global scope:
-		this.camera			= undefined;
-		this.skybox			= undefined;
-		this.board			= undefined;
-		this.sunlight		= undefined;
-	}
-
-	tick() {
-
-	}
-
-	spawn_resources() {
-
+		this.camera					= undefined;
+		this.skybox					= undefined;
+		this.board					= undefined;
+		this.sunlight				= undefined;
 	}
 
 	startup() {
@@ -57,15 +64,27 @@ class Game {
 		this.board.createMesh({x:this.x, y:this.y}, this.scene);
 		this.board.displayAxes(this.scene, 50) // #ifdef DEBUG
 
-		// Create a spriteManager for each team. (Different color dinos! :D)
+// ------- Load sprite managers with their respective sprites ------- //
+		// Create an avatar manager for each team. (Different color dinos! :D)
 		for (var i = 0; i < this.teams.length; i++) {
-			this.spriteManagers.push(
-				new BABYLON.SpriteManager(this.teams[i], SPRITE_ASSET_STRINGS[i % SPRITE_ASSET_STRINGS.length],
+			this.avatarSM.push(
+				new BABYLON.SpriteManager(this.teams[i], AVATAR_SPRITE_ASSET_STRINGS[i % AVATAR_SPRITE_ASSET_STRINGS.length],
 											MAX_SPRITES, SPRITE_DIMENSIONS, this.scene)
 			)
 		}
 
-		//this.camera = createArcCamera(this.canvas, this.scene); 		// #ifdef DEBUG
+		// Create a manager for each stone type of stone and food.
+		this.tileContentsSM[0] = new BABYLON.SpriteManager("stone0", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[1] = new BABYLON.SpriteManager("stone1", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[2] = new BABYLON.SpriteManager("stone2", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[3] = new BABYLON.SpriteManager("stone3", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[4] = new BABYLON.SpriteManager("stone4", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[5] = new BABYLON.SpriteManager("stone5", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[6] = new BABYLON.SpriteManager("food", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+
+// ------ END SPRITE LOADING ------- //
+
+		//this.camera = createArcCamera(this.canvas, this.scene);	// #ifdef DEBUG
 		this.camera = createCustomCamera(this.canvas, this.scene);	// Custom camera setup for final version.
 	
 		// Register a render loop to repeatedly render the scene
@@ -75,7 +94,7 @@ class Game {
 	
 		// Watch for browser/canvas resize events
 		window.addEventListener("resize", function () { 
-				this.engine.resize();
+				game.engine.resize();
 		});
 	}
 
@@ -83,8 +102,16 @@ class Game {
 
 	}
 
+	tick() {
+
+	}
+
+	spawn_resources() {
+
+	}
+
 	add_player(pinfo) {
-		var new_player = new playerAvatar(this.spriteManagers[pinfo.team], pinfo);
+		var new_player = new playerAvatar(this.avatarSM[pinfo.team], pinfo);
 		this.players[new_player.id] = new_player;
 		this.players[new_player.id].createSprite();
 	}
@@ -98,5 +125,13 @@ class Game {
 		}
 	}
 
+	create_tile(tinfo) {
+		var new_tile;
+		for (var i = 0; i < tinfo.length; i++) {
+			new_tile = tinfo[i];
+			this.tiles[new_tile.x][new_tile.y] = new Tile(new_tile);
+
+		}
+	}
 
 }
