@@ -13,10 +13,10 @@
 		  const events = JSON.parse(data)
 		  if (events) {
 			  const item = document.createElement('li')
-			  const { game_start, hatch, spawn_resource, incant_done, connect_client, game_end } = events.global
-			  const numEvents = [events.player, game_start, hatch, spawn_resource, incant_done, connect_client, game_end].map(a => a.length).reduce((a, b) => a + b)
+			  const { gameStart, hatch, spawnResource, incantDone, connectClient, gameEnd } = events.global
+			  const numEvents = [events.player, gameStart, hatch, spawnResource, incantDone, connectClient, gameEnd].map(a => a.length).reduce((a, b) => a + b)
 			  if (numEvents > 0) {
-				  item.innerHTML = `something happened on tick ${events.tick_num}\n`
+				  item.innerHTML = `something happened on tick ${events.tickNum}\n`
 				  document.getElementById('ticks').appendChild(item)
 				  console.log(events)
 			  }

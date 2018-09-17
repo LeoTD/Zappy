@@ -5,8 +5,8 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var split2 = require('split2');
-var TickEventParser = require('./tick-event-parser.js');
-var TickEventCollection = require('./tick-event-collection.js');
+var TickEventParser = require('./TickEventParser.js');
+var TickEventCollection = require('./TickEventCollection.js');
 
 var key = "banana";
 var client;
@@ -37,7 +37,7 @@ const usage = () => {
 	process.exit();
 }
 
-const parse_args = () => {
+const parseArgs = () => {
 	if (process.argv.length != 4) {
 		usage();
 	} else {
@@ -46,13 +46,13 @@ const parse_args = () => {
 	}
 }
 
-const init_server = () => {
+const initServer = () => {
 	http.listen(3000, () => {
 		console.log('listening on *:3000');
 	});
 }
 
-const init_client = () => {
+const initClient = () => {
 	
 	client = new net.Socket();
 
@@ -75,6 +75,6 @@ const init_client = () => {
 	})
 }
 
-parse_args();
-init_server();
-init_client();
+parseArgs();
+initServer();
+initClient();

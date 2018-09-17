@@ -1,4 +1,4 @@
-const TickEventCollection = require('./tick-event-collection.js')
+const TickEventCollection = require('./TickEventCollection.js')
 const assert = require('assert')
 
 class TickEventParser {
@@ -10,24 +10,24 @@ class TickEventParser {
 		this.parse = this.parse.bind(this)
 	}
 
-	add_event_to_pool(event_object, event_pool) {
-		event_pool.push(event_object)
+	addEventToPool(eventObject, eventPool) {
+		eventPool.push(eventObject)
 	}
 
-	finish_multi_message_event() {
-		this.add_event_to_pool(this.multi.info, this.multi.pool)
+	finishMultiMessageEvent() {
+		this.addEventToPool(this.multi.info, this.multi.pool)
 		this.multi.info = null
 		this.multi.pool = null
 	}
 
-	construct_multi_message_event(event_info, event_pool) {
+	constructMultiMessageEvent(eventInfo, eventPool) {
 		assert(this.multi.info == null)
-		this.multi.pool = event_pool
-		this.multi.info = event_info
+		this.multi.pool = eventPool
+		this.multi.info = eventInfo
 	}
 
 	parse(line) {
-		let new_tick = null
+		let newTick = null
 		const msg = line.toString().split(' ')
 		switch(msg[0]) {
 			case 'SEE':
@@ -37,10 +37,10 @@ class TickEventParser {
 			case 'DEATH':
 			case 'INVENTORY':
 			case 'LAY_EGG':
-				this.add_event_to_pool(
+				this.addEventToPool(
 					{
 						type: msg[0],
-						player_id: msg[1]
+						playerId: msg[1]
 					},
 					this.events.player
 				)
@@ -48,14 +48,14 @@ class TickEventParser {
 
 			case 'TAKE':
 			case 'PUT':
-				this.add_event_to_pool(
+				this.addEventToPool(
 					{
 						type: msg[0],
-						player_id: msg[1],
-						obj_type: msg[2],
+						playerId: msg[1],
+						objType: msg[2],
 						x: msg[3],
 						y: msg[4],
-						is_success: msg[5]
+						isSuccess: msg[5]
 					},
 					this.events.player
 				)
@@ -63,10 +63,10 @@ class TickEventParser {
 
 			case 'BAD_COMMAND':
 			case 'BROADCAST':
-				this.add_event_to_pool(
+				this.addEventToPool(
 					{
 						type: msg[0],
-						player_id: msg[1],
+						playerId: msg[1],
 						message: msg.slice(2).join(' ')
 					},
 					this.events.player
@@ -74,21 +74,21 @@ class TickEventParser {
 				break
 
 			case 'CONNECT':
-				this.add_event_to_pool(
+				this.addEventToPool(
 					{
 						type: 'CONNECT',
-						player_id: msg[1]
+						playerId: msg[1]
 					},
-					this.events.global.accept_client
+					this.events.global.acceptClient
 				)
 				break
 
 			case 'DONE_LAYING_EGG':
-				this.add_event_to_pool(
+				this.addEventToPool(
 					{
 						type: 'DONE_LAYING_EGG',
-						player_id: msg[1],
-						team_id: msg[2],
+						playerId: msg[1],
+						teamId: msg[2],
 						x: msg[3],
 						y: msg[4]
 					},
@@ -97,11 +97,11 @@ class TickEventParser {
 				break
 
 			case 'EGG_HATCH':
-				this.add_event_to_pool(
+				this.addEventToPool(
 					{
 						type: 'EGG_HATCH',
-						player_id: msg[1],
-						team_id: msg[2],
+						playerId: msg[1],
+						teamId: msg[2],
 						level: msg[3],
 						x: msg[4],
 						y: msg[5],
@@ -114,25 +114,25 @@ class TickEventParser {
 				break
 
 			case 'SPAWN_RESOURCE':
-				this.add_event_to_pool(
+				this.addEventToPool(
 					{
 						type: 'SPAWN_RESOURCE',
 						x: msg[1],
 						y: msg[2],
-						obj_type: msg[3]
+						objType: msg[3]
 					},
-					this.events.global.spawn_resource
+					this.events.global.spawnResource
 				)
 				break
 
 			case 'LEAD_RITUAL':
-				this.construct_multi_message_event(
+				this.constructMultiMessageEvent(
 					{
 						type: 'INCANT_START',
-						priest_id: msg[1],
-						will_succeed: msg[2],
+						priestId: msg[1],
+						willSucceed: msg[2],
 						participants: [msg[1]],
-						new_level: msg[3]
+						newLevel: msg[3]
 					},
 					this.events.player
 				)
@@ -142,22 +142,22 @@ class TickEventParser {
 				break
 
 			case 'INCANT_FINISH':
-				this.construct_multi_message_event(
+				this.constructMultiMessageEvent(
 					{
 						type: 'INCANT_FINISH',
-						priest_id: msg[1],
-						new_level: msg[2],
-						levelup_pids: []
+						priestId: msg[1],
+						newLevel: msg[2],
+						levelupPids: []
 					},
-					this.events.global.incant_done
+					this.events.global.incantDone
 				)
 				break
 			case 'LEVEL_UP':
-				this.multi.info.levelup_pids.push(msg[1])
+				this.multi.info.levelupPids.push(msg[1])
 				break
 
 			case 'KICK':
-				this.construct_multi_message_event(
+				this.constructMultiMessageEvent(
 					{
 						type: 'KICK',
 						kicker: msg[1],
@@ -172,32 +172,32 @@ class TickEventParser {
 				break
 
 			case 'GAME_END':
-				this.construct_multi_message_event(
+				this.constructMultiMessageEvent(
 					{
 						type: 'GAME_END',
-						winning_team_ids: []
+						winningTeamIds: []
 					},
-					this.events.global.game_end
+					this.events.global.gameEnd
 				)
 				break
 			case 'WINNING_TEAM':
-				this.multi.info.winning_team_ids.push(msg[1])
+				this.multi.info.winningTeamIds.push(msg[1])
 				break
 
 			case 'WORLD':
-				this.construct_multi_message_event(
+				this.constructMultiMessageEvent(
 					{
 						type: 'INIT',
 						width: msg[1],
 						height: msg[2],
 						tickrate: msg[3],
-						start_tick: msg[4],
+						startTick: msg[4],
 						tiles: [],
-						command_delays: [],
-						team_names: [],
+						commandDelays: [],
+						teamNames: [],
 						players: []
 					},
-					this.events.global.game_start
+					this.events.global.gameStart
 				)
 				break
 			case 'TILE':
@@ -212,26 +212,26 @@ class TickEventParser {
 				)
 				break
 			case 'TEAMNAME':
-				this.multi.info.team_names.push(msg.slice(1).join(' '))
+				this.multi.info.teamNames.push(msg.slice(1).join(' '))
 				break
 			case 'PLAYER':
 				this.multi.info.players.push(
 					{
-						player_id: msg[0],
-						team_id: msg[1],
+						playerId: msg[0],
+						teamId: msg[1],
 						level: msg[2],
 						x: msg[3],
 						y: msg[4],
 						energy: msg[5],
 						facing: msg[6],
 						food: msg[7],
-						is_connected: msg[8],
+						isConnected: msg[8],
 						inventory: msg.slice(9)
 					}
 				)
 				break
 			case 'DELAY_TIME':
-				this.multi.info.command_delays.push(
+				this.multi.info.commandDelays.push(
 					{
 						cmd: msg[1],
 						time: msg[2]
@@ -240,20 +240,20 @@ class TickEventParser {
 				break
 
 			case 'TICK':
-				new_tick = new TickEventCollection(msg[1])
+				newTick = new TickEventCollection(msg[1])
 				break
 
 			case 'DONE':
-				this.finish_multi_message_event()
+				this.finishMultiMessageEvent()
 				break
 
 			default:
 				console.log("not handled", msg)
 				//assert.fail('unhandled message type')
 		}
-		if (new_tick) {
+		if (newTick) {
 			this.callback(this.events)
-			this.events = new_tick
+			this.events = newTick
 		}
 	}
 }
