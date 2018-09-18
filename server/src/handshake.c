@@ -90,7 +90,7 @@ static void	gfx_eventmsg_greeting(int fd)
 	while (i < g_opts.teamcount)
 		gfx_sendone(fd, "TEAMNAME %s\n", g_opts.team_names[i++]);
 	while ((p = iter_players()))
-		gfx_sendone(fd, "PLAYER %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+		gfx_sendone(fd, "PLAYER %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
 			p->id, p->team_id, p->level, p->tile->x, p->tile->y, p->energy,
 			p->facing, p->count[FOOD], get_client_by_id(p->id) != NULL,
 			p->count[LINEMATE], p->count[DERAUMERE], p->count[SIBUR],
