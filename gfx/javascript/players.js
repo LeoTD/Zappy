@@ -11,25 +11,28 @@ class playerAvatar {
 		this.team		= opts.team;
 		this.compass	= ['n', 'e', 's', 'w'];
 		this.facing		= opts.facing || 's';
+		this.idle = this.idle.bind(this)
 	}
 
 	right() {
 		let prev = this.facing
 		this.compass.push(this.compass.shift());
 		console.log(`right(): ${prev} -> ${this.facing}`)
+		this.idle()
 	}
 
 	left() {
 		let prev = this.facing
 		this.compass.unshift(this.compass.pop());
 		console.log(`left(): ${prev} -> ${this.facing}`)
+		this.idle()
 	}
 
 	set facing(dir) {
 		if (!this.compass.includes(dir))
 			throw('bad direction: ' + dir);
 		while (this.compass[0] != dir)
-			this.left();
+			this.compass.unshift(this.compass.pop());
 	}
 
 	get facing() {
@@ -44,7 +47,6 @@ class playerAvatar {
 		this.sprite.position.z = (this.y * TILE_SIZE) + (Math.random() * (TILE_SIZE / 2)) - (TILE_SIZE / 2);;
 		this.sprite.size = 10;
 		this.sprite.isPickable = true;
-		this.idle();
 	}
 
 	createAvatar(scene) {
@@ -64,15 +66,13 @@ class playerAvatar {
 	}
 
 	advance() {
-		let prevx = this.x
-		let prevy = this.y
-		const nx = (this.x + { n: 0, e: 1, w: -1, s: 0 }[this.facing] + game.x) % game.x;
-		const ny = (this.y + { n: -1, e: 0, w: 0, s: 1 }[this.facing] + game.y) % game.y;
-		this.x = nx;
-		this.y = ny;
+		if (false === ['n', 'e', 's', 'w'].includes(this.facing))
+			console.warn(`player ${this.id}: invalid facing '${this.facing}'`)
+		this.x = (this.x + { n: 0, e: -1, w: 1, s: 0 }[this.facing] + game.x) % game.x
+		this.y = (this.y + { n: -1, e: 0, w: 0, s: 1 }[this.facing] + game.y) % game.y
 		this.sprite.position.x = this.x * TILE_SIZE
-		this.sprite.position.y = this.y * TILE_SIZE
-		console.log(`advance(): from <${prevx}, ${prevy}> to <${this.x}, ${this.y}>`)
+		this.sprite.position.z = this.y * TILE_SIZE
+		this.idle()
 	}
 
 	connect_client() {

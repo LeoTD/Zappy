@@ -72,7 +72,7 @@ module.exports = {
 		x: 0,
 		y: 0,
 		energy: 0,
-		facing: 'N',
+		facing: 'n',
 		inventory: [0, 0, 0, 0, 0, 0]
 	},
 	'SPAWN_RESOURCE': {
@@ -97,7 +97,7 @@ module.exports = {
 	'KICK': {
 		type: 'KICK',
 		kicker: 0,
-		direction: 'N',
+		direction: 'n',
 		kickees: [],
 	},
 	'GAME_END': {
@@ -110,8 +110,33 @@ module.exports = {
 		tickrate: 0,
 		startTick: 0,
 		tiles: [[]],
-		commandDelays: [],
+		commandDelays: [
+			{cmd: "SEE", time: 7},
+			{cmd: "ADVANCE", time: 7},
+			{cmd: "RIGHT", time: 7},
+			{cmd: "LEFT", time: 7},
+			{cmd: "LEAD_RITUAL", time: 300},
+			{cmd: "KICK", time: 7},
+			{cmd: "BROADCAST", time: 7},
+			{cmd: "TAKE", time: 7},
+			{cmd: "PUT", time: 7},
+			{cmd: "LAY_EGG", time: 42},
+			{cmd: "EGG_HATCH", time: 600},
+		],
 		teamNames: [],
-		players: []
+		players: [
+			{
+				playerId: 0,
+				teamId: 0,
+				level: 0,
+				x: 0,
+				y: 0,
+				energy: 0,
+				facing: 'n',
+				food: 0,
+				isConnected: 0,
+				inventory: [0, 0, 0, 0, 0, 0]
+			},
+		]
 	}
 }

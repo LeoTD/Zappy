@@ -46,7 +46,7 @@ class TickEventParser extends stream.Transform {
 			case 'CONNECT':
 				this.addEvent({
 					type: msg[0],
-					playerId: msg[1]
+					playerId: Number(msg[1])
 				})
 				break;
 
@@ -54,11 +54,11 @@ class TickEventParser extends stream.Transform {
 			case 'PUT':
 				this.addEvent({
 					type: msg[0],
-					playerId: msg[1],
-					objType: msg[2],
-					x: msg[3],
-					y: msg[4],
-					isSuccess: msg[5]
+					playerId: Number(msg[1]),
+					objType: Number(msg[2]),
+					x: Number(msg[3]),
+					y: Number(msg[4]),
+					isSuccess: Number(msg[5])
 				})
 				break
 
@@ -66,7 +66,7 @@ class TickEventParser extends stream.Transform {
 			case 'BROADCAST':
 				this.addEvent({
 					type: msg[0],
-					playerId: msg[1],
+					playerId: Number(msg[1]),
 					message: msg.slice(2).join(' ')
 				})
 				break
@@ -74,71 +74,71 @@ class TickEventParser extends stream.Transform {
 			case 'DONE_LAYING_EGG':
 				this.addEvent({
 						type: 'DONE_LAYING_EGG',
-						playerId: msg[1],
-						teamId: msg[2],
-						x: msg[3],
-						y: msg[4]
+						playerId: Number(msg[1]),
+						teamId: Number(msg[2]),
+						x: Number(msg[3]),
+						y: Number(msg[4])
 					})
 				break
 
 			case 'EGG_HATCH':
 				this.addEvent({
 					type: 'EGG_HATCH',
-					playerId: msg[1],
-					teamId: msg[2],
-					level: msg[3],
-					x: msg[4],
-					y: msg[5],
-					energy: msg[6],
-					facing: msg[7],
-					inventory: msg.slice(8)
+					playerId: Number(msg[1]),
+					teamId: Number(msg[2]),
+					level: Number(msg[3]),
+					x: Number(msg[4]),
+					y: Number(msg[5]),
+					energy: Number(msg[6]),
+					facing: Number(msg[7]),
+					inventory: msg.slice(8).map(Number)
 				})
 				break
 
 			case 'SPAWN_RESOURCE':
 				this.addEvent({
 					type: 'SPAWN_RESOURCE',
-					x: msg[1],
-					y: msg[2],
-					objType: msg[3]
+					x: Number(msg[1]),
+					y: Number(msg[2]),
+					objType: Number(msg[3])
 				})
 				break
 
 			case 'LEAD_RITUAL':
 				this.constructMultiMessageEvent({
 					type: 'INCANT_START',
-					priestId: msg[1],
-					willSucceed: msg[2],
-					participants: [msg[1]],
-					newLevel: msg[3]
+					priestId: Number(msg[1]),
+					willSucceed: Number(msg[2]),
+					participants: [Number(msg[1])],
+					newLevel: Number(msg[3])
 				})
 				break
 			case 'JOIN_RITUAL':
-				this.multi.participants.push(msg[1])
+				this.multi.participants.push(Number(msg[1]))
 				break
 
 			case 'INCANT_FINISH':
 				this.constructMultiMessageEvent({
 					type: 'INCANT_FINISH',
-					priestId: msg[1],
-					newLevel: msg[2],
+					priestId: Number(msg[1]),
+					newLevel: Number(msg[2]),
 					levelupPids: []
 				})
 				break
 			case 'LEVEL_UP':
-				this.multi.levelupPids.push(msg[1])
+				this.multi.levelupPids.push(Number(msg[1]))
 				break
 
 			case 'KICK':
 				this.constructMultiMessageEvent({
 					type: 'KICK',
-					kicker: msg[1],
-					direction: msg[2],
+					kicker: Number(msg[1]),
+					direction: ['n', 'w', 's', 'e'][Math.floor(Number(msg[2]) / 2)],
 					kickees: []
 				})
 				break
 			case 'GET_KICKED':
-				this.multi.kickees.push(msg[1])
+				this.multi.kickees.push(Number(msg[1]))
 				break
 
 			case 'GAME_END':
@@ -148,16 +148,16 @@ class TickEventParser extends stream.Transform {
 				})
 				break
 			case 'WINNING_TEAM':
-				this.multi.winningTeamIds.push(msg[1])
+				this.multi.winningTeamIds.push(Number(msg[1]))
 				break
 
 			case 'WORLD':
 				this.constructMultiMessageEvent({
 					type: 'INIT',
-					width: msg[1],
-					height: msg[2],
-					tickrate: msg[3],
-					startTick: msg[4],
+					width: Number(msg[1]),
+					height: Number(msg[2]),
+					tickrate: Number(msg[3]),
+					startTick: Number(msg[4]),
 					tiles: [],
 					commandDelays: [],
 					teamNames: [],
@@ -166,11 +166,11 @@ class TickEventParser extends stream.Transform {
 				break
 			case 'TILE':
 				this.multi.tiles.push({
-					x: msg[1],
-					y: msg[2],
-					eggs: msg[3],
-					food: msg[4],
-					stones: msg.slice(5)
+					x: Number(msg[1]),
+					y: Number(msg[2]),
+					eggs: Number(msg[3]),
+					food: Number(msg[4]),
+					stones: msg.slice(5).map(Number)
 				})
 				break
 			case 'TEAMNAME':
@@ -178,22 +178,22 @@ class TickEventParser extends stream.Transform {
 				break
 			case 'PLAYER':
 				this.multi.players.push({
-					playerId: msg[0],
-					teamId: msg[1],
-					level: msg[2],
-					x: msg[3],
-					y: msg[4],
-					energy: msg[5],
-					facing: msg[6],
-					food: msg[7],
-					isConnected: msg[8],
-					inventory: msg.slice(9)
+					playerId: Number(msg[1]),
+					teamId: Number(msg[2]),
+					level: Number(msg[3]),
+					x: Number(msg[4]),
+					y: Number(msg[5]),
+					energy: Number(msg[6]),
+					facing: ['n', 'w', 's', 'e'][Math.floor(Number(msg[7]) / 2)],
+					food: Number(msg[8]),
+					isConnected: Number(msg[9]),
+					inventory: msg.slice(10).map(Number)
 				})
 				break
 			case 'DELAY_TIME':
 				this.multi.commandDelays.push({
 					cmd: msg[1],
-					time: msg[2]
+					time: Number(msg[2])
 				})
 				break
 
@@ -202,7 +202,7 @@ class TickEventParser extends stream.Transform {
 					this.completedTicks.push(this.currentTick)
 				}
 				this.currentTick = {
-					tickNum: msg[1],
+					tickNum: Number(msg[1]),
 					events: []
 				}
 				break

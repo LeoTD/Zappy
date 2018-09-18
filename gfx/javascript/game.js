@@ -107,7 +107,7 @@ class Game {
 
 	}
 
-	add_player(pinfo) {
+	addPlayer(pinfo) {
 		var new_player = new playerAvatar(this.avatarSM[pinfo.team], pinfo);
 		this.players[new_player.id] = new_player;
 		this.players[new_player.id].createSprite();
