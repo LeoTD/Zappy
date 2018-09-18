@@ -1,4 +1,3 @@
-const TickEventCollection = require('./TickEventCollection.js')
 const assert = require('assert')
 const stream = require('stream')
 

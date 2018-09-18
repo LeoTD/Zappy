@@ -4,7 +4,6 @@ const express = require('express')
 const split2 = require('split2')
 const socketio = require('socket.io')
 const TickEventParser = require('./TickEventParser.js')
-const TickEventCollection = require('./TickEventCollection.js')
 const stream = require('stream')
 
 const app = express()
