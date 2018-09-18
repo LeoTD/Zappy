@@ -65,13 +65,17 @@ class playerAvatar {
 		});
 	}
 
-	advance() {
-		if (false === ['n', 'e', 's', 'w'].includes(this.facing))
-			console.warn(`player ${this.id}: invalid facing '${this.facing}'`)
-		this.x = (this.x + { n: 0, e: -1, w: 1, s: 0 }[this.facing] + game.x) % game.x
-		this.y = (this.y + { n: -1, e: 0, w: 0, s: 1 }[this.facing] + game.y) % game.y
+	moveDirection(dir) {
+		if (false === ['n', 'e', 's', 'w'].includes(dir))
+			console.warn(`${this.id}: invalid direction '${dir}'`)
+		this.x = (this.x + { n: 0, e: -1, w: 1, s: 0 }[dir] + game.x) % game.x
+		this.y = (this.y + { n: -1, e: 0, w: 0, s: 1 }[dir] + game.y) % game.y
 		this.sprite.position.x = this.x * TILE_SIZE
 		this.sprite.position.z = this.y * TILE_SIZE
+	}
+
+	advance() {
+		this.moveDirection(this.facing)
 		this.idle()
 	}
 
