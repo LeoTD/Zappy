@@ -3,10 +3,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	socket.on('tick', (data) => {
 		const tick = JSON.parse(data)
 		console.log(tick.tickNum)
-		tick.events.forEach(console.log)
-		tick.events.filter(e => e.type == "ADVANCE" && parseInt(e.playerId) < 12).forEach(e => {
-			const player = game.get_player(e.playerId)
-			player.advance({x: -1, y: -1 })
-		})
+		for (const ev of tick.events) {
+			console.log(ev)
+			if (ev.type == 'ADVANCE') {
+				game.get_player(ev.playerId).advance()
+			} else if (ev.type == 'RIGHT') {
+				game.get_player(ev.playerId).right()
+			} else if (ev.type == 'LEFT') {
+				game.get_player(ev.playerId).left()
+			}
+		}
 	})
 })

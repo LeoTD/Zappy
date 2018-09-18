@@ -1,10 +1,7 @@
 const MAX_SPRITES					= 256;
-const SPRITE_DIMENSIONS				= {height:24, width:24};
+const SPRITE_DIMENSIONS				= {height:32, width:32};
 const AVATAR_SPRITE_ASSET_STRINGS	= [
-	"dino_blue.png",
-	"dino_red.png",
-	"dino_yellow.png",
-	"dino_green.png"
+	"bob.png",
 ];
 const STONE_ASSET_STRINGS			= [
 	"temp_stone.png",	// Stone0, ...
