@@ -79,7 +79,7 @@ module.exports = {
 		type: 'SPAWN_RESOURCE',
 		x: 0,
 		y: 0,
-		objType: 0
+		objType: "stone0"
 	},
 	'INCANT_START': {
 		type: 'INCANT_START',
@@ -109,7 +109,13 @@ module.exports = {
 		height: 0,
 		tickrate: 0,
 		startTick: 0,
-		tiles: [[]],
+		tiles: [{
+			x: 0,
+			y: 0,
+			eggs: 0,
+			food: 0,
+			stones: [0, 0, 0, 0, 0, 0]
+		}],
 		commandDelays: [
 			{cmd: "SEE", time: 7},
 			{cmd: "ADVANCE", time: 7},

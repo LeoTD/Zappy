@@ -35,6 +35,7 @@ class TickEventParser extends stream.Transform {
 
 	parse(line) {
 		const msg = line.toString().split(' ')
+		console.log(msg)
 		switch(msg[0]) {
 			case 'SEE':
 			case 'ADVANCE':
@@ -55,7 +56,7 @@ class TickEventParser extends stream.Transform {
 				this.addEvent({
 					type: msg[0],
 					playerId: Number(msg[1]),
-					objType: Number(msg[2]),
+					objType: objNameFor(msg[2]),
 					x: Number(msg[3]),
 					y: Number(msg[4]),
 					isSuccess: Number(msg[5])
@@ -100,7 +101,7 @@ class TickEventParser extends stream.Transform {
 					type: 'SPAWN_RESOURCE',
 					x: Number(msg[1]),
 					y: Number(msg[2]),
-					objType: Number(msg[3])
+					objType: objNameFor(msg[3])
 				})
 				break
 
@@ -216,6 +217,10 @@ class TickEventParser extends stream.Transform {
 				//assert.fail('unhandled message type')
 		}
 	}
+}
+
+function objNameFor(typeEnum) {
+	return Number(typeEnum) === 6 ? "food" : "stone" + typeEnum
 }
 
 module.exports = TickEventParser

@@ -10,7 +10,6 @@ const STONE_ASSET_STRINGS			= [
 	"temp_stone.png",
 	"temp_stone.png",
 	"temp_stone.png",
-	"temp_stone.png"		// Food
 ];
 
 class Game {
@@ -19,6 +18,7 @@ class Game {
 		// General information:
 		this.x						= opts.x;
 		this.y						= opts.y;
+
 		this.teams					= opts.teams;
 		this.tickrate				= opts.tickrate;
 		this.current_tick			= opts.num_elapsed_ticks;
@@ -26,7 +26,9 @@ class Game {
 		// Player and tile arrays for detailed game state
 		//     management and for deploying animations.
 		this.players				= [];
-		this.tiles					= undefined;
+		this.tiles					= [];
+		for (let i = 0; i < this.y; i++)
+			this.tiles.push([])
 
 // ------- Constructs required by the BABYLON graphics engine ------- //
 // -------	   or created to better manage BABYLON resources: ------- //
@@ -35,9 +37,6 @@ class Game {
 		this.scene					= undefined;
 
 		// Various Sprite Managers
-		this.tileContentsSM			= []; // One per stone sprite + one for food.
-		this.avatarSM				= []; // One per team. Handles the main avatar sprite.
-		
 		// Space saved for action/reaction sprite assets
 		//
 		//
@@ -60,26 +59,7 @@ class Game {
 		this.board		= new Board();
 		this.board.createMesh({x:this.x, y:this.y}, this.scene);
 		this.board.displayAxes(this.scene, 50) // #ifdef DEBUG
-
-// ------- Load sprite managers with their respective sprites ------- //
-		// Create an avatar manager for each team. (Different color dinos! :D)
-		for (var i = 0; i < this.teams.length; i++) {
-			this.avatarSM.push(
-				new BABYLON.SpriteManager(this.teams[i], AVATAR_SPRITE_ASSET_STRINGS[i % AVATAR_SPRITE_ASSET_STRINGS.length],
-											MAX_SPRITES, SPRITE_DIMENSIONS, this.scene)
-			)
-		}
-
-		// Create a manager for each stone type of stone and food.
-		this.tileContentsSM[0] = new BABYLON.SpriteManager("stone0", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
-		this.tileContentsSM[1] = new BABYLON.SpriteManager("stone1", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
-		this.tileContentsSM[2] = new BABYLON.SpriteManager("stone2", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
-		this.tileContentsSM[3] = new BABYLON.SpriteManager("stone3", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
-		this.tileContentsSM[4] = new BABYLON.SpriteManager("stone4", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
-		this.tileContentsSM[5] = new BABYLON.SpriteManager("stone5", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
-		this.tileContentsSM[6] = new BABYLON.SpriteManager("food", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
-
-// ------ END SPRITE LOADING ------- //
+		this.initSpriteManagers()
 
 		//this.camera = createArcCamera(this.canvas, this.scene);	// #ifdef DEBUG
 		this.camera = createCustomCamera(this.canvas, this.scene);	// Custom camera setup for final version.
@@ -108,7 +88,8 @@ class Game {
 	}
 
 	addPlayer(pinfo) {
-		var new_player = new playerAvatar(this.avatarSM[pinfo.team], pinfo);
+		var new_player = new playerAvatar(
+			this.spriteManagers.avatars[pinfo.team], pinfo);
 		this.players[new_player.id] = new_player;
 		this.players[new_player.id].createSprite();
 	}
@@ -118,17 +99,57 @@ class Game {
 			return this.players[pid];
 		}
 		else {
-			console.log("Failed to get_player");
+			console.warn("Failed to get_player");
 		}
 	}
 
-	create_tile(tinfo) {
-		var new_tile;
-		for (var i = 0; i < tinfo.length; i++) {
-			new_tile = tinfo[i];
-			this.tiles[new_tile.x][new_tile.y] = new Tile(new_tile);
-
-		}
+	addTile({ x, y }) {
+		return (this.tiles[x][y] = new Tile({ x, y }))
 	}
 
+	getContentSpriteManagerFor(type) {
+		if ("stone" === type.slice(0, 5))
+			return this.spriteManagers.stones[type[5]]
+		if ("eggs" === type || "food" === type)
+			return this.spriteManagers[type]
+		console.warn("couldn't get sprite manager for " + type)
+	}
+
+	initSpriteManagers() {
+		this.spriteManagers = {
+			stones: STONE_ASSET_STRINGS.map((asset_path, idx) => {
+				return new BABYLON.SpriteManager(
+					`stone${idx}-manager`,
+					asset_path,
+					this.x * this.y * 10,
+					SPRITE_DIMENSIONS,
+					this.scene
+				)
+			}),
+			avatars: this.teams.map((teamName, idx) => {
+				const whichSprite = idx % AVATAR_SPRITE_ASSET_STRINGS.length
+				return new BABYLON.SpriteManager(
+					`avatar-${teamName}-manager`,
+					AVATAR_SPRITE_ASSET_STRINGS[whichSprite],
+					MAX_SPRITES,
+					SPRITE_DIMENSIONS,
+					this.scene
+				)
+			}),
+			eggs: new BABYLON.SpriteManager(
+				'eggs-manager',
+				'egg.png', //XXX changeme
+				this.x * this.y * 10,
+				SPRITE_DIMENSIONS,
+				this.scene
+			),
+			food: new BABYLON.SpriteManager(
+				'food-manager',
+				'food.png', //XXX changeme
+				this.x * this.y * 10,
+				SPRITE_DIMENSIONS,
+				this.scene
+			),
+		}
+	}
 }
