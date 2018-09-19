@@ -63,7 +63,25 @@ class playerAvatar {
 		this.y = (this.y + { n: -1, e: 0, w: 0, s: 1 }[dir] + game.y) % game.y;
 	}
 
-	moveSprite(val, dir) {
+	advance() {
+		this.moveDirection(this.facing);
+		this.advanceAnimation()
+		//this.idle();
+	}
+
+	connect_client() {
+		this.sprite.playAnimation(0, 3, true, 100);
+	}
+
+	idle() {
+		const startFrame = { n: 38, e: 44, s: 32, w: 50 }[this.facing];
+		this.sprite.playAnimation(startFrame, startFrame + 3, true, 200);
+	}
+
+	advanceAnimation() {
+		const dir = this.facing;
+		var val = {n:this.sprite.position.x, s:this.sprite.position.x,
+				   e:this.sprite.position.z, w:this.sprite.position.z}[dir];
 		var animation = new BABYLON.Animation("tutoAnimation",
 			{n:"position.x", s:"position.x", e:"position.z", w:"position.z"}[dir],
 			15 * game.tickrate,
@@ -95,19 +113,37 @@ class playerAvatar {
 		);
 	}
 
-	advance() {
-		this.moveDirection(this.facing);
-		this.moveSprite({n:this.sprite.position.x, s:this.sprite.position.x,
-						 e:this.sprite.position.z, w:this.sprite.position.z}[this.facing], this.facing)
-		//this.idle();
-	}
-
-	connect_client() {
-		this.sprite.playAnimation(0, 3, true, 100);
-	}
-
-	idle() {
-		const startFrame = { n: 38, e: 44, s: 32, w: 50 }[this.facing];
-		this.sprite.playAnimation(startFrame, startFrame + 3, true, 200);
+	kickAnimation(dir) {
+		var val = {n:this.sprite.position.x, s:this.sprite.position.x,
+				   e:this.sprite.position.z, w:this.sprite.position.z}[dir];
+		var animation = new BABYLON.Animation("tutoAnimation",
+			{n:"position.x", s:"position.x", e:"position.z", w:"position.z"}[dir],
+			15 * game.tickrate,
+			BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+			BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
+		);
+		var keys = [];
+		keys.push({
+			frame: 0,
+			value: val 
+		});
+		keys.push({
+			frame: 100,
+			value: val + (dir === 'n' || dir === 'w' ? -TILE_SIZE : TILE_SIZE)
+		});
+		animation.setKeys(keys);
+		this.sprite.animations.push(animation);
+		game.scene.beginAnimation(this.sprite, 0, 100, false, 1, () => {
+			this.sprite.stopAnimation();
+			this.sprite.position.x = this.y * TILE_SIZE + this.spriteOffsets.y;
+			this.sprite.position.z = this.x * TILE_SIZE + this.spriteOffsets.x;
+			this.idle();
+		});
+		this.sprite.playAnimation(
+			{n:7,  e:13, s:1, w:19}[this.facing],
+			{n:10, e:16, s:4, w:22}[this.facing],
+			true,
+			10
+		);
 	}
 }

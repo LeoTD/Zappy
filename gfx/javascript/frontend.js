@@ -69,5 +69,6 @@ function fastForwardToGameState(ev) {
 function kickPlayers(kicked_pids, direction) {
 	for (let pid of kicked_pids) {
 		game.get_player(pid).moveDirection(direction);
+		game.get_player(pid).kickAnimation(direction);
 	}
 }

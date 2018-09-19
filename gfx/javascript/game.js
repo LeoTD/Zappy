@@ -14,15 +14,6 @@ const STONE_ASSET_STRINGS			= {
 	'stone5.png': { height: 155, width: 155 },
 };
 
-/*const STONE_ASSET_STRINGS			= [
-	'stone0.png',	// Stone0, ...
-	'stone1.png',
-	'stone2.png',
-	'stone3.png',
-	'stone4.png',
-	'stone5.png',
-];
-*/
 class Game {
 	constructor(opts) {
 		
