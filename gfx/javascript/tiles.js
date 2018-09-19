@@ -27,9 +27,9 @@ class Tile {
 
 	addContentSprite(type) {
 		const sp = new BABYLON.Sprite(type, game.getContentSpriteManagerFor(type));
-		sp.position.x = this.y * TILE_SIZE;
-		sp.position.y = 0;
-		sp.position.z = this.x * TILE_SIZE;
+		sp.position.x = this.y * (TILE_SIZE + Math.random() * 2 - 1);
+		sp.position.y = 5;
+		sp.position.z = this.x * (TILE_SIZE + Math.random() * 2 - 1);
 		sp.size = 3;
 		this.contentSprites.push(sp);
 	}

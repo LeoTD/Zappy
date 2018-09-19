@@ -1,17 +1,28 @@
 const MAX_SPRITES					= 256;
 const SPRITE_DIMENSIONS				= {height:32, width:32};
+const FOOD_DIMENSIONS				= {height:384, width: 427};
 const AVATAR_SPRITE_ASSET_STRINGS	= [
 	'bob.png',
 ];
-const STONE_ASSET_STRINGS			= [
-	'temp_stone.png',	// Stone0, ...
-	'temp_stone.png',
-	'temp_stone.png',
-	'temp_stone.png',
-	'temp_stone.png',
-	'temp_stone.png',
-];
 
+const STONE_ASSET_STRINGS			= {
+	'stone0.png': { height: 89, width: 67 },	// rock
+	'stone1.png': { height: 114, width: 123 },	// air
+	'stone2.png': { height: 120, width: 120 },	// fire
+	'stone3.png': { height: 89, width: 107 },	// water
+	'stone4.png': { height: 500, width: 500 },	// earth
+	'stone5.png': { height: 155, width: 155 },	// ?
+};
+
+/*const STONE_ASSET_STRINGS			= [
+	'stone0.png',	// Stone0, ...
+	'stone1.png',
+	'stone2.png',
+	'stone3.png',
+	'stone4.png',
+	'stone5.png',
+];
+*/
 class Game {
 	constructor(opts) {
 		
@@ -119,12 +130,12 @@ class Game {
 
 	initSpriteManagers() {
 		this.spriteManagers = {
-			stones: STONE_ASSET_STRINGS.map((asset_path, idx) => {
+			stones: Object.keys(STONE_ASSET_STRINGS).map((asset_path, idx) => {
 				return new BABYLON.SpriteManager(
 					`stone${idx}-manager`,
 					asset_path,
 					this.x * this.y * 10,
-					SPRITE_DIMENSIONS,
+					STONE_ASSET_STRINGS[asset_path],
 					this.scene
 				);
 			}),
@@ -149,7 +160,7 @@ class Game {
 				'food-manager',
 				'food.png', //XXX changeme
 				this.x * this.y * 10,
-				SPRITE_DIMENSIONS,
+				FOOD_DIMENSIONS,	
 				this.scene
 			),
 		};

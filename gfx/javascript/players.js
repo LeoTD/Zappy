@@ -102,10 +102,10 @@ class playerAvatar {
 		});
 		testAnim.setKeys(aniKeys);
 		this.sprite.animations.push(testAnim);
-		game.scene.beginAnimation(this.sprite, 0 , 100, false, this.idle());
+		game.scene.beginAnimation(this.sprite, this.x, 100, false, this.idle());
 		console.log("Hello");
 		
-		//this.moveDirection(this.facing);
+		this.moveDirection(this.facing);
 		//this.idle();
 	}
 
