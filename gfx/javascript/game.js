@@ -6,12 +6,12 @@ const AVATAR_SPRITE_ASSET_STRINGS	= [
 ];
 
 const STONE_ASSET_STRINGS			= {
-	'stone0.png': { height: 89, width: 67 },	// rock
-	'stone1.png': { height: 114, width: 123 },	// air
-	'stone2.png': { height: 120, width: 120 },	// fire
-	'stone3.png': { height: 89, width: 107 },	// water
-	'stone4.png': { height: 500, width: 500 },	// earth
-	'stone5.png': { height: 155, width: 155 },	// ?
+	'stone0.png': { height: 89, width: 67 },
+	'stone1.png': { height: 114, width: 123 },
+	'stone2.png': { height: 120, width: 120 },
+	'stone3.png': { height: 89, width: 107 },
+	'stone4.png': { height: 500, width: 500 },
+	'stone5.png': { height: 155, width: 155 },
 };
 
 /*const STONE_ASSET_STRINGS			= [
@@ -71,11 +71,10 @@ class Game {
 
 		this.board		= new Board();
 		this.board.createMesh({x:this.x, y:this.y}, this.scene);
-		this.board.displayAxes(this.scene, 50); // #ifdef DEBUG
+		this.board.displayAxes(this.scene, 50);							// #ifdef DEBUG
 		this.initSpriteManagers();
 
-		//this.camera = createArcCamera(this.canvas, this.scene);	// #ifdef DEBUG
-		this.camera = createCustomCamera(this.canvas, this.scene);	// Custom camera setup for final version.
+		this.camera = createCustomCamera(this.canvas, this.scene);
 	
 		// Register a render loop to repeatedly render the scene
 		this.engine.runRenderLoop(function () {

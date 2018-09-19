@@ -46,16 +46,20 @@ class playerAvatar {
 		const zone_height= (TILE_SIZE / 2);
 		const w_offset   = (TILE_SIZE / 2) - (this.sprite.size / 2);
 		const h_offset   = (TILE_SIZE / 3);
+		this.spriteOffsets = {
+			x:(Math.random() * zone_width) - w_offset,
+			y:(Math.random() * zone_height) - h_offset
+		}
 		this.sprite.position.y = 5;
-		this.sprite.position.z = (this.x * TILE_SIZE) + (Math.random() * zone_width) - w_offset;
-		this.sprite.position.x = (this.y * TILE_SIZE) + (Math.random() * zone_height) - h_offset;
+		this.sprite.position.z = (this.x * TILE_SIZE) + this.spriteOffsets.x;
+		this.sprite.position.x = (this.y * TILE_SIZE) + this.spriteOffsets.y;
 		this.sprite.isPickable = true;
 	}
 
 	moveDirection(dir) {
 		if (false === ['n', 'e', 's', 'w'].includes(dir))
 			console.warn(`${this.id}: invalid direction '${dir}'`);
-		this.x = (this.x + { n: 0, e: -1, w: 1, s: 0 }[dir] + game.x) % game.x;
+		this.x = (this.x + { n: 0, e: 1, w: -1, s: 0 }[dir] + game.x) % game.x;
 		this.y = (this.y + { n: -1, e: 0, w: 0, s: 1 }[dir] + game.y) % game.y;
 	}
 
@@ -71,41 +75,27 @@ class playerAvatar {
 			frame: 0,
 			value: val 
 		});
-
+	
 		keys.push({
 			frame: 100,
-			value: val + TILE_SIZE
+			value: val + (dir === 'n' || dir === 'w' ? -TILE_SIZE : TILE_SIZE)
 		});
 
 		animation.setKeys(keys);
 		this.sprite.animations.push(animation);
 		game.scene.beginAnimation(this.sprite, 0, 100, false, 1, () => {
 			this.sprite.stopAnimation();
-			this.sprite.position.x = this.y * TILE_SIZE;
-			this.sprite.position.z = this.x * TILE_SIZE;
+			this.sprite.position.x = this.y * TILE_SIZE + this.spriteOffsets.y;
+			this.sprite.position.z = this.x * TILE_SIZE + this.spriteOffsets.x;
 			this.idle();
 		});
 		this.sprite.playAnimation(1, 4, true, 100);
 	}
 
 	advance() {
-		var testAnim = new BABYLON.Animation("myAnimation", "position.x", 30,
-			BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
-		var aniKeys = [];
-		aniKeys.push({
-			frame: 0,
-			value: 0
-		});
-		aniKeys.push({
-			frame: 100,
-			value: TILE_SIZE
-		});
-		testAnim.setKeys(aniKeys);
-		this.sprite.animations.push(testAnim);
-		game.scene.beginAnimation(this.sprite, this.x, 100, false, this.idle());
-		console.log("Hello");
-		
 		this.moveDirection(this.facing);
+		this.moveSprite({n:this.sprite.position.x, s:this.sprite.position.x,
+						 e:this.sprite.position.z, w:this.sprite.position.z}[this.facing], this.facing)
 		//this.idle();
 	}
 
