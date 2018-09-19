@@ -1,5 +1,5 @@
 function createArcCamera(canvas, scene) {
-	var camera = new BABYLON.ArcRotateCamera("Camera", (Math.PI / 2), (Math.PI / 3), 50, new BABYLON.Vector3(0,0,0), scene);
+	var camera = new BABYLON.ArcRotateCamera("Camera", 0, (Math.PI / 3), 50, new BABYLON.Vector3(0,0,0), scene);
     camera.attachControl(canvas, true);
     
     // Remove default keyboard:
@@ -81,16 +81,16 @@ function createArcCamera(canvas, scene) {
             for (var index = 0; index < this._keys.length; index++) {
                 var keyCode = this._keys[index];
                 if (this.keysUp.indexOf(keyCode) !== -1) {
-					target.z -= this.sensibility;
+					target.x -= this.sensibility;
                 }
                 else if (this.keysDown.indexOf(keyCode) !== -1) {
-					target.z += this.sensibility;
-                }
-                if (this.keysLeft.indexOf(keyCode) !== -1) {
 					target.x += this.sensibility;
                 }
+                if (this.keysLeft.indexOf(keyCode) !== -1) {
+					target.z -= this.sensibility;
+                }
                 else if (this.keysRight.indexOf(keyCode) !== -1) {
-                    target.x -= this.sensibility;
+                    target.z += this.sensibility;
                 }
             }
             if (!_.isEqual(oldtarget, target)){
@@ -115,10 +115,10 @@ function createArcCamera(canvas, scene) {
 
 function createCustomCamera(canvas, scene) {
 	// This creates and positions a free camera (non-mesh)
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 300, 300), scene);
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(200, 200, 0), scene);
 
     // This targets the camera to scene origin (Coord: (0, 0, 0))
-    camera.setTarget(BABYLON.Vector3.Zero());
+    camera.setTarget(new BABYLON.Vector3(0, 0, 0));
 
     // This attaches the camera to the canvas
     camera.attachControl(canvas, true);
@@ -200,17 +200,17 @@ function createCustomCamera(canvas, scene) {
             for (var index = 0; index < this._keys.length; index++) {
                 var keyCode = this._keys[index];
                 if (this.keysUp.indexOf(keyCode) !== -1) {
-					camera.position.z -= this.sensibility;
+					camera.position.x -= this.sensibility;
                 }
                 else if (this.keysDown.indexOf(keyCode) !== -1) {
-					camera.position.z += this.sensibility;
+					camera.position.x += this.sensibility;
                 }
                 if (this.keysLeft.indexOf(keyCode) !== -1) {
 					//camera.cameraRotation.y += this.sensibility;
-					camera.position.x += this.sensibility;
+					camera.position.z -= this.sensibility;
                 }
                 else if (this.keysRight.indexOf(keyCode) !== -1) {
-                    camera.position.x -= this.sensibility;
+                    camera.position.z += this.sensibility;
                 }
             }
         }

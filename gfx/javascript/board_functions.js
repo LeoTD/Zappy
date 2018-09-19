@@ -44,8 +44,8 @@ class Board {
 
 	createMesh(dim, scene) {
 
-		this._mesh = BABYLON.MeshBuilder.CreateBox("board", {height:0.5, width:TILE_SIZE * dim.x, depth:TILE_SIZE * dim.y}, scene);
-		this._mesh.position = {x:((dim.x / 2) - 0.5) * TILE_SIZE, y:-0.7, z:((dim.y / 2) - 0.5) * TILE_SIZE};
+		this._mesh = BABYLON.MeshBuilder.CreateBox("board", {height:0.5, width:TILE_SIZE * dim.y, depth:TILE_SIZE * dim.x}, scene);
+		this._mesh.position = {x:((dim.y / 2) - 0.5) * TILE_SIZE, y:-0.7, z:((dim.x / 2) - 0.5) * TILE_SIZE};
 
 		var tileTexture = new BABYLON.StandardMaterial("tileTexture", scene);
 		tileTexture.diffuseTexture = new BABYLON.Texture(TILE_ASSET, scene);

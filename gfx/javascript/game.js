@@ -59,7 +59,32 @@ class Game {
 		this.board		= new Board();
 		this.board.createMesh({x:this.x, y:this.y}, this.scene);
 		this.board.displayAxes(this.scene, 50) // #ifdef DEBUG
+<<<<<<< HEAD
 		this.initSpriteManagers()
+=======
+
+// ------- Load sprite managers with their respective sprites ------- //
+		// Create an avatar manager for each team. (Different color dinos! :D)
+		for (var i = 0; i < this.teams.length; i++) {
+			this.avatarSM.push(
+				new BABYLON.SpriteManager(this.teams[i], AVATAR_SPRITE_ASSET_STRINGS[i % AVATAR_SPRITE_ASSET_STRINGS.length],
+											MAX_SPRITES, SPRITE_DIMENSIONS, this.scene)
+			)
+		}
+
+		// Create a manager for each stone type of stone and food.
+		this.tileContentsSM[0] = new BABYLON.SpriteManager("stone0", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[1] = new BABYLON.SpriteManager("stone1", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[2] = new BABYLON.SpriteManager("stone2", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[3] = new BABYLON.SpriteManager("stone3", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[4] = new BABYLON.SpriteManager("stone4", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[5] = new BABYLON.SpriteManager("stone5", STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+		this.tileContentsSM[6] = new BABYLON.SpriteManager("food"  , STONE_ASSET_STRINGS[0], (this.x * this.y) * 10, SPRITE_DIMENSIONS, this.scene);
+
+// ------ END SPRITE LOADING ------- //
+>>>>>>> I MADE BOB MOVE OMG WHY WAS THAT SO HARD
+
+		// Generate empty tiles
 
 		//this.camera = createArcCamera(this.canvas, this.scene);	// #ifdef DEBUG
 		this.camera = createCustomCamera(this.canvas, this.scene);	// Custom camera setup for final version.

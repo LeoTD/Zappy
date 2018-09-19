@@ -1,3 +1,13 @@
+const STONE_PLACEMENT_OFFSETS	= [
+	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
+	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
+	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
+	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
+	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
+	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
+	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)}
+]
+
 class Tile {
 	constructor(opts) {
 		this.x					= opts.x;
@@ -13,6 +23,7 @@ class Tile {
 		}
 		this.contentSprites		= [];
 	}
+<<<<<<< HEAD
 
 	get center() {
 		return { x: this.x * TILE_SIZE, y: this.y * TILE_SIZE }
@@ -33,4 +44,6 @@ class Tile {
 		sp.size = 3;
 		this.contentSprites.push(sp);
 	}
+=======
+>>>>>>> I MADE BOB MOVE OMG WHY WAS THAT SO HARD
 }
