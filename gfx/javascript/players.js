@@ -75,12 +75,10 @@ class playerAvatar {
 			frame: 0,
 			value: val 
 		});
-	
 		keys.push({
 			frame: 100,
 			value: val + (dir === 'n' || dir === 'w' ? -TILE_SIZE : TILE_SIZE)
 		});
-
 		animation.setKeys(keys);
 		this.sprite.animations.push(animation);
 		game.scene.beginAnimation(this.sprite, 0, 100, false, 1, () => {
@@ -89,7 +87,12 @@ class playerAvatar {
 			this.sprite.position.z = this.x * TILE_SIZE + this.spriteOffsets.x;
 			this.idle();
 		});
-		this.sprite.playAnimation(1, 4, true, 100);
+		this.sprite.playAnimation(
+			{n:7,  e:13, s:1, w:19}[dir],
+			{n:10, e:16, s:4, w:22}[dir],
+			true,
+			100
+		);
 	}
 
 	advance() {
