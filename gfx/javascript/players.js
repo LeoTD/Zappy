@@ -57,31 +57,35 @@ class playerAvatar {
 			console.warn(`${this.id}: invalid direction '${dir}'`);
 		this.x = (this.x + { n: 0, e: -1, w: 1, s: 0 }[dir] + game.x) % game.x;
 		this.y = (this.y + { n: -1, e: 0, w: 0, s: 1 }[dir] + game.y) % game.y;
-		this.sprite.position.x = this.y * TILE_SIZE;
-		this.sprite.position.z = this.x * TILE_SIZE;
 	}
 
-	dumbtestthing() {
-		var player = this.sprite;
-		var animation = new BABYLON.Animation("tutoAnimation", "position.z", 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-			BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);  
+	moveSprite(val, dir) {
+		var animation = new BABYLON.Animation("tutoAnimation",
+			{n:"position.x", s:"position.x", e:"position.z", w:"position.z"}[dir],
+			15 * game.tickrate,
+			BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+			BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
+		);
 		var keys = [];
 		keys.push({
 			frame: 0,
-			value: player.position.z 
+			value: val 
 		});
 
 		keys.push({
 			frame: 100,
-			value: player.position.z + TILE_SIZE
+			value: val + TILE_SIZE
 		});
 
 		animation.setKeys(keys);
-		player.animations.push(animation);
-		game.scene.beginAnimation(player, 0, 100, false, 1, function () {
-			player.stopAnimation();
+		this.sprite.animations.push(animation);
+		game.scene.beginAnimation(this.sprite, 0, 100, false, 1, () => {
+			this.sprite.stopAnimation();
+			this.sprite.position.x = this.y * TILE_SIZE;
+			this.sprite.position.z = this.x * TILE_SIZE;
+			this.idle();
 		});
-		player.playAnimation(1, 4, true, 100);
+		this.sprite.playAnimation(1, 4, true, 100);
 	}
 
 	advance() {

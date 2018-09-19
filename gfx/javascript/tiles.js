@@ -1,13 +1,3 @@
-const STONE_PLACEMENT_OFFSETS	= [
-	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
-	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
-	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
-	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
-	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
-	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)},
-	{x: (TILE_SIZE / 3), y: (TILE_SIZE / 3)}
-];
-
 class Tile {
 	constructor(opts) {
 		this.x					= opts.x;
@@ -37,9 +27,9 @@ class Tile {
 
 	addContentSprite(type) {
 		const sp = new BABYLON.Sprite(type, game.getContentSpriteManagerFor(type));
-		sp.position.x = this.x * TILE_SIZE;
+		sp.position.x = this.y * TILE_SIZE;
 		sp.position.y = 0;
-		sp.position.z = this.y * TILE_SIZE;
+		sp.position.z = this.x * TILE_SIZE;
 		sp.size = 3;
 		this.contentSprites.push(sp);
 	}

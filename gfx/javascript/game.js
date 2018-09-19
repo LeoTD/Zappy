@@ -27,7 +27,7 @@ class Game {
 		//     management and for deploying animations.
 		this.players				= [];
 		this.tiles					= [];
-		for (let i = 0; i < this.y; i++)
+		for (let i = 0; i < this.x; i++)
 			this.tiles.push([]);
 
 		// ------- Constructs required by the BABYLON graphics engine ------- //
@@ -53,6 +53,8 @@ class Game {
 		this.canvas 	= document.getElementById('renderCanvas');		// Get the canvas element
 		this.engine 	= new BABYLON.Engine(this.canvas, true);		// Generate the BABYLON 3D engine
 		this.scene 		= new BABYLON.Scene(this.engine);				// Create the scene object
+
+		this.scene.clearColor = new BABYLON.Color3(0, 0.1, 0.5);
 
 		this.sunlight	= new BABYLON.HemisphericLight('sunlight', new BABYLON.Vector3(1, 1, 0), this.scene);
 

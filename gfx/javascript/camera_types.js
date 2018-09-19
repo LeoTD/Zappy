@@ -115,10 +115,12 @@ function createArcCamera(canvas, scene) {
 
 function createCustomCamera(canvas, scene) {
 	// This creates and positions a free camera (non-mesh)
-	var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(200, 200, 0), scene);
+	var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(200, 200, 200), scene);
 
 	// This targets the camera to scene origin (Coord: (0, 0, 0))
-	camera.setTarget(new BABYLON.Vector3(0, 0, 0));
+//	camera.setTarget(new BABYLON.Vector3(0, 0, 0));
+
+	camera.rotation = new BABYLON.Vector3((Math.PI / 4), (Math.PI * 2.1 / -3), 0);
 
 	// This attaches the camera to the canvas
 	camera.attachControl(canvas, true);
