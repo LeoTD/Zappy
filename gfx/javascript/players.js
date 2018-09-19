@@ -1,4 +1,3 @@
-
 class playerAvatar {
 	constructor(s_manager, opts) {
 
@@ -65,7 +64,7 @@ class playerAvatar {
 	dumbtestthing() {
 		var player = this.sprite;
 		var animation = new BABYLON.Animation("tutoAnimation", "position.z", 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-		BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);  
+			BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);  
 		var keys = [];
 		keys.push({
 			frame: 0,
@@ -87,7 +86,7 @@ class playerAvatar {
 
 	advance() {
 		var testAnim = new BABYLON.Animation("myAnimation", "position.x", 30,
-						BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
+			BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
 		var aniKeys = [];
 		aniKeys.push({
 			frame: 0,
@@ -112,6 +111,6 @@ class playerAvatar {
 
 	idle() {
 		const startFrame = { n: 38, e: 44, s: 32, w: 50 }[this.facing];
-		this.sprite.playAnimation(startFrame, startFrame + 3, true, 200)
+		this.sprite.playAnimation(startFrame, startFrame + 3, true, 200);
 	}
 }

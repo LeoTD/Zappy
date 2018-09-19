@@ -1,3 +1,4 @@
+/* eslint-disable */
  /*
   Live.js - One script closer to Designing in the Browser
   Written for Handcraft.com by Martin Kool (@mrtnkl).
