@@ -1,5 +1,13 @@
 const SpriteData = {};
 
+function facingCamera(facing) {
+	return facing === 's' || facing === 'e';
+}
+
+function shouldInvert(facing) {
+	return facing === 'n' || facing === 'e';
+}
+
 SpriteData.bob = {
 	assetPath: 'bob.png',
 	getMaxSprites: () => 256,
@@ -23,6 +31,54 @@ SpriteData.bob = {
 		}
 	}
 };
+
+const genericFftaSpriteData = {
+	getMaxSprites: () => 1000,
+	dimensions: {
+		width: 64,
+		height: 64,
+	},
+	size: 25,
+	animations: {
+		walk: function (legInterval) {
+			let startFrame = 1;
+			if (facingCamera(this.player.facing))
+				startFrame += 4;
+			if (this.player.team % 2 !== 0)
+				startFrame += 8;
+			this.invertU = shouldInvert(this.player.facing);
+			this.playAnimation(
+				startFrame,
+				startFrame + 2,
+				true,
+				legInterval
+			);
+		},
+		idle: function () {
+			this.cellIndex = 1;
+			if (facingCamera(this.player.facing))
+				this.cellIndex += 4;
+			if (this.player.team % 2 !== 0)
+				this.cellIndex += 8;
+			this.invertU = shouldInvert(this.player.facing);
+		}
+	}
+};
+
+SpriteData.blackMage = {
+	assetPath: 'player-sprites/human-blackmage/human-blackmage-sheet.png',
+};
+Object.assign(SpriteData.blackMage, genericFftaSpriteData);
+
+SpriteData.mogKnight = {
+	assetPath: 'player-sprites/moogle-mogknight/moogle-mogknight-sheet.png',
+};
+Object.assign(SpriteData.mogKnight, genericFftaSpriteData);
+
+SpriteData.bangaa = {
+	assetPath: 'player-sprites/bangaa-warrior/bangaa-warrior-sheet.png',
+};
+Object.assign(SpriteData.bangaa, genericFftaSpriteData);
 
 SpriteData.eggs = {
 	assetPath: 'egg.png',

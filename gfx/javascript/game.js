@@ -115,8 +115,15 @@ class Game {
 	}
 
 	getTeamSpriteName(teamId) {
-		const teamSpriteNames = ['bob'];
-		return teamSpriteNames[teamId % teamSpriteNames.length];
+		const teamSprites = [
+			'blackMage',
+			'mogKnight',
+			'bangaa',
+			'blackMage',
+			'mogKnight',
+			'bangaa'
+		];
+		return teamSprites[teamId % teamSprites.length];
 	}
 
 	initSpriteManagers() {

@@ -15,7 +15,7 @@ class PlayerSprite extends BABYLON.Sprite {
 			x:(Math.random() * zone_width) - w_offset,
 			y:(Math.random() * zone_height) - h_offset
 		};
-		this.position.y = 5;
+		this.position.y = this.size / 2;
 		this.position.z = (this.player.x * game.tileSize) + this.player.spriteOffsets.x;
 		this.position.x = (this.player.y * game.tileSize) + this.player.spriteOffsets.y;
 		this.isPickable = true;
