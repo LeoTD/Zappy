@@ -57,9 +57,10 @@ class Game {
 		this.engine 	= new BABYLON.Engine(this.canvas, true);		// Generate the BABYLON 3D engine
 		this.scene 		= new BABYLON.Scene(this.engine);				// Create the scene object
 
-		this.scene.clearColor = new BABYLON.Color3(0, 0.1, 0.5);
+//		this.scene.clearColor = new BABYLON.Color3(0, 0.1, 0.5);
 
-		this.sunlight	= new BABYLON.HemisphericLight('sunlight', new BABYLON.Vector3(1, 1, 0), this.scene);
+		this.sunlight	= new BABYLON.HemisphericLight('hemiLight', new BABYLON.Vector3(1, 1, 0), this.scene);
+		this.sunlight.intensity = 0;
 
 		this.board		= new Board();
 		this.board.createMesh({x:this.x, y:this.y}, this.scene);
@@ -68,6 +69,13 @@ class Game {
 
 		this.camera = createCustomCamera(this.canvas, this.scene);
 	
+		var skybox = BABYLON.Mesh.CreateBox("skyBox", 5026, this.scene, undefined, BABYLON.Mesh.BACKSIDE);
+		var skyboxMaterial = new BABYLON.BackgroundMaterial("skyBox", this.scene);
+		skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("skybox0/skybox", this.scene);
+		skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	//	skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	//	skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+		skybox.material = skyboxMaterial;
 		// Register a render loop to repeatedly render the scene
 		this.engine.runRenderLoop(function () {
 			game.scene.render();
