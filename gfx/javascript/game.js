@@ -12,6 +12,7 @@ class Game {
 		// Player and tile arrays for detailed game state
 		//     management and for deploying animations.
 		this.players				= [];
+		this.MAX_PLAYERS			= 1024;
 		this.tileSize = 25;
 		this.tiles					= [];
 		for (let i = 0; i < this.x; i++)

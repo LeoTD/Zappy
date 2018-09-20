@@ -1,21 +1,7 @@
 class speechBubble {
-	constructor(managers, player) {
+	constructor(player) {
 
 		this.p				= player;
-		this.m				= {
-			put:		managers.put,
-			putFail:	managers.putFail,
-			take:		managers.take,
-			takeFail:	managers.takeFail,
-			inventory:	managers.inventory,
-			broadcast:	managers.broadcast,
-			see:		managers.see,
-			kick:		managers.kick,
-			kickFail:	managers.kickFail,
-			incant:		managers.incant,
-			incantFail:	managers.incantFail,
-			fork:		managers.fork,
-		};
 
 		this.s				= {
 			put:		undefined,
@@ -30,10 +16,14 @@ class speechBubble {
 			incant:		undefined,
 			incantFail:	undefined,
 			fork:		undefined,
+			death:		undefined,
 		}
 	}
 
 	cmdPopup(key) {
+		this.s[key] = new BABYLON.Sprite(key, SpriteData[key].manager);
+		this.s[key].color.a = 1;
+		this.s[key].size = 5;
 		this.updatePosition(key);
 		this.s[key].isVisible = true;
 
@@ -43,11 +33,12 @@ class speechBubble {
 			BABYLON.Animation.ANIMATIONTYPE_FLOAT,
 			BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
 		);
-		const start = this.s[key].position.y;
-		const end = 0;
-		fade.setKeys([
+		var start = this.s[key].position.y;
+		var end = start / 2;
+		cascade.setKeys([
 			{ frame: 0, value: start },
-			{ frame: 50, value: start},
+			{ frame: 40, value: start },
+			{ frame: 75, value: ((end - start) / 2) + start},
 			{ frame: 100, value: end }
 		]);
 
@@ -57,8 +48,8 @@ class speechBubble {
 			BABYLON.Animation.ANIMATIONTYPE_FLOAT,
 			BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
 		);
-		const start = this.s[key].color.a;
-		const end = 0;
+		start = 1;
+		end = 0;
 		fade.setKeys([
 			{ frame: 0, value: start },
 			{ frame: 50, value: start},
@@ -67,28 +58,22 @@ class speechBubble {
 
 		game.scene.beginDirectAnimation(
 			this.s[key],
-			[fade, cascade],
+			[cascade],
 			0,
 			100,
 			false,
 			1,
 			() => {
-				this.s[key].isVisible = false;
-				this.updatePosition(key);
+				this.s[key].dispose();
 			}
 		);
 	}
 
-	init() {
-		for (let key in this.m) {
-			this.s[key] = new BABYLON.Sprite(key, this.m[key]);
-			this.s[key].isVisible = false;
-			this.updatePosition(key);
-		}
-	}
-
 	updatePosition(key) {
-		this.s[key].position = this.p.sprite.position;
+		this.s[key].position.x = this.p.sprite.position.x;
+		this.s[key].position.y = this.p.sprite.position.y;
+		this.s[key].position.z = this.p.sprite.position.z;
+
 		this.s[key].position.y += this.p.sprite.size;
 	}
 

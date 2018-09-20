@@ -18,6 +18,18 @@ class Tile {
 		return { x: this.x * game.tileSize, y: this.y * game.tileSize };
 	}
 
+	removeContent(type, amt) {
+		this.inventory[type] -= amt;
+		for (var i = 0; i < amt; i++) {
+			this.removeContentSprite(type);
+		}
+	}
+
+	removeContentSprite(type) {
+		const sp = this.contentSprites.shift();
+		sp.dispose();
+	}
+
 	addContent(type, amt) {
 		this.inventory[type] += amt;
 		for (var i = 0; i < amt; i++) {

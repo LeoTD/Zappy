@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			case 'KICK':
 				kickPlayers(ev.kickees, ev.direction);
 				break;
+			case 'TAKE':
+				game.get_player(ev.playerId).take({x:ev.x, y:ev.y}, ev.objType, ev.isSuccess);
+				break;
+			case 'PUT':
+				game.get_player(ev.playerId).put({x:ev.x, y:ev.y}, ev.objType, ev.isSuccess);
+				break;
 			case 'SPAWN_RESOURCE':
 				game.tiles[ev.x][ev.y].addContent(ev.objType);
 				break;

@@ -2,6 +2,8 @@ const compass = ['n', 'e', 's', 'w', 'n'];
 
 class playerAvatar {
 	constructor(opts) {
+		this.bubble		= new speechBubble(this)
+
 		this.id			= opts.id;
 		this.x 			= opts.x;
 		this.y 			= opts.y;
@@ -25,6 +27,18 @@ class playerAvatar {
 		this.sprite.idleAnimation();
 	}
 
+	put(tile, type, isSuccess) {
+		if (1){//isSuccess == true) {
+			game.tiles[tile.x][tile.y].addContent(type, 1);
+		}
+	}
+
+	take(tile, type, isSuccess) {
+		if (1){//isSuccess == true) {
+			game.tiles[tile.x][tile.y].removeContent(type, 1);
+		}
+	}
+
 	createSprite() {
 		const opts = {};
 		Object.assign(opts, SpriteData[game.getTeamSpriteName(this.team)]);
@@ -42,6 +56,8 @@ class playerAvatar {
 	advance() {
 		this.sprite.advanceAnimation();
 		this.moveDirection(this.facing);
+		this.bubble.cmdPopup('fork');
+		this.sprite.isVisible = false;
 	}
 
 	getKicked(dir) {

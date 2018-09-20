@@ -115,12 +115,23 @@ function createArcCamera(canvas, scene) {
 
 function createCustomCamera(canvas, scene) {
 	// This creates and positions a free camera (non-mesh)
+//	var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(200, 200, 200), scene);
+
+	// try of isometric camera - GERARDO MODS
 	var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(200, 200, 200), scene);
+//	camera.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
+	camera.orthoTop = 350;
+	camera.orthoBottom = -350;
+	camera.orthoLeft = -350;
+	camera.orthoRight = 350;
 
 	// This targets the camera to scene origin (Coord: (0, 0, 0))
 //	camera.setTarget(new BABYLON.Vector3(0, 0, 0));
 
-	camera.rotation = new BABYLON.Vector3((Math.PI / 4), (Math.PI * 2.1 / -3), 0);
+//	camera.setTarget(sphere.);
+
+
+	camera.rotation = new BABYLON.Vector3((Math.PI / 6), (Math.PI * 2.1 / -3), 0);
 
 	// This attaches the camera to the canvas
 	camera.attachControl(canvas, true);
@@ -135,7 +146,10 @@ function createCustomCamera(canvas, scene) {
 		this.keysRight		= [39];
 		this.keysUp			= [38];
 		this.keysDown		= [40];
+		this.keysPlus		= [187];
+		this.keysMinus		= [189];
 		this.sensibility	= 5;
+		this.zoomSensibility = 5;
 	};
 
 	// Hooking keyboard events
@@ -147,7 +161,9 @@ function createCustomCamera(canvas, scene) {
 				if (_this.keysUp.indexOf(evt.keyCode) !== -1 ||
 					_this.keysDown.indexOf(evt.keyCode) !== -1 ||
 					_this.keysLeft.indexOf(evt.keyCode) !== -1 ||
-                    _this.keysRight.indexOf(evt.keyCode) !== -1) {
+                    _this.keysRight.indexOf(evt.keyCode) !== -1	||
+                    _this.keysPlus.indexOf(evt.keyCode) !== -1	||
+                    _this.keysMinus.indexOf(evt.keyCode) !== -1	) {
 					var index = _this._keys.indexOf(evt.keyCode);
 					if (index === -1) {
 						_this._keys.push(evt.keyCode);
@@ -158,10 +174,12 @@ function createCustomCamera(canvas, scene) {
 				}
 			};
 			this._onKeyUp = function (evt) {
-				if (_this.keysUp.indexOf(evt.keyCode) !== -1 ||
-					_this.keysDown.indexOf(evt.keyCode) !== -1 ||
-                    _this.keysLeft.indexOf(evt.keyCode) !== -1 ||
-                    _this.keysRight.indexOf(evt.keyCode) !== -1) {
+				if (_this.keysUp.indexOf(evt.keyCode) !== -1	||
+					_this.keysDown.indexOf(evt.keyCode) !== -1	||
+                    _this.keysLeft.indexOf(evt.keyCode) !== -1	||
+                    _this.keysRight.indexOf(evt.keyCode) !== -1	||
+                    _this.keysPlus.indexOf(evt.keyCode) !== -1	||
+                    _this.keysMinus.indexOf(evt.keyCode) !== -1	) {
 					var index = _this._keys.indexOf(evt.keyCode);
 					if (index >= 0) {
 						_this._keys.splice(index, 1);
@@ -213,6 +231,28 @@ function createCustomCamera(canvas, scene) {
 				}
 				else if (this.keysRight.indexOf(keyCode) !== -1) {
 					camera.position.z += this.sensibility;
+				}
+				if (this.keysMinus.indexOf(keyCode) !== -1) {
+					if (camera.mode !== BABYLON.Camera.ORTHOGRAPHIC_CAMERA) {
+						camera.position.x += this.sensibility;
+						camera.position.y += this.sensibility;
+						camera.position.z += this.sensibility;
+					}
+					camera.orthoTop += this.zoomSensibility;
+					camera.orthoBottom -= this.zoomSensibility;
+					camera.orthoLeft -= this.zoomSensibility;
+					camera.orthoRight += this.zoomSensibility;
+				}
+				else if (this.keysPlus.indexOf(keyCode) !== -1) {
+					if (camera.mode !== BABYLON.Camera.ORTHOGRAPHIC_CAMERA) {
+						camera.position.x -= this.sensibility;
+						camera.position.y -= this.sensibility;
+						camera.position.z -= this.sensibility;
+					}
+					camera.orthoTop -= this.zoomSensibility;
+					camera.orthoBottom += this.zoomSensibility;
+					camera.orthoLeft += this.zoomSensibility;
+					camera.orthoRight -= this.zoomSensibility;
 				}
 			}
 		}

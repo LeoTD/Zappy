@@ -81,11 +81,11 @@ SpriteData.bangaa = {
 Object.assign(SpriteData.bangaa, genericFftaSpriteData);
 
 SpriteData.eggs = {
-	assetPath: 'egg.png',
+	assetPath: 'egg0.png',
 	getMaxSprites: (game) => game.x * game.y * 10,
 	dimensions: {
-		height: 32,
-		width: 32,
+		height: 200,
+		width: 240,
 	}
 };
 
@@ -149,5 +149,122 @@ SpriteData.stone5 = {
 	dimensions: {
 		height: 155,
 		width: 155
+	}
+};
+
+SpriteData.put = {
+	assetPath: 'inventory.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 480,
+		width: 480
+	}
+};
+
+SpriteData.putFail = {
+	assetPath: 'inventory.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 480,
+		width: 480
+	}
+};
+
+SpriteData.take = {
+	assetPath: 'inventory.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 480,
+		width: 480
+	}
+};
+
+SpriteData.takeFail = {
+	assetPath: 'inventory.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 480,
+		width: 480
+	}
+};
+
+SpriteData.inventory = {
+	assetPath: 'inventory.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 480,
+		width: 480
+	}
+};
+
+SpriteData.broadcast = {
+	assetPath: 'broadcast.gif',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 50,
+		width: 50
+	}
+};
+
+SpriteData.see = {
+	assetPath: 'see.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 120,
+		width: 120
+	}
+};
+
+SpriteData.kick = {
+	assetPath: 'kick.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 225,
+		width: 225,
+	}
+};
+
+SpriteData.kickFail = {
+	assetPath: 'kick.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 225,
+		width: 225,
+	}
+};
+
+SpriteData.incant = {
+	assetPath: 'death.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 120,
+		width: 120,
+	}
+};
+
+SpriteData.incantFail = {
+	assetPath: 'death.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 120,
+		width: 120,
+	}
+};
+
+SpriteData.death = {
+	assetPath: 'death.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 120,
+		width: 120,
+	}
+};
+
+SpriteData.fork = {
+	assetPath: 'egg0.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 200,
+		width: 240
 	}
 };
