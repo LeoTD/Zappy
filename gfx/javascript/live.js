@@ -28,7 +28,7 @@
       pendingRequests = {},
       currentLinkElements = {},
       oldLinkElements = {},
-      interval = 100,
+      interval = 2000,
       loaded = false,
       active = { "html": 1, "css": 1, "js": 1 };
 

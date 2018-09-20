@@ -15,7 +15,7 @@ class Tile {
 	}
 
 	get center() {
-		return { x: this.x * TILE_SIZE, y: this.y * TILE_SIZE };
+		return { x: this.x * game.tileSize, y: this.y * game.tileSize };
 	}
 
 	addContent(type, amt) {
@@ -27,9 +27,9 @@ class Tile {
 
 	addContentSprite(type) {
 		const sp = new BABYLON.Sprite(type, game.getContentSpriteManagerFor(type));
-		sp.position.x = this.y * (TILE_SIZE + Math.random() * 2 - 1);
+		sp.position.x = this.y * (game.tileSize + Math.random() * 2 - 1);
 		sp.position.y = 5;
-		sp.position.z = this.x * (TILE_SIZE + Math.random() * 2 - 1);
+		sp.position.z = this.x * (game.tileSize + Math.random() * 2 - 1);
 		sp.size = 3;
 		this.contentSprites.push(sp);
 	}

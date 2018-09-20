@@ -28,6 +28,7 @@ class Game {
 		// Player and tile arrays for detailed game state
 		//     management and for deploying animations.
 		this.players				= [];
+		this.tileSize = 25;
 		this.tiles					= [];
 		for (let i = 0; i < this.x; i++)
 			this.tiles.push([]);
@@ -92,7 +93,8 @@ class Game {
 
 	addPlayer(pinfo) {
 		var new_player = new playerAvatar(
-			this.spriteManagers.avatars[pinfo.team], pinfo);
+			this.getTeamSpriteManager(pinfo.team),
+			pinfo);
 		this.players[new_player.id] = new_player;
 		this.players[new_player.id].createSprite();
 	}
@@ -118,6 +120,12 @@ class Game {
 		console.warn('couldn\'t get sprite manager for ' + type);
 	}
 
+	getTeamSpriteManager(teamId) {
+		const numTeamSprites = AVATAR_SPRITE_ASSET_STRINGS.length;
+		console.log(teamId % numTeamSprites);
+		return this.spriteManagers.avatars[teamId % numTeamSprites];
+	}
+
 	initSpriteManagers() {
 		this.spriteManagers = {
 			stones: Object.keys(STONE_ASSET_STRINGS).map((asset_path, idx) => {
@@ -129,11 +137,10 @@ class Game {
 					this.scene
 				);
 			}),
-			avatars: this.teams.map((teamName, idx) => {
-				const whichSprite = idx % AVATAR_SPRITE_ASSET_STRINGS.length;
+			avatars: AVATAR_SPRITE_ASSET_STRINGS.map((path, idx) => {
 				return new BABYLON.SpriteManager(
-					`avatar-${teamName}-manager`,
-					AVATAR_SPRITE_ASSET_STRINGS[whichSprite],
+					`avatar-${this.teams[idx]}-manager`,
+					path,
 					MAX_SPRITES,
 					SPRITE_DIMENSIONS,
 					this.scene
