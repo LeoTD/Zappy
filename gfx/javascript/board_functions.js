@@ -1,4 +1,4 @@
-const TILE_ASSET	= "tile.png";
+const TILE_ASSET	= 'desert-tile-60.png';
 
 class Board {
 	constructor(opts) {
