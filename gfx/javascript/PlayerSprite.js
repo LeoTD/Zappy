@@ -1,8 +1,12 @@
-class BobSprite extends BABYLON.Sprite {
-	constructor(player, manager) {
+class PlayerSprite extends BABYLON.Sprite {
+	constructor({ player, manager, dimensions, animations, size }) {
 		super("player", manager);
-		this.size = 10;
+		this.height = dimensions.height;
+		this.width = dimensions.width;
+		this.size = size;
 		this.player = player;
+		this.playWalkAnimation = animations.walk.bind(this);
+		this.idleAnimation = animations.idle.bind(this);
 		const zone_width = (game.tileSize) - (this.size);
 		const zone_height= (game.tileSize / 2);
 		const w_offset   = (game.tileSize / 2) - (this.size / 2);
@@ -43,15 +47,6 @@ class BobSprite extends BABYLON.Sprite {
 		});
 	}
 
-	playWalkAnimation(legInterval) {
-		this.playAnimation(
-			{n:7,  e:13, s:1, w:19}[this.player.facing],
-			{n:10, e:16, s:4, w:22}[this.player.facing],
-			true,
-			legInterval
-		);
-	}
-
 	slideInDirection({ direction, speed, onAnimationEnd }) {
 		const axis = ['n', 's'].includes(direction) ? "x" : "z";
 		const slide = new BABYLON.Animation("slidePlayer",
@@ -75,10 +70,5 @@ class BobSprite extends BABYLON.Sprite {
 			speed,
 			onAnimationEnd
 		);
-	}
-
-	idleAnimation() {
-		const startFrame = { n: 38, e: 44, s: 32, w: 50 }[this.player.facing];
-		this.playAnimation(startFrame, startFrame + 3, true, 200);
 	}
 }

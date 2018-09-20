@@ -1,8 +1,7 @@
 const compass = ['n', 'e', 's', 'w', 'n'];
 
 class playerAvatar {
-	constructor(s_manager, opts) {
-		this.manager 	= s_manager;
+	constructor(opts) {
 		this.id			= opts.id;
 		this.x 			= opts.x;
 		this.y 			= opts.y;
@@ -27,7 +26,10 @@ class playerAvatar {
 	}
 
 	createSprite() {
-		this.sprite = new BobSprite(this, this.manager);
+		const opts = {};
+		Object.assign(opts, SpriteData[game.getTeamSpriteName(this.team)]);
+		opts.player = this;
+		this.sprite = new PlayerSprite(opts);
 	}
 
 	moveDirection(dir) {

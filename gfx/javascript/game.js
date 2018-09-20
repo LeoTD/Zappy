@@ -1,19 +1,3 @@
-const MAX_SPRITES					= 256;
-const SPRITE_DIMENSIONS				= {height:32, width:32};
-const FOOD_DIMENSIONS				= {height:384, width: 427};
-const AVATAR_SPRITE_ASSET_STRINGS	= [
-	'bob.png',
-];
-
-const STONE_ASSET_STRINGS			= {
-	'stone0.png': { height: 89, width: 67 },
-	'stone1.png': { height: 114, width: 123 },
-	'stone2.png': { height: 120, width: 120 },
-	'stone3.png': { height: 89, width: 107 },
-	'stone4.png': { height: 500, width: 500 },
-	'stone5.png': { height: 155, width: 155 },
-};
-
 class Game {
 	constructor(opts) {
 		
@@ -106,15 +90,13 @@ class Game {
 	}
 
 	addPlayer(pinfo) {
-		var new_player = new playerAvatar(
-			this.getTeamSpriteManager(pinfo.team),
-			pinfo);
-		this.players[new_player.id] = new_player;
-		this.players[new_player.id].createSprite();
+		const player = new playerAvatar(pinfo);
+		player.createSprite();
+		this.players[player.id] = player;
 	}
 
 	get_player(pid) {
-		if (this.players) {
+		if (this.players[pid]) {
 			return this.players[pid];
 		}
 		else {
@@ -127,53 +109,26 @@ class Game {
 	}
 
 	getContentSpriteManagerFor(type) {
-		if ('stone' === type.slice(0, 5))
-			return this.spriteManagers.stones[type[5]];
-		if ('eggs' === type || 'food' === type)
-			return this.spriteManagers[type];
+		if (SpriteData[type].manager)
+			return SpriteData[type].manager;
 		console.warn('couldn\'t get sprite manager for ' + type);
 	}
 
-	getTeamSpriteManager(teamId) {
-		const numTeamSprites = AVATAR_SPRITE_ASSET_STRINGS.length;
-		console.log(teamId % numTeamSprites);
-		return this.spriteManagers.avatars[teamId % numTeamSprites];
+	getTeamSpriteName(teamId) {
+		const teamSpriteNames = ['bob'];
+		return teamSpriteNames[teamId % teamSpriteNames.length];
 	}
 
 	initSpriteManagers() {
-		this.spriteManagers = {
-			stones: Object.keys(STONE_ASSET_STRINGS).map((asset_path, idx) => {
-				return new BABYLON.SpriteManager(
-					`stone${idx}-manager`,
-					asset_path,
-					this.x * this.y * 10,
-					STONE_ASSET_STRINGS[asset_path],
-					this.scene
-				);
-			}),
-			avatars: AVATAR_SPRITE_ASSET_STRINGS.map((path, idx) => {
-				return new BABYLON.SpriteManager(
-					`avatar-${this.teams[idx]}-manager`,
-					path,
-					MAX_SPRITES,
-					SPRITE_DIMENSIONS,
-					this.scene
-				);
-			}),
-			eggs: new BABYLON.SpriteManager(
-				'eggs-manager',
-				'egg.png', //XXX changeme
-				this.x * this.y * 10,
-				SPRITE_DIMENSIONS,
+		for (let spriteName in SpriteData) {
+			const sdEntry = SpriteData[spriteName];
+			sdEntry.manager = new BABYLON.SpriteManager(
+				`${spriteName}-manager`,
+				sdEntry.assetPath,
+				sdEntry.getMaxSprites(this),
+				sdEntry.dimensions,
 				this.scene
-			),
-			food: new BABYLON.SpriteManager(
-				'food-manager',
-				'food.png', //XXX changeme
-				this.x * this.y * 10,
-				FOOD_DIMENSIONS,	
-				this.scene
-			),
-		};
+			);
+		}
 	}
 }
