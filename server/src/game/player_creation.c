@@ -45,10 +45,9 @@ t_player		*new_player(int team_id)
 	i = -1;
 	if ((tmp = malloc(sizeof(t_player))) == NULL)
 		ERR_OUT("player creation; malloc");
+	bzero(tmp->count, sizeof(tmp->count));
 	tmp->tile = NULL;
 	tmp->facing = faceable_directions[random() % 4];
-	while (++i < 6)
-		tmp->count[i] = 0;
 	tmp->count[FOOD] = DEFAULT_FOOD;
 	tmp->energy = DEFAULT_ENERGY;
 	tmp->level = DEFAULT_LEVEL;
@@ -57,7 +56,6 @@ t_player		*new_player(int team_id)
 	add_player_to_list(tmp);
 	add_player_to_team_waitlist(tmp);
 	g_map->players++;
-	bzero(tmp->count, sizeof(tmp->count));
 	return (tmp);
 }
 
