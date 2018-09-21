@@ -8,40 +8,17 @@ function shouldInvert(facing) {
 	return facing === 'n' || facing === 'e';
 }
 
-SpriteData.bob = {
-	assetPath: 'bob.png',
-	getMaxSprites: () => 256,
+const fftaPlayerSprite = (path) => ({
+	assetPath: path,
+	getMaxSprites: () => 2000,
 	dimensions: {
-		height: 32,
 		width: 32,
+		height: 32,
 	},
-	size: 10,
+	size: 8,
 	animations: {
 		walk: function (legInterval) {
-			this.playAnimation(
-				{n:7,  e:13, s:1, w:19}[this.player.facing],
-				{n:10, e:16, s:4, w:22}[this.player.facing],
-				true,
-				legInterval
-			);
-		},
-		idle: function () {
-			const startFrame = { n: 38, e: 44, s: 32, w: 50 }[this.player.facing];
-			this.playAnimation(startFrame, startFrame + 3, true, 200);
-		}
-	}
-};
-
-const genericFftaSpriteData = {
-	getMaxSprites: () => 1000,
-	dimensions: {
-		width: 64,
-		height: 64,
-	},
-	size: 25,
-	animations: {
-		walk: function (legInterval) {
-			let startFrame = 1;
+			let startFrame = 2;
 			if (facingCamera(this.player.facing))
 				startFrame += 4;
 			if (this.player.team % 2 !== 0)
@@ -49,9 +26,10 @@ const genericFftaSpriteData = {
 			this.invertU = shouldInvert(this.player.facing);
 			this.playAnimation(
 				startFrame,
-				startFrame + 2,
+				startFrame + 1,
 				true,
-				legInterval
+				legInterval * 2,
+				this.idle
 			);
 		},
 		idle: function () {
@@ -63,26 +41,23 @@ const genericFftaSpriteData = {
 			this.invertU = shouldInvert(this.player.facing);
 		}
 	}
-};
+});
 
-SpriteData.blackMage = {
-	assetPath: 'player-sprites/human-blackmage/human-blackmage-sheet.png',
-};
-Object.assign(SpriteData.blackMage, genericFftaSpriteData);
+SpriteData.blackMage = fftaPlayerSprite(
+	'player-sprites/human-blackmage/human-blackmage-sheet.png'
+);
 
-SpriteData.mogKnight = {
-	assetPath: 'player-sprites/moogle-mogknight/moogle-mogknight-sheet.png',
-};
-Object.assign(SpriteData.mogKnight, genericFftaSpriteData);
+SpriteData.mogKnight = fftaPlayerSprite(
+	'player-sprites/moogle-mogknight/moogle-mogknight-sheet.png'
+);
 
-SpriteData.bangaa = {
-	assetPath: 'player-sprites/bangaa-warrior/bangaa-warrior-sheet.png',
-};
-Object.assign(SpriteData.bangaa, genericFftaSpriteData);
+SpriteData.bangaa = fftaPlayerSprite(
+	'player-sprites/bangaa-warrior/bangaa-warrior-sheet.png'
+);
 
 SpriteData.eggs = {
 	assetPath: 'egg0.png',
-	getMaxSprites: (game) => game.x * game.y * 10,
+	getMaxSprites: (game) => 2000,
 	dimensions: {
 		height: 200,
 		width: 240,
@@ -90,67 +65,33 @@ SpriteData.eggs = {
 };
 
 SpriteData.food = {
-	assetPath: 'food.png',
-	getMaxSprites: (game) => game.x * game.y * 10,
+	assetPath: 'meat-small.png',
+	getMaxSprites: (game) => 2000,
 	dimensions: {
-		height: 384,
-		width: 427,
-	}
+		height: 32,
+		width: 32,
+	},
+	yOffsetOverride: 2.7,
+	size: 5,
 };
 
-SpriteData.stone0 = {
-	assetPath: 'stone0.png',
-	getMaxSprites: (game) => game.x * game.y * 10,
+const fftaStone = (path) => ({
+	assetPath: `stones/${path}`,
+	getMaxSprites: (game) => 2000,
 	dimensions: {
-		height: 89,
-		width: 67
-	}
-};
+		height: 14,
+		width: 12,
+	},
+	yOffsetOverride: 1.5,
+	size: 3,
+});
 
-SpriteData.stone1 = {
-	assetPath: 'stone1.png',
-	getMaxSprites: (game) => game.x * game.y * 10,
-	dimensions: {
-		height: 114,
-		width: 123
-	}
-};
-
-SpriteData.stone2 = {
-	assetPath: 'stone2.png',
-	getMaxSprites: (game) => game.x * game.y * 10,
-	dimensions: {
-		height: 120,
-		width: 120
-	}
-};
-
-SpriteData.stone3 = {
-	assetPath: 'stone3.png',
-	getMaxSprites: (game) => game.x * game.y * 10,
-	dimensions: {
-		height: 89,
-		width: 107
-	}
-};
-
-SpriteData.stone4 = {
-	assetPath: 'stone4.png',
-	getMaxSprites: (game) => game.x * game.y * 10,
-	dimensions: {
-		height: 500,
-		width: 500
-	}
-};
-
-SpriteData.stone5 = {
-	assetPath: 'stone5.png',
-	getMaxSprites: (game) => game.x * game.y * 10,
-	dimensions: {
-		height: 155,
-		width: 155
-	}
-};
+SpriteData.stone0 = fftaStone('ffta-stone-blue.png');
+SpriteData.stone1 = fftaStone('ffta-stone-bluegreen.png');
+SpriteData.stone2 = fftaStone('ffta-stone-green.png');
+SpriteData.stone3 = fftaStone('ffta-stone-sunset.png');
+SpriteData.stone4 = fftaStone('ffta-stone-fairypink.png');
+SpriteData.stone5 = fftaStone('ffta-stone-fireplum.png');
 
 SpriteData.put = {
 	assetPath: 'inventory.png',

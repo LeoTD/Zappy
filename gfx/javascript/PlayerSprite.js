@@ -7,15 +7,8 @@ class PlayerSprite extends BABYLON.Sprite {
 		this.player = player;
 		this.playWalkAnimation = animations.walk.bind(this);
 		this.idleAnimation = animations.idle.bind(this);
-		const zone_width = (game.tileSize) - (this.size);
-		const zone_height= (game.tileSize / 2);
-		const w_offset   = (game.tileSize / 2) - (this.size / 2);
-		const h_offset   = (game.tileSize / 3);
-		this.player.spriteOffsets = {
-			x:(Math.random() * zone_width) - w_offset,
-			y:(Math.random() * zone_height) - h_offset
-		};
-		this.position.y = this.size / 2;
+		this.player.spriteOffsets = Tile.generatePlayerSpriteOffset();
+		this.position.y = this.height / 2;
 		this.position.z = (this.player.x * game.tileSize) + this.player.spriteOffsets.x;
 		this.position.x = (this.player.y * game.tileSize) + this.player.spriteOffsets.y;
 		this.isPickable = true;

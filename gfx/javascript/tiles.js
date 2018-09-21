@@ -51,10 +51,35 @@ class Tile {
 
 	addContentSprite(type) {
 		const sp = new BABYLON.Sprite(type, game.getContentSpriteManagerFor(type));
-		sp.position.x = this.y * (game.tileSize + Math.random() * 2 - 1);
-		sp.position.y = 5;
-		sp.position.z = this.x * (game.tileSize + Math.random() * 2 - 1);
-		sp.size = 3;
+		const sdataEntry = SpriteData[type];
+		const offset = Tile.generateContentSpriteOffset();
+		sp.position.x = this.y * game.tileSize + offset.y;
+		if (sdataEntry.yOffsetOverride)
+			sp.position.y = sdataEntry.yOffsetOverride;
+		else
+			sp.position.y = sdataEntry.dimensions.height / 2;
+		sp.position.z = this.x * game.tileSize + offset.x;
+		sp.size = sdataEntry.size;
 		this.contentSprites[type].push(sp);
 	}
+
+	static generatePlayerSpriteOffset() {
+		let y = randomInNonnegativeRange(0.05, 0.3) * game.tileSize * -1;
+		let x = randomInNonnegativeRange(0, 0.3) * game.tileSize;
+		if (Math.random() < 0.5)
+			x *= -1;
+		return { x, y };
+	}
+
+	static generateContentSpriteOffset() {
+		let y = randomInNonnegativeRange(0.05, 0.3) * game.tileSize;
+		let x = randomInNonnegativeRange(0, 0.3) * game.tileSize;
+		if (Math.random() < 0.5)
+			x *= -1;
+		return { x, y };
+	}
+}
+
+function randomInNonnegativeRange(min, max) {
+	return Math.random() * (max - min) + min;
 }
