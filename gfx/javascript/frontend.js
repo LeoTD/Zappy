@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
 				game.get_player(ev.playerId).left();
 				break;
 			case 'KICK':
-				kickPlayers(ev.kickees, ev.direction);
+				if (ev.kickees.length === 0)
+					game.get_player(ev.playerId).fail();
+				else
+					kickPlayers(ev.kickees, ev.direction);
 				break;
 			case 'TAKE':
 				game.get_player(ev.playerId).take({x:ev.x, y:ev.y}, ev.objType, ev.isSuccess);
@@ -27,8 +30,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			case 'PUT':
 				game.get_player(ev.playerId).put({x:ev.x, y:ev.y}, ev.objType, ev.isSuccess);
 				break;
+			case 'SEE':
+				game.get_player(ev.playerId).see();
+				break;
 			case 'SPAWN_RESOURCE':
 				game.tiles[ev.x][ev.y].addContent(ev.objType);
+				break;
+			case 'BAD_COMMAND':
+				game.get_player(ev.playerId).fail();	
 				break;
 			default:
 				console.log('event type not yet handled: ' + ev.type);

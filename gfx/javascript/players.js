@@ -28,15 +28,25 @@ class playerAvatar {
 	}
 
 	put(tile, type, isSuccess) {
-		if (isSuccess == true) {
+		if (isSuccess === 1) {
 			game.tiles[tile.x][tile.y].addContent(type, 1);
+		}
+		else {
+			this.fail();
 		}
 	}
 
 	take(tile, type, isSuccess) {
-		if (isSuccess == true) {
+		if (isSuccess === 1) {
 			game.tiles[tile.x][tile.y].removeContent(type, 1);
 		}
+		else {
+			this.fail();
+		}
+	}
+
+	see() {
+		this.bubble.cmdPopup('see');
 	}
 
 	createSprite() {
@@ -63,5 +73,9 @@ class playerAvatar {
 	getKicked(dir) {
 		this.sprite.getKickedAnimation(dir);
 		this.moveDirection(dir);
+	}
+
+	fail() {
+		this.bubble.cmdPopup('fail');
 	}
 }

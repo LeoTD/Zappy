@@ -133,7 +133,7 @@ class TickEventParser extends stream.Transform {
 		case 'KICK':
 			this.constructMultiMessageEvent({
 				type: 'KICK',
-				kicker: Number(msg[1]),
+				playerId: Number(msg[1]),
 				direction: ['n', 'w', 's', 'e'][Math.floor(Number(msg[2]) / 2)],
 				kickees: []
 			});

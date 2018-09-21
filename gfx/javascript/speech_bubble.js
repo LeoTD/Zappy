@@ -5,18 +5,16 @@ class speechBubble {
 
 		this.s				= {
 			put:		undefined,
-			putFail:	undefined,
 			take:		undefined,
-			takeFail:	undefined,
 			inventory:	undefined,
 			broadcast:	undefined,
 			see:		undefined,
 			kick:		undefined,
-			kickFail:	undefined,
 			incant:		undefined,
 			incantFail:	undefined,
 			fork:		undefined,
 			death:		undefined,
+			fail:		undefined,
 		}
 	}
 

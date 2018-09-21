@@ -96,7 +96,7 @@ module.exports = {
 	},
 	'KICK': {
 		type: 'KICK',
-		kicker: 0,
+		playerId: 0,
 		direction: 'n',
 		kickees: [],
 	},

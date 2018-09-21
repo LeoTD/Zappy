@@ -268,3 +268,12 @@ SpriteData.fork = {
 		width: 240
 	}
 };
+
+SpriteData.fail = {
+	assetPath: 'fail.png',
+	getMaxSprites: (game) => game.MAX_PLAYERS,
+	dimensions: {
+		height: 334,
+		width: 334
+	}
+};
