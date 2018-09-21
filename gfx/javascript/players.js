@@ -13,6 +13,10 @@ class playerAvatar {
 		this.facing		= opts.facing || 's';
 	}
 
+	broadcast() {
+		this.bubble.cmdPopup('broadcast');
+	}
+
 	right() {
 		this.facing = compass[compass.indexOf(this.facing) + 1];
 		this.sprite.idleAnimation();

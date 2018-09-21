@@ -198,7 +198,7 @@ SpriteData.inventory = {
 };
 
 SpriteData.broadcast = {
-	assetPath: 'broadcast.gif',
+	assetPath: 'broadcast.png',
 	getMaxSprites: (game) => game.MAX_PLAYERS,
 	dimensions: {
 		height: 50,

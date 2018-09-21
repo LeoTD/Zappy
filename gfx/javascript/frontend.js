@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			case 'INIT':
 				fastForwardToGameState(ev);
 				break;
+			case 'BROADCAST':
+				game.get_player(ev.playerId).broadcast();
+				break;
 			case 'ADVANCE':
 				game.get_player(ev.playerId).advance();
 				break;
