@@ -28,13 +28,13 @@ class playerAvatar {
 	}
 
 	put(tile, type, isSuccess) {
-		if (1){//isSuccess == true) {
+		if (isSuccess == true) {
 			game.tiles[tile.x][tile.y].addContent(type, 1);
 		}
 	}
 
 	take(tile, type, isSuccess) {
-		if (1){//isSuccess == true) {
+		if (isSuccess == true) {
 			game.tiles[tile.x][tile.y].removeContent(type, 1);
 		}
 	}

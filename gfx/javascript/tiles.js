@@ -5,13 +5,23 @@ class Tile {
 		this.inventory = {
 			eggs: 0,
 			food: 0,
+			stone0: 0,
 			stone1: 0,
 			stone2: 0,
 			stone3: 0,
 			stone4: 0,
 			stone5: 0
 		};
-		this.contentSprites		= [];
+		this.contentSprites		= {
+			eggs: [],
+			food: [],
+			stone0: [],
+			stone1: [],
+			stone2: [],
+			stone3: [],
+			stone4: [],
+			stone5: [],
+		};
 	}
 
 	get center() {
@@ -26,8 +36,10 @@ class Tile {
 	}
 
 	removeContentSprite(type) {
-		const sp = this.contentSprites.shift();
-		sp.dispose();
+		const sp = this.contentSprites[type].shift();
+		if (sp) {
+			sp.dispose();
+		}
 	}
 
 	addContent(type, amt) {
@@ -43,6 +55,6 @@ class Tile {
 		sp.position.y = 5;
 		sp.position.z = this.x * (game.tileSize + Math.random() * 2 - 1);
 		sp.size = 3;
-		this.contentSprites.push(sp);
+		this.contentSprites[type].push(sp);
 	}
 }
