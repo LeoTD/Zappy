@@ -101,7 +101,7 @@ class playerAvatar {
 	
 	death() {
 		this.bubble.cmdPopup('death');
-		t
+		this.sprite.dispose();
 	}
 
 }

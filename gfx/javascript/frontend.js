@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				o.inv = ev.inventory;
 				game.addPlayer(o);
 				game.get_player(o.id).eggHatch({x:o.x, y:o.y});
+				console.log(o.team);
 				break;
 			case 'SEE':
 				game.get_player(ev.playerId).see();
