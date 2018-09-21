@@ -86,12 +86,12 @@ const fftaStone = (path) => ({
 	size: 3,
 });
 
-SpriteData.stone0 = fftaStone('ffta-stone-blue.png');
-SpriteData.stone1 = fftaStone('ffta-stone-bluegreen.png');
-SpriteData.stone2 = fftaStone('ffta-stone-green.png');
-SpriteData.stone3 = fftaStone('ffta-stone-sunset.png');
-SpriteData.stone4 = fftaStone('ffta-stone-fairypink.png');
-SpriteData.stone5 = fftaStone('ffta-stone-fireplum.png');
+SpriteData.stone0 = fftaStone('ffta-stone-linemate.png');
+SpriteData.stone1 = fftaStone('ffta-stone-deraumere.png');
+SpriteData.stone2 = fftaStone('ffta-stone-sibur.png');
+SpriteData.stone3 = fftaStone('ffta-stone-mendiane.png');
+SpriteData.stone4 = fftaStone('ffta-stone-phiras.png');
+SpriteData.stone5 = fftaStone('ffta-stone-thystame.png');
 
 SpriteData.put = {
 	assetPath: 'inventory.png',

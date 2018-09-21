@@ -50,7 +50,6 @@ class Game {
 
 		this.board		= new Board();
 		this.board.createMesh({x:this.x, y:this.y}, this.scene);
-		this.board.displayAxes(this.scene, 50);							// #ifdef DEBUG
 		this.initSpriteManagers();
 
 		this.camera = createCustomCamera(this.canvas, this.scene);
