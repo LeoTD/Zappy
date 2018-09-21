@@ -29,6 +29,7 @@ class playerAvatar {
 
 	put(tile, type, isSuccess) {
 		if (isSuccess === 1) {
+			this.inventory();
 			game.tiles[tile.x][tile.y].addContent(type, 1);
 		}
 		else {
@@ -36,8 +37,23 @@ class playerAvatar {
 		}
 	}
 
+	layEgg() {
+		this.bubble.cmdPopup('fork');
+	}
+
+	doneLayingEgg(tile) {
+		console.log(tile);
+		console.log(this);
+		game.tiles[tile.x][tile.y].addContent('eggs', 1);
+	}
+
+	eggHatch(tile) {
+		game.tiles[tile.x][tile.y].removeContent('eggs', 1);
+	}
+
 	take(tile, type, isSuccess) {
 		if (isSuccess === 1) {
+			this.inventory();
 			game.tiles[tile.x][tile.y].removeContent(type, 1);
 		}
 		else {
@@ -47,6 +63,10 @@ class playerAvatar {
 
 	see() {
 		this.bubble.cmdPopup('see');
+	}
+
+	inventory() {
+		this.bubble.cmdPopup('inventory');
 	}
 
 	createSprite() {
@@ -78,4 +98,10 @@ class playerAvatar {
 	fail() {
 		this.bubble.cmdPopup('fail');
 	}
+	
+	death() {
+		this.bubble.cmdPopup('death');
+		t
+	}
+
 }

@@ -23,10 +23,6 @@ module.exports = {
 		type: 'INVENTORY',
 		playerId: 0
 	},
-	'LAY_EGG': {
-		type: 'LAY_EGG',
-		playerId: 0
-	},
 	'TAKE': {
 		type: 'TAKE',
 		playerId: 0,
@@ -55,6 +51,10 @@ module.exports = {
 	},
 	'CONNECT': {
 		type: 'CONNECT',
+		playerId: 0
+	},
+	'LAY_EGG': {
+		type: 'LAY_EGG',
 		playerId: 0
 	},
 	'DONE_LAYING_EGG': {

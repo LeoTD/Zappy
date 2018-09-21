@@ -13,6 +13,9 @@ class speechBubble {
 			incant:		undefined,
 			incantFail:	undefined,
 			fork:		undefined,
+			layEgg:		undefined,
+			doneLayingEgg:		undefined,
+			eggHatch:	undefined,
 			death:		undefined,
 			fail:		undefined,
 		}

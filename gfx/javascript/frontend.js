@@ -30,14 +30,43 @@ document.addEventListener('DOMContentLoaded', function() {
 			case 'PUT':
 				game.get_player(ev.playerId).put({x:ev.x, y:ev.y}, ev.objType, ev.isSuccess);
 				break;
+			case 'LAY_EGG':
+				game.get_player(ev.playerId).layEgg();
+				break;
+			case 'DONE_LAYING_EGG':
+				game.get_player(ev.playerId).doneLayingEgg({x:ev.x, y:ev.y});
+				break;
+			case 'EGG_HATCH':
+				const o = {};
+				o.id = ev.playerId;
+				o.team = ev.teamId;
+				o.level = ev.level;
+				o.x = ev.x;
+				o.y = ev.y;
+				o.energy = ev.energy;
+				o.facing = ev.facing;
+				o.food = ev.food;
+				o.inv = ev.inventory;
+				game.addPlayer(o);
+				game.get_player(o.id).eggHatch({x:o.x, y:o.y});
+				break;
 			case 'SEE':
 				game.get_player(ev.playerId).see();
+				break;
+			case 'INVENTORY':
+				game.get_player(ev.playerId).inventory();	
 				break;
 			case 'SPAWN_RESOURCE':
 				game.tiles[ev.x][ev.y].addContent(ev.objType);
 				break;
 			case 'BAD_COMMAND':
 				game.get_player(ev.playerId).fail();	
+				break;
+			case 'BROADCAST':
+				game.get_player(ev.playerId).broadcast();
+				break;
+			case 'DEATH':
+				game.get_player(ev.playerId).death();
 				break;
 			default:
 				console.log('event type not yet handled: ' + ev.type);
