@@ -90,8 +90,6 @@ class playerAvatar {
 	advance() {
 		this.sprite.advanceAnimation();
 		this.moveDirection(this.facing);
-		this.bubble.cmdPopup('fork');
-		this.sprite.isVisible = false;
 	}
 
 	getKicked(dir) {
