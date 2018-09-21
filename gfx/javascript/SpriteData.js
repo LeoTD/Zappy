@@ -80,11 +80,11 @@ SpriteData.eggs = {
 };
 
 SpriteData.food = {
-	assetPath: 'meat-small.png',
+	assetPath: 'minecraft_watermelon.png',
 	getMaxSprites: (game) => 2000,
 	dimensions: {
-		height: 32,
-		width: 32,
+		height: 128,
+		width: 128,
 	},
 	yOffsetOverride: 2.7,
 	size: 5,
