@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				game.get_player(ev.playerId).inventory();	
 				break;
 			case 'SPAWN_RESOURCE':
-				game.tiles[ev.x][ev.y].addContent(ev.objType);
+				game.tiles[ev.x][ev.y].addContent(ev.objType, 1);
 				break;
 			case 'BAD_COMMAND':
 				game.get_player(ev.playerId).fail();	
