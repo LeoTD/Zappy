@@ -72,6 +72,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			case 'DEATH':
 				game.get_player(ev.playerId).death();
 				break;
+			case 'INCANT_START':
+				game.get_player(ev.priestId).leadIncant(ev.isSuccess);
+				break;
+			case 'INCANT_FINISH':
+				game.get_player(ev.priestId).finishLeadIncant(ev.newLevel);
+				break;
 			default:
 				console.log('event type not yet handled: ' + ev.type);
 			}

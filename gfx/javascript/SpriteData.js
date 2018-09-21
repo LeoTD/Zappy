@@ -39,7 +39,22 @@ const fftaPlayerSprite = (path) => ({
 			if (this.player.team % 2 !== 0)
 				this.cellIndex += 8;
 			this.invertU = shouldInvert(this.player.facing);
-		}
+		},
+		leadIncant: function () {
+			let startFrame = 0;
+			if (facingCamera(this.player.facing))
+				startFrame += 4;
+			if (this.player.team % 2 !== 0)
+				startFrame += 8;
+			this.invertU = shouldInvert(this.player.facing);
+			this.playAnimation(
+				startFrame,
+				startFrame + 1,
+				true,
+				1000,
+				this.idle
+			);
+		},
 	}
 });
 

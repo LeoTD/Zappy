@@ -41,6 +41,14 @@ class playerAvatar {
 		}
 	}
 
+	leadIncant(isSuccess) {
+		this.sprite.playLeadIncantationAnimation();
+	}
+
+	finishLeadIncant(newLevel) {
+		this.sprite.resetAndIdle();
+	}
+
 	layEgg() {
 		this.bubble.cmdPopup('fork');
 	}

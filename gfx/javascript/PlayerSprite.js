@@ -7,6 +7,7 @@ class PlayerSprite extends BABYLON.Sprite {
 		this.player = player;
 		this.playWalkAnimation = animations.walk.bind(this);
 		this.idleAnimation = animations.idle.bind(this);
+		this.playLeadIncantationAnimation = animations.leadIncant.bind(this);
 		this.player.spriteOffsets = Tile.generatePlayerSpriteOffset();
 		this.position.y = this.height / 2;
 		this.position.z = (this.player.x * game.tileSize) + this.player.spriteOffsets.x;

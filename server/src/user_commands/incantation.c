@@ -60,10 +60,9 @@ char					*incantation_finish(int player_id, void *args)
 	struct s_incant_args	*incant_args;
 	char					*response;
 
-	(void)player_id;
 	incant_args = (struct s_incant_args *)args;
 	i = 0;
-	gfx_sendall("INCANT_FINISH %d %d\n", incant_args->player_id, incant_args->new_level);
+	gfx_sendall("INCANT_FINISH %d %d\n", player_id, incant_args->new_level);
 	while (i < incant_args->group_size)
 	{
 		player = get_player(incant_args->levelup_group[i]);
