@@ -94,8 +94,8 @@ const fftaStone = (path) => ({
 	assetPath: `stones/${path}`,
 	getMaxSprites: (game) => 2000,
 	dimensions: {
-		height: 14,
-		width: 12,
+		height: 112,
+		width: 96,
 	},
 	yOffsetOverride: 1.5,
 	size: 3,
