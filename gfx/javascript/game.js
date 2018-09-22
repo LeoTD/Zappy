@@ -63,6 +63,10 @@ class Game {
 		skybox.material = skyboxMaterial;
 		// Register a render loop to repeatedly render the scene
 		this.alpha = 0;
+	
+		this.gui = new Gui();
+		this.gui.displayLeaderboard();
+
 		game.scene.registerBeforeRender( () => {
 			skybox.rotation.y = this.alpha;
 			this.alpha += 0.0005;

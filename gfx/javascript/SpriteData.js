@@ -10,7 +10,7 @@ function shouldInvert(facing) {
 
 const fftaPlayerSprite = (path) => ({
 	assetPath: path,
-	getMaxSprites: () => 2000,
+	getMaxSprites: () => 300000,
 	dimensions: {
 		width: 32,
 		height: 32,
