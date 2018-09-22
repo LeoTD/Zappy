@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	var socket = io();
 	socket.on('tick', (data) => {
 		const tick = JSON.parse(data);
-		console.log(tick.tickNum);
+//		console.log(tick.tickNum);
 		for (const ev of tick.events) {
 			console.log(ev);
 			switch(ev.type) {
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				o.inv = ev.inventory;
 				game.addPlayer(o);
 				game.get_player(o.id).eggHatch({x:o.x, y:o.y});
-				console.log(o.team);
+				stats.incPlayerCount(ev.teamId);
 				break;
 			case 'SEE':
 				game.get_player(ev.playerId).see();
@@ -71,13 +71,18 @@ document.addEventListener('DOMContentLoaded', function() {
 				break;
 			case 'DEATH':
 				game.get_player(ev.playerId).death();
+				stats.decPlayerCount(ev.teamId, ev.level);
 				break;
 			case 'INCANT_START':
 				game.get_player(ev.priestId).leadIncant(ev.isSuccess);
 				break;
 			case 'INCANT_FINISH':
 				game.get_player(ev.priestId).finishLeadIncant(ev.newLevel);
+				stats.incHighestLevel(ev.newLevel, ev.levelupPids);
 				break;
+			case 'GAME_END':
+				// do cool stuff here;
+				stats.displayWinningTeam(ev.winningTeamIds);
 			default:
 				console.log('event type not yet handled: ' + ev.type);
 			}
@@ -86,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 var game;
+var stats;
 
 function fastForwardToGameState(ev) {
 	game = new Game({
@@ -95,6 +101,7 @@ function fastForwardToGameState(ev) {
 		num_elapsed_ticks: ev.startTick,
 		teams: ev.teamNames
 	});
+	stats = new Stats(ev.teamNames);
 	game.startup();
 	for (let tileStat of ev.tiles) {
 		const t = game.addTile({ x: tileStat.x, y: tileStat.y });

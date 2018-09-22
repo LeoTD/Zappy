@@ -62,6 +62,11 @@ class playerAvatar {
 	eggHatch(tile) {
 		game.tiles[tile.x][tile.y].removeContent('eggs', 1);
 	}
+	
+	death() {
+		this.bubble.cmdPopup('death');
+		this.sprite.dispose();
+	}
 
 	take(tile, type, isSuccess) {
 		if (isSuccess === 1) {
@@ -109,9 +114,5 @@ class playerAvatar {
 		this.bubble.cmdPopup('fail');
 	}
 	
-	death() {
-		this.bubble.cmdPopup('death');
-		this.sprite.dispose();
-	}
 
 }
