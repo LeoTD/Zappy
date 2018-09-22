@@ -70,43 +70,25 @@ SpriteData.bangaa = fftaPlayerSprite(
 	'player-sprites/bangaa-warrior/bangaa-warrior-sheet.png'
 );
 
-SpriteData.eggs = {
-	assetPath: 'egg0.png',
+const numberedResource = (path) => ({
+	assetPath: `numbered_resources/${path}`,
 	getMaxSprites: (game) => 2000,
 	dimensions: {
-		height: 200,
-		width: 240,
-	}
-};
-
-SpriteData.food = {
-	assetPath: 'minecraft_watermelon.png',
-	getMaxSprites: (game) => 2000,
-	dimensions: {
-		height: 128,
-		width: 128,
+		width: 192,
+		height: 192,
 	},
-	yOffsetOverride: 2.7,
 	size: 5,
-};
-
-const fftaStone = (path) => ({
-	assetPath: `stones/${path}`,
-	getMaxSprites: (game) => 2000,
-	dimensions: {
-		height: 112,
-		width: 96,
-	},
-	yOffsetOverride: 1.5,
-	size: 3,
+	yOffsetOverride: 2.7,
 });
 
-SpriteData.stone0 = fftaStone('ffta-stone-linemate.png');
-SpriteData.stone1 = fftaStone('ffta-stone-deraumere.png');
-SpriteData.stone2 = fftaStone('ffta-stone-sibur.png');
-SpriteData.stone3 = fftaStone('ffta-stone-mendiane.png');
-SpriteData.stone4 = fftaStone('ffta-stone-phiras.png');
-SpriteData.stone5 = fftaStone('ffta-stone-thystame.png');
+SpriteData.eggs = numberedResource('eggs-numbered.png');
+SpriteData.food = numberedResource('watermelons-numbered.png');
+SpriteData.stone0 = numberedResource('linemate-numbered.png');
+SpriteData.stone1 = numberedResource('deraumere-numbered.png');
+SpriteData.stone2 = numberedResource('sibur-numbered.png');
+SpriteData.stone3 = numberedResource('mendiane-numbered.png');
+SpriteData.stone4 = numberedResource('phiras-numbered.png');
+SpriteData.stone5 = numberedResource('thystame-numbered.png');
 
 SpriteData.put = {
 	assetPath: 'inventory.png',

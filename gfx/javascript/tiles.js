@@ -12,16 +12,7 @@ class Tile {
 			stone4: 0,
 			stone5: 0
 		};
-		this.contentSprites		= {
-			eggs: [],
-			food: [],
-			stone0: [],
-			stone1: [],
-			stone2: [],
-			stone3: [],
-			stone4: [],
-			stone5: [],
-		};
+		this.sprites = {};
 	}
 
 	get center() {
@@ -30,37 +21,17 @@ class Tile {
 
 	removeContent(type, amt) {
 		this.inventory[type] -= amt;
-		for (var i = 0; i < amt; i++) {
-			this.removeContentSprite(type);
-		}
-	}
-
-	removeContentSprite(type) {
-		const sp = this.contentSprites[type].shift();
-		if (sp) {
-			sp.dispose();
-		}
+		this.sprites[type].count -= amt;
 	}
 
 	addContent(type, amt) {
-		this.inventory[type] += amt;
-		for (var i = 0; i < amt; i++) {
-			this.addContentSprite(type);
+		if (!this.sprites[type]) {
+			const sp = new TileContentSprite(type);
+			this.sprites[type] = sp;
+			sp.addToTile(this);
 		}
-	}
-
-	addContentSprite(type) {
-		const sp = new BABYLON.Sprite(type, game.getContentSpriteManagerFor(type));
-		const sdataEntry = SpriteData[type];
-		const offset = Tile.generateContentSpriteOffset();
-		sp.position.x = this.y * game.tileSize + offset.y;
-		if (sdataEntry.yOffsetOverride)
-			sp.position.y = sdataEntry.yOffsetOverride;
-		else
-			sp.position.y = sdataEntry.dimensions.height / 2;
-		sp.position.z = this.x * game.tileSize + offset.x;
-		sp.size = sdataEntry.size;
-		this.contentSprites[type].push(sp);
+		this.inventory[type] += amt;
+		this.sprites[type].count += amt;
 	}
 
 	static generatePlayerSpriteOffset() {
