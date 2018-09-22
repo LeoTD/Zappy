@@ -8,11 +8,15 @@
 #define PHIRAS_CHANCE 6
 #define THYSTAME_CHANCE 1
 #define FOOD_CHANCE 28
-
-#define SUM_RESOURCE_CHANCES (LINEMATE_CHANCE + DERAUMERE_CHANCE + SIBUR_CHANCE + MENDIANE_CHANCE + PHIRAS_CHANCE + THYSTAME_CHANCE + FOOD_CHANCE)
 #define SPAWN_CHANCE_NUMERATOR 1
 #define SPAWN_CHANCE_DENOMINATOR 600
 #define PREGAME_RESOURCE_SPAWNING_ROUNDS 1000
+
+static int	sum_resource_chances(void)
+{
+	return (LINEMATE_CHANCE + DERAUMERE_CHANCE + SIBUR_CHANCE + \
+			MENDIANE_CHANCE + PHIRAS_CHANCE + THYSTAME_CHANCE + FOOD_CHANCE);
+}
 
 static void	spawn_resource(t_tile *t, int type)
 {
@@ -20,13 +24,13 @@ static void	spawn_resource(t_tile *t, int type)
 	t->count[type] += 1;
 }
 
-void	spawn_random_resource_on_tile(t_tile *t)
+void		spawn_random_resource_on_tile(t_tile *t)
 {
 	unsigned int	r;
 	unsigned int	accumulator;
 
 	accumulator = 0;
-	r = random() % SUM_RESOURCE_CHANCES;
+	r = random() % sum_resource_chances();
 	if (r < (accumulator += FOOD_CHANCE))
 		spawn_resource(t, FOOD);
 	else if (r < (accumulator += LINEMATE_CHANCE))
@@ -43,7 +47,7 @@ void	spawn_random_resource_on_tile(t_tile *t)
 		spawn_resource(t, THYSTAME);
 }
 
-void	do_per_tick_resource_generation(void)
+void		do_per_tick_resource_generation(void)
 {
 	int		i;
 	int		j;
@@ -62,7 +66,7 @@ void	do_per_tick_resource_generation(void)
 	}
 }
 
-void	seed_tiles_initial_resources(void)
+void		seed_tiles_initial_resources(void)
 {
 	int		i;
 

@@ -10,7 +10,7 @@ void	start_server_and_game(void)
 	init_global_hatch_queue();
 }
 
-void	animate(void); // XXX remove me and delete src/ascii_visuals.c from makefile when gfx exists
+void	animate(void);
 
 int		main(int argc, char **argv)
 {
@@ -18,7 +18,6 @@ int		main(int argc, char **argv)
 	int				fd;
 	t_client		**clients;
 
-	//srandomdev();
 	parse_command_line_options(argc, argv);
 	start_server_and_game();
 	while (1)
@@ -28,7 +27,7 @@ int		main(int argc, char **argv)
 			handle_waiting_connection_data(fd);
 		if (have_we_ticked())
 		{
-			gfx_sendall("TICK %d\n", get_elapsed_ticks()); // could just send "tick"?
+			gfx_sendall("TICK %d\n", get_elapsed_ticks());
 			animate();
 			check_and_hatch_eggs();
 			game_upkeep();
@@ -41,5 +40,4 @@ int		main(int argc, char **argv)
 			handle_possible_gameover();
 		}
 	}
-	return (0);
 }

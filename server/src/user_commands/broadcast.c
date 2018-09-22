@@ -4,10 +4,11 @@
 #include "client_type.h"
 
 #define GFX_BROADCAST_MSG_MAX_LEN 31
-static char	g_broadcast_buf[MAX_BROADCAST_LENGTH + 10 + 2]; // 10 = starting "message K ", 2 = ending "\n\0"
+
+static char	g_broadcast_buf[MAX_BROADCAST_LENGTH + 10 + 2];
 static size_t g_broadcast_len;
 
-int		distance_along_wrapped_dimension(int p1, int p2, int dim)
+int			distance_along_wrapped_dimension(int p1, int p2, int dim)
 {
 	int	d;
 
@@ -21,7 +22,7 @@ int		distance_along_wrapped_dimension(int p1, int p2, int dim)
 	return (d);
 }
 
-int		*point_to_greater_abs_value(int *a, int *b)
+int			*point_to_greater_abs_value(int *a, int *b)
 {
 	if (abs(*a) == abs(*b))
 		return (NULL);
@@ -31,7 +32,7 @@ int		*point_to_greater_abs_value(int *a, int *b)
 		return (b);
 }
 
-int		get_message_transmission_direction(int sourcex, int sourcey,
+int			get_message_transmission_direction(int sourcex, int sourcey,
 											int destx, int desty)
 {
 	int	dx;
@@ -68,7 +69,7 @@ static void	send_gfx_client_broadcast_msg(int player_id, char *msg)
 	gfx_sendall("BROADCAST %d %s\n", player_id, buf);
 }
 
-char	*broadcast(int player_id, void *args)
+char		*broadcast(int player_id, void *args)
 {
 	int			direction;
 	t_client	**clients;
@@ -76,8 +77,6 @@ char	*broadcast(int player_id, void *args)
 	t_player	*p;
 
 	clients = get_clients();
-	// FIXME: this doesn't limit the message length to MAX_BROADCAST_LENGTH
-	// but to MAX_BROADCAST_LENGTH - strlen("message K\n") - 1
 	snprintf(g_broadcast_buf, MAX_BROADCAST_LENGTH, "message K %s\n", args);
 	g_broadcast_len = strlen(g_broadcast_buf);
 	sender = get_player(player_id);

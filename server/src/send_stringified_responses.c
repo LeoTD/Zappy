@@ -13,7 +13,8 @@ void	send_stringified_responses(t_command_list *lst)
 		cmd = lst->cmd;
 		client = get_client_by_id(cmd->player_id);
 		assert(client != NULL);
-		if (send(client->socket_fd, cmd->response, strlen(cmd->response), 0) <= 0)
+		if (send(client->socket_fd, cmd->response,
+					strlen(cmd->response), 0) <= 0)
 			perror("send stringified response");
 		lst = lst->next;
 	}

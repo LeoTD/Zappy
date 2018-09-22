@@ -1,18 +1,18 @@
 #include "server.h"
 #include "player_type.h"
 
-void        feed_players(void)
+void	feed_players(void)
 {
-    int         fed;
+	int			fed;
 	int			pid;
-    t_player    *p;
+	t_player	*p;
 
 	fed = 0;
 	pid = 0;
-    while (fed < g_map->players)
-    {
-        if ((p = get_player(pid)) != NULL)
-        {
+	while (fed < g_map->players)
+	{
+		if ((p = get_player(pid)) != NULL)
+		{
 			p->energy--;
 			if (p->energy <= 0)
 			{
@@ -27,12 +27,12 @@ void        feed_players(void)
 			fed++;
 		}
 		pid++;
-    }
+	}
 }
 
-void        game_upkeep(void)
+void	game_upkeep(void)
 {
-    reset_obituary();
+	reset_obituary();
 	feed_players();
 	do_per_tick_resource_generation();
 }

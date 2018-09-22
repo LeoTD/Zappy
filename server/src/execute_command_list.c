@@ -6,7 +6,8 @@ void	execute_command_list(t_command_list *list)
 {
 	while (list)
 	{
-		list->cmd->response = list->cmd->cmdfunc(list->cmd->player_id, list->cmd->args);
+		list->cmd->response = list->cmd->cmdfunc(list->cmd->player_id,
+				list->cmd->args);
 		list = list->next;
 	}
 }

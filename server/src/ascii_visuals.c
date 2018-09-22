@@ -3,7 +3,7 @@
 #include "tile_type.h"
 #include "command_queue_type.h" 
 
-t_player	*client_controlled_player_on_tile(t_tile *t)
+t_player		*client_controlled_player_on_tile(t_tile *t)
 {
 	t_player *p;
 	t_client *c;
@@ -14,7 +14,7 @@ t_player	*client_controlled_player_on_tile(t_tile *t)
 	return (NULL);
 }
 
-void		print_player_facing(t_player *p)
+void			print_player_facing(t_player *p)
 {
 	printf("%c ", ((char []){ [NORTH] = '^', [EAST] = '>', [SOUTH] = 'v' , [WEST] = '<'}[p->facing]));
 }

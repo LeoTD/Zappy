@@ -16,13 +16,10 @@ t_command_queue		*new_cmdqueue(void)
 	return (holder);
 }
 
-/*
-** check for leaks
-*/
 void				free_cmdqueue(t_command_queue *q)
 {
 	if (!q)
-		return;
+		return ;
 	free_cmdlist(q->head);
 	free(q);
 }

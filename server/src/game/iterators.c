@@ -4,10 +4,10 @@
 
 t_tile		*iter_tiles(void)
 {
-	static int prev_x = 0;
-	static int prev_y = -1;
-	int		x;
-	int		y;
+	static int	prev_x = 0;
+	static int	prev_y = -1;
+	int			x;
+	int			y;
 
 	if (prev_x == g_map->dim.x - 1 && prev_y == g_map->dim.y - 1)
 	{
@@ -32,8 +32,8 @@ t_tile		*iter_tiles(void)
 
 t_player	*iter_players(void)
 {
-	static int found_players = -1;
-	static int last_found_player_id = -1;
+	static int	found_players = -1;
+	static int	last_found_player_id = -1;
 	t_player	*p;
 	int			pid;
 

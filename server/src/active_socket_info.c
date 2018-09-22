@@ -82,9 +82,9 @@ int		socket_lookup_has(int fd, enum e_socktype type)
 
 int		iter_next_readable_socket(void)
 {
-	static fd_set readable;
-	struct timeval timeout;
-	int	curr;
+	static fd_set	readable;
+	struct timeval	timeout;
+	int				curr;
 
 	if (g_prev_iter == -1)
 	{

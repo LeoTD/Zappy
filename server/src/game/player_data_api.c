@@ -7,7 +7,8 @@ int			g_list_size = START_SIZE;
 
 int				grow_list(void)
 {
-	g_player_list = realloc(g_player_list, sizeof(t_player *) * (g_list_size * 2));
+	g_player_list = realloc(g_player_list, \
+			sizeof(t_player *) * (g_list_size * 2));
 	if (!g_player_list)
 		ERR_OUT("grow list; realloc");
 	bzero(g_player_list + g_list_size, g_list_size);

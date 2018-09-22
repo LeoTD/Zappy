@@ -4,7 +4,8 @@
 #include "client_type.h"
 #include "player_type.h"
 
-static void		pop_command(t_command_list **popped_head, t_command_queue *cmd_queue)
+static void		pop_command(t_command_list **popped_head,
+		t_command_queue *cmd_queue)
 {
 	t_command_list	*popped_tail;
 
@@ -39,5 +40,5 @@ t_command_list	*dequeue_commands(t_client **user_clients)
 			}
 		}
 	}
-    return (popped_cmds);
+	return (popped_cmds);
 }

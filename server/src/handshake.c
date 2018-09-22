@@ -57,19 +57,23 @@ static void	greet_user_client(int fd, int team_id)
 	send(fd, response, strlen(response), 0);
 }
 
-static void send_command_tick_delays(int fd)
+static void	send_command_tick_delays(int fd)
 {
 	gfx_sendone(fd, "DELAY_TIME SEE %d\n", get_cmdfunc_tick_delay(see));
 	gfx_sendone(fd, "DELAY_TIME ADVANCE %d\n", get_cmdfunc_tick_delay(advance));
 	gfx_sendone(fd, "DELAY_TIME RIGHT %d\n", get_cmdfunc_tick_delay(right));
 	gfx_sendone(fd, "DELAY_TIME LEFT %d\n", get_cmdfunc_tick_delay(left));
-	gfx_sendone(fd, "DELAY_TIME LEAD_RITUAL %d\n", get_cmdfunc_tick_delay(incantation_finish));
+	gfx_sendone(fd, "DELAY_TIME LEAD_RITUAL %d\n",
+			get_cmdfunc_tick_delay(incantation_finish));
 	gfx_sendone(fd, "DELAY_TIME KICK %d\n", get_cmdfunc_tick_delay(kick));
-	gfx_sendone(fd, "DELAY_TIME BROADCAST %d\n", get_cmdfunc_tick_delay(broadcast));
+	gfx_sendone(fd, "DELAY_TIME BROADCAST %d\n",
+			get_cmdfunc_tick_delay(broadcast));
 	gfx_sendone(fd, "DELAY_TIME TAKE %d\n", get_cmdfunc_tick_delay(take));
 	gfx_sendone(fd, "DELAY_TIME PUT %d\n", get_cmdfunc_tick_delay(put));
-	gfx_sendone(fd, "DELAY_TIME LAY_EGG %d\n", get_cmdfunc_tick_delay(fork_player));
-	gfx_sendone(fd, "DELAY_TIME EGG_HATCH %d\n", get_cmdfunc_tick_delay(fork_finish));
+	gfx_sendone(fd, "DELAY_TIME LAY_EGG %d\n",
+			get_cmdfunc_tick_delay(fork_player));
+	gfx_sendone(fd, "DELAY_TIME EGG_HATCH %d\n",
+			get_cmdfunc_tick_delay(fork_finish));
 }
 
 static void	gfx_eventmsg_greeting(int fd)

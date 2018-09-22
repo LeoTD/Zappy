@@ -76,7 +76,7 @@ int				get_team_open_slots(int team)
 {
 	t_plist		*tmp;
 	int			i;
-	
+
 	if (g_map->empty_avatars[team] == NULL)
 		return (0);
 	tmp = g_map->empty_avatars[team];

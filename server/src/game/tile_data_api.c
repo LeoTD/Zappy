@@ -25,7 +25,7 @@ int			*get_current_tile_player_count(int pid, int *count)
 	j = -1;
 	while (++i < t->count[PLAYERS])
 	{
-		assert (t->players[i] != NULL);
+		assert(t->players[i] != NULL);
 		res[++j] = t->players[i]->id;
 	}
 	return (res);
@@ -41,8 +41,5 @@ int			*get_current_tile_stones(int pid)
 	t = p->tile;
 	res = malloc(sizeof(t->count));
 	memcpy(res, t->count, sizeof(t->count));
-	/* if ((res = malloc(sizeof(int) * 6)) == NULL) */
-	/* 	ERR_OUT("get_current_tile_stones; malloc"); */
-	/* memcpy(res, t->stones, sizeof(t->stones)); */
 	return (res);
 }

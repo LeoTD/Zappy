@@ -74,9 +74,6 @@ char					*incantation_finish(int player_id, void *args)
 		++i;
 	}
 	gfx_sendall("%s", "DONE\n");
-	// Use get_player() instead of incant_args->new_level.
-	// Handles the case where the leader of the current (failing) ritual is
-	// also a participant in an ongoing (successful) ritual.
 	asprintf(&response, "current level %d\n", get_player(player_id)->level);
 	free(incant_args);
 	return (response);
@@ -121,7 +118,7 @@ char					*incantation(int player_id, void *args)
 	finish = new_cmd(incantation_finish);
 	assert(get_player(player_id));
 	incant_args = create_incant_attempt_args(get_player(player_id));
-	finish->args = incant_args; // FIXME: change everything to void *
+	finish->args = incant_args;
 	finish->player_id = player_id;
 	q = get_client_by_id(player_id)->cmdqueue;
 	if (q->remaining_space < MAX_COMMANDS)
