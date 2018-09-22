@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				game.addPlayer(o);
 				game.get_player(o.id).eggHatch({x:o.x, y:o.y});
 				stats.incPlayerCount(ev.teamId);
+				game.gui.updateLeaderboardText();
 				break;
 			case 'SEE':
 				game.get_player(ev.playerId).see();
@@ -71,7 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				break;
 			case 'DEATH':
 				game.get_player(ev.playerId).death();
-				stats.decPlayerCount(ev.teamId, ev.level);
+				stats.decPlayerCount(game.get_player(ev.playerId).team, game.get_player(ev.playerId).level);
+				game.gui.updateLeaderboardText();
 				break;
 			case 'INCANT_START':
 				game.get_player(ev.priestId).leadIncant(ev.isSuccess);
@@ -79,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			case 'INCANT_FINISH':
 				game.get_player(ev.priestId).finishLeadIncant(ev.newLevel);
 				stats.incHighestLevel(ev.newLevel, ev.levelupPids);
+				game.gui.updateLeaderboardText();
 				break;
 			case 'GAME_END':
 				// do cool stuff here;
@@ -123,8 +126,11 @@ function fastForwardToGameState(ev) {
 			food: p.food,
 			inv: p.inventory,
 		});
+		stats.incPlayerCount(p.teamId);
+		stats.incHighestLevel(1, [p.playerId]);
 		game.get_player(p.playerId).idle();
 	}
+	game.gui.updateLeaderboardText();
 }
 
 function kickPlayers(kicked_pids, direction) {

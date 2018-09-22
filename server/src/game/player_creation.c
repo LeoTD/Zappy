@@ -2,7 +2,7 @@
 #include "player_type.h"
 #include "tile_type.h"
 
-#define DEFAULT_FOOD 999
+#define DEFAULT_FOOD 0
 #define DEFAULT_ENERGY 1260
 #define DEFAULT_LEVEL 1
 

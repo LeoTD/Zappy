@@ -41,6 +41,38 @@ class Gui{
 		advancedTexture.addControl(button1); 
 	}
 
+	updateLeaderboardText() {
+		var cmp = function(a, b) {
+			if (a.highestLevelOnTeam !== b.highestLevelOnTeam) {
+				return (b.highestLevelOnTeam - a.highestLevelOnTeam);
+			}
+			return (b.playersAtHighestLevel - a.playersAtHighestLevel);
+		}
+
+		var oldInfo;
+		if (this.currentTeamInfo) {
+			oldInfo = this.currentTeamInfo.slice(0);
+		}
+		this.currentTeamInfo = _.cloneDeep(stats.teams);
+		this.currentTeamInfo.sort(cmp);
+		if (oldInfo && _.isEqual(oldInfo, this.currentTeamInfo)) {
+			return ;
+		}
+
+		for (var i = 0; i < this.leaderboard.text.length; i++) {
+			this.leaderboard.text[i].dispose();
+		}
+
+		for (var i = 0; i < this.currentTeamInfo.length; i++) {
+			this.leaderboard.text[i] = this._createLeaderboardText(
+				this.leaderboard.panel,
+				`${i + 1}. ${this.currentTeamInfo[i].teamName} ${this.currentTeamInfo[i].playersAtHighestLevel} at level ${this.currentTeamInfo[i].highestLevelOnTeam} (out of ${this.currentTeamInfo[i].playersOnTeam})`,
+				i
+			);
+			this.advTex.addControl(this.leaderboard.text[i]);
+		}
+	}
+
 	displayLeaderboard() {
 		this.leaderboard.panel = this._createPanel({height:200, width:400}, {left:20, top:20}, "top", "left");
 		this.leaderboard.panel.alpha = 0.2;
@@ -51,29 +83,7 @@ class Gui{
 			this.leaderboard.panel.alpha = 0.2;
 		});
 		this.advTex.addControl(this.leaderboard.panel);
-	
-		var cmp = function(a, b) {
-			if (a.highestLevelOnTeam !== b.highestLevelOnTeam) {
-				return (b.highestLevelOnTeam - a.highestLevelOnTeam);
-			}
-			return (b.playersAtHighestLevel - a.playersAtHighestLevel);
-		}
-
-		//var teams = stats.teams.slice();
-		var teams = [
-			{playersOnTeam: 10, highestLevelOnTeam: 4, playersAtHighestLevel: 3, teamName: "zerg"},
-			{playersOnTeam: 11, highestLevelOnTeam: 2, playersAtHighestLevel: 4, teamName: "terran"},
-			{playersOnTeam: 12, highestLevelOnTeam: 3, playersAtHighestLevel: 5, teamName: "protoss"},
-		]
-
-		teams.sort(cmp);
-		for (var i = 0; i < teams.length; i++) {
-			this.advTex.addControl(this._createLeaderboardText(
-				this.leaderboard.panel,
-				`${i + 1}. ${teams[i].teamName} ${teams[i].playersAtHighestLevel} at level ${teams[i].highestLevelOnTeam} (out of ${teams[i].playersOnTeam})`,
-				i
-			));
-		}
+		this.updateLeaderboardText();
 	}
 	
 	_createPanel(size, offset, vert, hor, color) {

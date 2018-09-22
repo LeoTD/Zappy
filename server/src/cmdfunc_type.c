@@ -11,9 +11,9 @@ int					get_cmdfunc_tick_delay(t_cmdfunc f)
 	if (f == incantation)
 		return (0);
 	if (f == incantation_finish)
-		return (7);
+		return (300);
 	if (f == fork_finish)
-		return (7);
+		return (600);
 	return (7);
 }
 
