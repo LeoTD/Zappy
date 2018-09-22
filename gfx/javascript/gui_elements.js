@@ -1,6 +1,11 @@
 class Gui{
 	constructor() {
 		this.advTex = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("myUI");
+		this.leaderboardFontSize = 18;
+		this.leaderboard = {
+			panel:		undefined,
+			text:		[],
+		};
 	}
 	
 	init_scene() {
@@ -37,15 +42,15 @@ class Gui{
 	}
 
 	displayLeaderboard() {
-		var panel = this._createPanel({height:200, width:400}, {left:20, top:20}, "top", "left");
-		panel.alpha = 0.2;
-		panel.onPointerEnterObservable.add(function(){
-			panel.alpha = 0.8;
+		this.leaderboard.panel = this._createPanel({height:200, width:400}, {left:20, top:20}, "top", "left");
+		this.leaderboard.panel.alpha = 0.2;
+		this.leaderboard.panel.onPointerEnterObservable.add(() => {
+			this.leaderboard.panel.alpha = 0.8;
 		});
-		panel.onPointerOutObservable.add(function(){
-			panel.alpha = 0.2;
+		this.leaderboard.panel.onPointerOutObservable.add(() => {
+			this.leaderboard.panel.alpha = 0.2;
 		});
-		this.advTex.addControl(panel);
+		this.advTex.addControl(this.leaderboard.panel);
 	
 		var cmp = function(a, b) {
 			if (a.highestLevelOnTeam !== b.highestLevelOnTeam) {
@@ -64,12 +69,11 @@ class Gui{
 		teams.sort(cmp);
 		for (var i = 0; i < teams.length; i++) {
 			this.advTex.addControl(this._createLeaderboardText(
-				panel,
+				this.leaderboard.panel,
 				`${i + 1}. ${teams[i].teamName} ${teams[i].playersAtHighestLevel} at level ${teams[i].highestLevelOnTeam} (out of ${teams[i].playersOnTeam})`,
 				i
 			));
 		}
-//		this.advTex.addControl(text1);
 	}
 	
 	_createPanel(size, offset, vert, hor, color) {
@@ -108,19 +112,18 @@ class Gui{
 
 		const leftMargin = 20;
 		const topMargin = 40;
-		const fontSize = 18;
 	
 		var text = new BABYLON.GUI.TextBlock("text", text);
 //		text.text = text;
 		text.color = "white";
-		text.fontSize = fontSize;
+		text.fontSize = this.leaderboardFontSize;
 		text.isHitTestVisible = false;
 		
 		text.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
 		text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
 
 		text.left = panel.__left__ + leftMargin;
-		text.top = panel.__top__ + topMargin + (idx * (fontSize + 4));
+		text.top = panel.__top__ + topMargin + (idx * (this.leaderboardFontSize + 4));
 
 		return (text);
 	}

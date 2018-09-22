@@ -13,6 +13,7 @@ class Board {
 		tileTexture.diffuseTexture = new BABYLON.Texture(TILE_ASSET, scene);
 		tileTexture.diffuseTexture.uScale = dim.x; //Repeat {x} times on the Vertical Axes
 		tileTexture.diffuseTexture.vScale = dim.y; //Repeat {y} times on the Horizontal Axes
+		tileTexture.opacityFresnel = false;
 		this._mesh.material = tileTexture;
 	}
 }
