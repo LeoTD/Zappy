@@ -3,7 +3,7 @@
 
 void	send_death_message(int sock_fd)
 {
-	if (send(sock_fd, "death\n", strlen("death\n"), 0) <= 0)
+	if (send(sock_fd, SERVER_STRING_DEATH, strlen(SERVER_STRING_DEATH), 0) <= 0)
 		perror("send death message");
 }
 

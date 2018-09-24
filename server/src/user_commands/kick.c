@@ -4,9 +4,9 @@
 
 char	*kick_origin_message(int kick_dir, t_player *p)
 {
-	static char msg[] = "moving <K>\n";
+	static char msg[] = SERVER_STRING_MOVING;
 
-	msg[8] = '0' + perceived_direction(opposite_direction(kick_dir), p);
+	msg[strlen(msg) - 3] = '0' + perceived_direction(opposite_direction(kick_dir), p);
 	return (msg);
 }
 

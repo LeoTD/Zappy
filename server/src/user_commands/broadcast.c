@@ -77,7 +77,7 @@ char		*broadcast(int player_id, void *args)
 	t_player	*p;
 
 	clients = get_clients();
-	snprintf(g_broadcast_buf, MAX_BROADCAST_LENGTH, "message K %s\n", args);
+	snprintf(g_broadcast_buf, MAX_BROADCAST_LENGTH, "message K,%s\n", args);
 	g_broadcast_len = strlen(g_broadcast_buf);
 	sender = get_player(player_id);
 	while (clients[0])

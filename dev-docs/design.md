@@ -415,7 +415,7 @@ Our program is essentially some setup, and then a while(1) loop that continuousl
 + `char *broadcast(int player_id, void *args);`
 
 	- Get from the game an array of `int[2]`s indicating each player and their direction relative to the current player's location.
-	- For each item in this array, get the corresponding client struct and send its socket a message of the form `message <K> <text>\n`, where `K` is the direction returned from the game, `text` is `args`, and `message` is the literal string "message".
+	- For each item in this array, get the corresponding client struct and send its socket a message of the form `message <K>,<text>\n`, where `K` is the direction returned from the game, `text` is `args`, and `message` is the literal string "message".
 
 ## user_commands/incantation.c
 

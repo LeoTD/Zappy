@@ -10,8 +10,8 @@ static char *g_obj_names[] =
 	[MENDIANE] = "mendiane",
 	[PHIRAS] = "phiras",
 	[THYSTAME] = "thystame",
-	[FOOD] = "food",
-	[PLAYERS] = "player"
+	[FOOD] = SERVER_STRING_FOOD,
+	[PLAYERS] = SERVER_STRING_PLAYER
 };
 
 size_t		alloc_space_for_seen_objects(t_objcount **counts, char **str_p)

@@ -11,7 +11,7 @@ int		attempt_to_take(int pid, char *obj)
 	t_player *player;
 
 	player = get_player(pid);
-	if (!strcmp(obj, "food"))
+	if (!strcmp(obj, SERVER_STRING_FOOD))
 		return (pickup_food(player->tile, player));
 	else if (!strcmp(obj, "linemate"))
 		return (player_pickup_stone(LINEMATE, player->tile, player));
@@ -38,7 +38,7 @@ int		attempt_to_put(int pid, char *obj)
 	t_player *player;
 
 	player = get_player(pid);
-	if (!strcmp(obj, "food"))
+	if (!strcmp(obj, SERVER_STRING_FOOD))
 		return (player_place_food(player->tile, player));
 	else if (!strcmp(obj, "linemate"))
 		return (player_place_stone(LINEMATE, player->tile, player));

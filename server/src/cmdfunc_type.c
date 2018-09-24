@@ -19,23 +19,23 @@ int					get_cmdfunc_tick_delay(t_cmdfunc f)
 
 static t_cmdfunc	string_to_cmdfunc_nullary(char *s)
 {
-	if (!strcmp("advance", s))
+	if (!strcmp(SERVER_STRING_ADVANCE, s))
 		return (advance);
-	if (!strcmp("connect_nbr", s))
+	if (!strcmp(SERVER_STRING_CONNECT_NBR, s))
 		return (connect_nbr);
-	if (!strcmp("fork", s))
+	if (!strcmp(SERVER_STRING_FORK, s))
 		return (fork_player);
-	if (!strcmp("incantation", s))
+	if (!strcmp(SERVER_STRING_INCANTATION, s))
 		return (incantation);
-	if (!strcmp("inventory", s))
+	if (!strcmp(SERVER_STRING_INVENTORY, s))
 		return (inventory);
-	if (!strcmp("kick", s))
+	if (!strcmp(SERVER_STRING_KICK, s))
 		return (kick);
-	if (!strcmp("left", s))
+	if (!strcmp(SERVER_STRING_LEFT, s))
 		return (left);
-	if (!strcmp("right", s))
+	if (!strcmp(SERVER_STRING_RIGHT, s))
 		return (right);
-	if (!strcmp("see", s))
+	if (!strcmp(SERVER_STRING_SEE, s))
 		return (see);
 	return (NULL);
 }
@@ -49,25 +49,30 @@ static t_cmdfunc	string_to_cmdfunc_unary(char *s, char **arg_ptr)
 	if (!(space = strchr(s, ' ')))
 		return (NULL);
 	*space = '\0';
-	if (strcmp("broadcast", s) && strcmp("put", s) && strcmp("take", s))
+	if (strcmp(SERVER_STRING_BROADCAST, s) != 0
+			&& strcmp(SERVER_STRING_PUT, s) != 0
+			&& strcmp(SERVER_STRING_TAKE, s) != 0)
 		return (NULL);
-	max_len = *s == 'b' ? MAX_BROADCAST_LENGTH : MAX_OBJ_NAME_LENGTH;
+	max_len = !strcmp(s, SERVER_STRING_BROADCAST)
+		? MAX_BROADCAST_LENGTH : MAX_OBJ_NAME_LENGTH;
 	len = strnlen(space + 1, max_len);
 	if ((space + 1)[len] != '\0')
 		return (NULL);
 	asprintf(arg_ptr, "%s", space + 1);
-	if (*s == 'b')
+	if (!strcmp(s, SERVER_STRING_BROADCAST))
 		return (broadcast);
-	if (*s == 'p')
+	if (!strcmp(s, SERVER_STRING_PUT))
 		return (put);
-	if (*s == 't')
+	if (!strcmp(s, SERVER_STRING_TAKE))
 		return (take);
 	return (NULL);
 }
 
 t_cmdfunc			string_to_cmdfunc(char *string, char **arg_ptr)
 {
-	if (*string == 't' || *string == 'p' || *string == 'b')
+	if (!strncmp(string, SERVER_STRING_TAKE, 2)
+			|| !strncmp(string, SERVER_STRING_PUT, 2)
+			|| !strncmp(string, SERVER_STRING_BROADCAST, 2))
 		return (string_to_cmdfunc_unary(string, arg_ptr));
 	return (string_to_cmdfunc_nullary(string));
 }

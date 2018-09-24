@@ -2,8 +2,8 @@
 #include "player_type.h"
 #include "tile_type.h"
 
-#define DEFAULT_FOOD 0
-#define DEFAULT_ENERGY 1260
+#define DEFAULT_FOOD 10
+#define DEFAULT_ENERGY 0
 #define DEFAULT_LEVEL 1
 
 static int		g_pid_count;

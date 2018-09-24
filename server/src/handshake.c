@@ -17,7 +17,8 @@ void		initiate_user_connection_handshake(int serv_fd)
 		perror("handshake accept");
 	else
 	{
-		if (send(cli_fd, "WELCOME\n", 8, 0) == -1)
+		if (send(cli_fd, SERVER_STRING_WELCOME,
+					strlen(SERVER_STRING_WELCOME), 0) == -1)
 			perror("send welcome");
 		else
 			socket_lookup_add(cli_fd, HANDSHAKE);
