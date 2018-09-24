@@ -104,17 +104,27 @@ class TickEventParser extends stream.Transform {
 			});
 			break;
 
-		case 'LEAD_RITUAL':
+		case 'INCANT_START':
 			this.constructMultiMessageEvent({
 				type: 'INCANT_START',
-				priestId: Number(msg[1]),
-				willSucceed: Number(msg[2]),
-				participants: [Number(msg[1])],
-				newLevel: Number(msg[3])
+				priestId: undefined,
+				willSucceed: undefined,
+				participants: [],
+				newLevel: undefined,
+				stonesUsed: [0, 0, 0, 0, 0, 0]
 			});
+			break;
+		case 'LEAD_RITUAL':
+			this.multi.priestId = Number(msg[1]);
+			this.multi.willSucceed = Number(msg[2]);
+			this.multi.participants.push(Number(msg[1]));
+			this.multi.newLevel = Number(msg[3]);
 			break;
 		case 'JOIN_RITUAL':
 			this.multi.participants.push(Number(msg[1]));
+			break;
+		case 'USE_STONE_FOR_TOTEM':
+			this.multi.stonesUsed[Number(msg[1])] = Number(msg[2]);
 			break;
 
 		case 'INCANT_FINISH':

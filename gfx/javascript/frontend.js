@@ -76,7 +76,14 @@ document.addEventListener('DOMContentLoaded', function() {
 				game.gui.updateLeaderboardText();
 				break;
 			case 'INCANT_START':
-				game.get_player(ev.priestId).leadIncant(ev.isSuccess);
+				const p = game.get_player(ev.priestId);
+				p.leadIncant(ev.willSucceed);
+				if (ev.willSucceed) {
+					const t = game.tiles[p.x][p.y];
+					ev.stonesUsed.forEach((amt, idx) => {
+						t.removeContent(`stone${idx}`, amt);
+					});
+				}
 				break;
 			case 'INCANT_FINISH':
 				game.get_player(ev.priestId).finishLeadIncant(ev.newLevel);

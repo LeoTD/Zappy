@@ -26,6 +26,8 @@ void					construct_totem(t_tile *t, int priest_level)
 	{
 		t->count[i] -= g_incant_reqs[priest_level - 1][i];
 		assert(t->count[i] >= 0);
+		gfx_sendall("USE_STONE_FOR_TOTEM %d %d\n",
+				i, g_incant_reqs[priest_level - 1][i]);
 		i++;
 	}
 }
@@ -115,6 +117,7 @@ char					*incantation(int player_id, void *args)
 	struct s_incant_args	*incant_args;
 
 	(void)args;
+	gfx_sendall("%s", "INCANT_START\n");
 	finish = new_cmd(incantation_finish);
 	assert(get_player(player_id));
 	incant_args = create_incant_attempt_args(get_player(player_id));
