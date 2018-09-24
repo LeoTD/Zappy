@@ -55,8 +55,7 @@ static t_cmdfunc	string_to_cmdfunc_unary(char *s, char **arg_ptr)
 	len = strnlen(space + 1, max_len);
 	if ((space + 1)[len] != '\0')
 		return (NULL);
-	*arg_ptr = malloc(len);
-	strcpy(*arg_ptr, space + 1);
+	asprintf(arg_ptr, "%s", space + 1);
 	if (*s == 'b')
 		return (broadcast);
 	if (*s == 'p')

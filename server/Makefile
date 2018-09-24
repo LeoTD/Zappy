@@ -134,7 +134,7 @@ norm:
 	@printf "%b" "$(LIB_COLOR)$(NAME): Checking Norm...\n$(NO_COLOR)"
 	@norminette $(SRC) $(INC) $(MAIN)
 
-dev: CFLAGS += -Wno-error
+dev: CFLAGS += -Wno-error -fsanitize=address -fsanitize-address-use-after-scope -fsanitize=undefined
 dev: all
 
 ascii: CFLAGS += -DASCII_ANIMATIONS

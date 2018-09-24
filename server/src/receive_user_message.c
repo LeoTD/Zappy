@@ -17,8 +17,7 @@ char		*read_user_buffer(int cli_fd)
 	if ((count = recv(cli_fd, buf, MAX_USER_CLIENT_RECV, 0)) > 0)
 	{
 		buf[count] = '\0';
-		s = malloc(count);
-		strcpy(s, buf);
+		asprintf(&s, "%s", buf);
 	}
 	return (s);
 }
