@@ -10,7 +10,7 @@ function shouldInvert(facing) {
 
 const fftaPlayerSprite = (path) => ({
 	assetPath: path,
-	getMaxSprites: () => 300000,
+	getMaxSprites: (game) => game.MAX_PLAYERS,
 	dimensions: {
 		width: 32,
 		height: 32,
@@ -72,7 +72,7 @@ SpriteData.bangaa = fftaPlayerSprite(
 
 const numberedResource = (path) => ({
 	assetPath: `numbered_resources/${path}`,
-	getMaxSprites: (game) => 2000,
+	getMaxSprites: (game) => game.x * game.y,
 	dimensions: {
 		width: 192,
 		height: 192,
