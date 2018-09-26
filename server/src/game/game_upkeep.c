@@ -22,12 +22,20 @@ void	feed_players(void)
 					p->energy += ENERGY_PER_FOOD;
 				}
 				else
+				{
+					printf("%d ", fed);
+					printf("%d\n", p->id);
 					kill_player(p);
+					pid++;
+					continue;
+				}
 			}
 			fed++;
 		}
+//		fed++;
 		pid++;
 	}
+//	printf("BREAK\n");
 }
 
 void	game_upkeep(void)

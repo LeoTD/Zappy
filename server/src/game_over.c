@@ -12,9 +12,11 @@ static void	gfx_eventmsg_game_end(int num_winners, int *team_ids)
 		++i;
 	}
 	gfx_sendall("%s", "DONE\n");
+	printf("DONE WITH THE GAME PLEASE END HERE\n");
+
 }
 
-void	handle_possible_gameover(void)
+void		handle_possible_gameover(void)
 {
 	int		*winning_team_ids;
 	int		game_end_state;
@@ -26,7 +28,6 @@ void	handle_possible_gameover(void)
 	{
 		num_winners = (game_end_state == -1 ? 0 : game_end_state);
 		gfx_eventmsg_game_end(num_winners, winning_team_ids);
-		exit(0);
 	}
 	free(winning_team_ids);
 }

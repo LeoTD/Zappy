@@ -40,4 +40,5 @@ int		main(int argc, char **argv)
 			handle_possible_gameover();
 		}
 	}
+	return (0);
 }
