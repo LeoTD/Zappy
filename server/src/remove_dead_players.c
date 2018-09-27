@@ -14,7 +14,7 @@ void	remove_dead_players(void)
 	t_client	*client;
 	int			i;
 
-	player_ids = get_dead_players(&pid_count);
+	player_ids = kill_and_return_dead_players(&pid_count);
 	i = 0;
 	while (i < pid_count)
 	{

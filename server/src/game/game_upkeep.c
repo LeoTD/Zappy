@@ -22,7 +22,7 @@ void	feed_players(void)
 					p->energy += ENERGY_PER_FOOD;
 				}
 				else
-					kill_player(p);
+					mark_player_for_death(p);
 			}
 			fed++;
 		}
@@ -32,7 +32,6 @@ void	feed_players(void)
 
 void	game_upkeep(void)
 {
-	reset_obituary();
 	feed_players();
 	do_per_tick_resource_generation();
 }

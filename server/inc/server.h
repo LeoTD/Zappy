@@ -198,9 +198,8 @@ t_player				*new_player_on_tile(int team_id, int x, int y);
 void					reset_pid(void);
 
 //	game/player_death.c
-int						kill_player(t_player *p);
-int				        *get_dead_players(int *size);
-void					reset_obituary(void);
+int						mark_player_for_death(t_player *p);
+int				        *kill_and_return_dead_players(int *size);
 
 // game/levelups_and_gameovers.c
 void					increase_player_level(t_player *p, int new_level);

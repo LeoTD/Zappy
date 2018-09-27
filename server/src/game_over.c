@@ -1,4 +1,5 @@
 #include "server.h"
+#include "client_type.h"
 
 static void	gfx_eventmsg_game_end(int num_winners, int *team_ids)
 {
@@ -16,17 +17,23 @@ static void	gfx_eventmsg_game_end(int num_winners, int *team_ids)
 
 void	handle_possible_gameover(void)
 {
-	int		*winning_team_ids;
-	int		game_end_state;
-	int		num_winners;
+	int			*winning_team_ids;
+	int			game_end_state;
+	int			num_winners;
+	static int	already_ended = 0;
 
+	if (already_ended)
+	{
+		sleep(99);
+		exit(0);
+	}
 	winning_team_ids = NULL;
 	game_end_state = get_winning_teams(&winning_team_ids);
 	if (game_end_state != 0)
 	{
 		num_winners = (game_end_state == -1 ? 0 : game_end_state);
 		gfx_eventmsg_game_end(num_winners, winning_team_ids);
-		exit(0);
+		already_ended = 1;
 	}
 	free(winning_team_ids);
 }

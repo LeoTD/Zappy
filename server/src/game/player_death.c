@@ -7,17 +7,6 @@ static int		*g_dead_pids = NULL;
 static int		g_obit_size = 0;
 static int		g_dead_num = 0;
 
-void			reset_obituary(void)
-{
-	g_dead_num = 0;
-}
-
-int				*get_dead_players(int *size)
-{
-	*size = g_dead_num;
-	return (g_dead_pids);
-}
-
 void			remove_dead_plist_node(t_player *p)
 {
 	t_plist		*prev;
@@ -44,18 +33,34 @@ void			remove_dead_plist_node(t_player *p)
 	}
 }
 
-int				kill_player(t_player *p)
+int				*kill_and_return_dead_players(int *size)
+{
+	int			i;
+	t_player	*p;
+
+	*size = g_dead_num;
+	i = 0;
+	while (i < g_dead_num)
+	{
+		p = get_player(g_dead_pids[i]);
+		g_map->players_on_team[p->team_id] -= 1;
+		remove_dead_plist_node(p);
+		delete_player_from_list(p);
+		i++;
+	}
+	g_map->players -= g_dead_num;
+	g_dead_num = 0;
+	return (g_dead_pids);
+}
+
+int				mark_player_for_death(t_player *p)
 {
 	if (!g_dead_pids)
 		g_dead_pids = calloc((g_obit_size = OBIT_START_SIZE), sizeof(int));
 	if (g_dead_num == g_obit_size)
 		g_dead_pids = realloc(g_dead_pids, (g_obit_size *= 2) * sizeof(int));
 	remove_player_from_tile(p, p->tile);
-	g_map->players -= 1;
-	g_map->players_on_team[p->team_id] -= 1;
 	g_dead_pids[g_dead_num] = p->id;
 	g_dead_num++;
-	remove_dead_plist_node(p);
-	delete_player_from_list(p);
 	return (0);
 }
