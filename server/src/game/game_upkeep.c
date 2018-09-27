@@ -3,30 +3,18 @@
 
 void	feed_players(void)
 {
-	int			fed;
-	int			pid;
 	t_player	*p;
 
-	fed = 0;
-	pid = 0;
-	while (fed < g_map->players)
+	while ((p = iter_players()))
 	{
-		if ((p = get_player(pid)) != NULL)
+		p->energy--;
+		if (p->energy <= 0 && p->count[FOOD] > 0)
 		{
-			p->energy--;
-			if (p->energy <= 0)
-			{
-				if (p->count[FOOD] > 0)
-				{
-					p->count[FOOD]--;
-					p->energy += ENERGY_PER_FOOD;
-				}
-				else
-					mark_player_for_death(p);
-			}
-			fed++;
+			p->count[FOOD]--;
+			p->energy = ENERGY_PER_FOOD;
 		}
-		pid++;
+		else if (p->energy <= 0)
+			mark_player_for_death(p);
 	}
 }
 

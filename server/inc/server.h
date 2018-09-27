@@ -234,6 +234,7 @@ void					seed_tiles_initial_resources(void);
 // game/iterators.c
 t_tile					*iter_tiles(void);
 t_player				*iter_players(void);
+t_client				*iter_clients(int type);
 
 /*
 ** User commands:
@@ -268,7 +269,7 @@ int						have_we_ticked(void);
 void					remove_dead_players(void);
 
 // dequeue_commands.c
-t_command_list			*dequeue_commands(t_client **clients);
+t_command_list			*dequeue_commands(void);
 
 // execute_command_list.c
 void					execute_command_list(t_command_list *lst);
@@ -280,7 +281,7 @@ void					handle_possible_gameover(void);
 void					send_results_to_users(t_command_list *lst);
 
 // decrement_user_command_timers.c
-void					decrement_user_command_timers(t_client **clients);
+void					decrement_user_command_timers(void);
 
 // hatch_queue.c
 void					init_global_hatch_queue(void);

@@ -16,13 +16,11 @@ int		main(int argc, char **argv)
 {
 	t_command_list	*cmds;
 	int				fd;
-	t_client		**clients;
 
 	parse_command_line_options(argc, argv);
 	start_server_and_game();
 	while (1)
 	{
-		clients = get_clients();
 		while ((fd = iter_next_readable_socket()) != -1)
 			handle_waiting_connection_data(fd);
 		if (have_we_ticked())
@@ -32,11 +30,11 @@ int		main(int argc, char **argv)
 			check_and_hatch_eggs();
 			game_upkeep();
 			remove_dead_players();
-			cmds = dequeue_commands(clients);
+			cmds = dequeue_commands();
 			execute_command_list(cmds);
 			send_stringified_responses(cmds);
 			free_cmdlist(cmds);
-			decrement_user_command_timers(clients);
+			decrement_user_command_timers();
 			handle_possible_gameover();
 		}
 	}

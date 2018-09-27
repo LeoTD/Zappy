@@ -1,6 +1,7 @@
 #include "server.h"
 #include "player_type.h"
 #include "tile_type.h"
+#include "client_type.h"
 
 t_tile		*iter_tiles(void)
 {
@@ -32,25 +33,47 @@ t_tile		*iter_tiles(void)
 
 t_player	*iter_players(void)
 {
+	static int	players_to_find = -1;
 	static int	found_players = -1;
-	static int	last_found_player_id = -1;
+	static int	next_pid = 0;
+	int			this_pid;
 	t_player	*p;
-	int			pid;
 
-	if (found_players == g_map->players)
+	if (players_to_find == -1)
 	{
-		found_players = -1;
+		players_to_find = g_map->players;
+		found_players = 0;
+		next_pid = 0;
+	}
+	if (found_players == players_to_find)
+	{
+		players_to_find = -1;
 		return (NULL);
 	}
-	if (found_players == -1)
+	this_pid = next_pid;
+	while ((p = get_player(this_pid)) == NULL)
 	{
-		found_players = 0;
-		last_found_player_id = -1;
+		this_pid++;
 	}
-	pid = last_found_player_id + 1;
-	while ((p = get_player(pid)) == NULL)
-		pid++;
 	found_players++;
-	last_found_player_id = pid;
+	next_pid = this_pid + 1;
 	return (p);
+}
+
+t_client	*iter_clients(int type)
+{
+	static t_client	**clients = NULL;
+	t_client		*c;
+
+	if (clients == NULL)
+		clients = get_clients();
+	while (1)
+	{
+		c = *clients++;
+		if (type == -1 || c == NULL || c->type == type)
+			break ;
+	}
+	if (c == NULL)
+		clients = NULL;
+	return (c);
 }

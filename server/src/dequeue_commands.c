@@ -22,22 +22,14 @@ static void		ply_pop_command(t_command_list **popped_head,
 	}
 }
 
-t_command_list	*dequeue_commands(t_client **user_clients)
+t_command_list	*dequeue_commands(void)
 {
 	t_command_list	*popped_cmds;
-	int				i;
+	t_client		*c;
 
 	popped_cmds = NULL;
-	i = -1;
-	while (user_clients[++i])
-	{
-		if (user_clients[i]->type == ACTIVE_PLAYER)
-		{
-			while (user_clients[i]->cmdqueue.dequeue_timer == 0)
-			{
-				ply_pop_command(&popped_cmds, &(user_clients[i]->cmdqueue));
-			}
-		}
-	}
+	while ((c = iter_clients(ACTIVE_PLAYER)))
+		while (c->cmdqueue.dequeue_timer == 0)
+			ply_pop_command(&popped_cmds, &(c->cmdqueue));
 	return (popped_cmds);
 }

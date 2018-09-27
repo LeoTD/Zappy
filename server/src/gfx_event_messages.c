@@ -18,20 +18,15 @@ void		gfx_sendone(int fd, char *format, ...)
 
 void		gfx_sendall(char *format, ...)
 {
-	t_client	**clients;
+	t_client	*c;
 	va_list		args;
 	int			len;
 	char		*buf;
 
 	va_start(args, format);
-	clients = get_clients();
 	len = vasprintf(&buf, format, args);
-	while (clients[0])
-	{
-		if (clients[0]->type == GFX)
-			send(clients[0]->socket_fd, buf, len, 0);
-		clients++;
-	}
+	while ((c = iter_clients(GFX)))
+		send(c->socket_fd, buf, len, 0);
 	free(buf);
 	va_end(args);
 }

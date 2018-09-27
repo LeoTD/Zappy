@@ -72,27 +72,22 @@ static void	send_gfx_client_broadcast_msg(int player_id, char *msg)
 char		*broadcast(int player_id, void *args)
 {
 	int			direction;
-	t_client	**clients;
+	t_client	*c;
 	t_player	*sender;
 	t_player	*p;
 
-	clients = get_clients();
 	snprintf(g_broadcast_buf, MAX_BROADCAST_LENGTH, "message K,%s\n", args);
 	g_broadcast_len = strlen(g_broadcast_buf);
 	sender = get_player(player_id);
-	while (clients[0])
+	while ((c = iter_clients(ACTIVE_PLAYER)))
 	{
-		if (clients[0]->type == ACTIVE_PLAYER)
-		{
-			p = get_player(clients[0]->id);
-			direction = get_message_transmission_direction(
-					sender->tile->x, sender->tile->y, p->tile->x, p->tile->y);
-			if (direction > 0)
-				direction = perceived_direction(direction, p);
-			g_broadcast_buf[8] = direction + '0';
-			send(clients[0]->socket_fd, g_broadcast_buf, g_broadcast_len, 0);
-		}
-		clients++;
+		p = get_player(c->id);
+		direction = get_message_transmission_direction(
+				sender->tile->x, sender->tile->y, p->tile->x, p->tile->y);
+		if (direction > 0)
+			direction = perceived_direction(direction, p);
+		g_broadcast_buf[8] = direction + '0';
+		send(c->socket_fd, g_broadcast_buf, g_broadcast_len, 0);
 	}
 	send_gfx_client_broadcast_msg(player_id, args);
 	return (ok_response());

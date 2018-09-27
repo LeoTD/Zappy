@@ -15,6 +15,7 @@ void	test_receive_user_message(void);
 void	test_user_commands(void);
 void	test_user_command_incantation(void);
 void	test_user_command_fork(void);
+void	test_iterators(void);
 
 int		main(int argc, char **argv)
 {
@@ -32,5 +33,6 @@ int		main(int argc, char **argv)
 	test_user_commands();
 	test_user_command_incantation();
 	test_user_command_fork();
+	test_iterators();
 	return (0);
 }
