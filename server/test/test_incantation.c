@@ -2,7 +2,7 @@
 #include "test.h"
 #include "g_player_list.h"
 
-struct	s_incant_args *create_incant_attempt_args(t_player *p);
+struct	s_incant_args *get_eventual_incantation_result(t_player *p);
 
 void	do_incant_args_creation_test(int *levels, t_objcount ct, int should_succeed)
 {
@@ -20,7 +20,7 @@ void	do_incant_args_creation_test(int *levels, t_objcount ct, int should_succeed
 	}
 	memcpy(g_map->tile[0][0].count, ct, sizeof(t_objcount));
 	int priest_id = pids[0];
-	struct s_incant_args *result = create_incant_attempt_args(get_player(priest_id));
+	struct s_incant_args *result = get_eventual_incantation_result(get_player(priest_id));
 	if (should_succeed)
 	{
 		assert(get_player(priest_id));
@@ -111,7 +111,7 @@ void	test_incantation_start_to_finish(int should_succeed)
 	if (should_succeed == 0)
 		ct[SIBUR] -= 1;
 	memcpy(g_map->tile[0][0].count, ct, sizeof(ct));
-	a = create_incant_attempt_args(get_player(pids[0]));
+	a = get_eventual_incantation_result(get_player(pids[0]));
 	char *response = incantation_finish(pids[0], a);
 	char *expected;
 	asprintf(&expected, "current level %d\n", new_level);

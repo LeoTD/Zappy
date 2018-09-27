@@ -54,7 +54,7 @@ const fftaPlayerSprite = (spriteName) => ({
 				startFrame,
 				startFrame + 1,
 				true,
-				1000,
+				500,
 				this.idle
 			);
 		},
