@@ -69,16 +69,22 @@ kick\n\
 forgot the newline on the next one:\n\
 see";
 	t_client *c = new_client(0, 0, ACTIVE_PLAYER);
-	c->cmdqueue->remaining_space = 3;
 	enqueue_commands_from_user_message(c, msg);
-	assert(c->cmdqueue->remaining_space == 1);
-	assert(c->cmdqueue->tail->cmd->cmdfunc == kick);
+	assert(c->cmdqueue.jobs[c->cmdqueue.head_ind + c->cmdqueue.size - 1]->cmd->cmdfunc == kick);
+	char filler[] = "see\n\
+see\n\
+see\n\
+see\n\
+see\n\
+see\n\
+see\n";
+	enqueue_commands_from_user_message(c, filler);
 	char msg2[] = "nope\n\
 take thystame\n\
 inventory\n";
 	enqueue_commands_from_user_message(c, msg2);
-	assert(c->cmdqueue->tail->cmd->cmdfunc == take);
-	assert(c->cmdqueue->remaining_space == 0);
+	assert(c->cmdqueue.size == 10);
+	assert(c->cmdqueue.jobs[c->cmdqueue.head_ind + c->cmdqueue.size - 1]->cmd->cmdfunc == take);
 }
 
 void test_receive_user_message(void)

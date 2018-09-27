@@ -55,12 +55,12 @@ void		enqueue_commands_from_user_message(t_client *client, char *msg)
 	t_command	*cmd;
 
 	msg_next = msg;
-	while (client->cmdqueue->remaining_space > 0 && *msg_next)
+	while (client->cmdqueue.size <= 10 && *msg_next)
 	{
 		if ((cmd = message_extract_next_command(msg, &msg_next)))
 		{
 			cmd->player_id = client->id;
-			enqueue_command(client->cmdqueue, cmd);
+			ply_enqueue_command(&(client->cmdqueue), cmd);
 			if (cmd->cmdfunc == fork_player)
 				gfx_sendall("LAY_EGG %d\n", client->id);
 		}

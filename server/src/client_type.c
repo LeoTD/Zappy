@@ -4,14 +4,10 @@
 t_client	*new_client(int socket_fd, int id, int type)
 {
 	t_client		*c;
-	t_command_queue	*q;
 
-	q = NULL;
-	if (type == ACTIVE_PLAYER && !(q = new_cmdqueue()))
-		return (NULL);
 	if (!(c = malloc(sizeof(*c))))
 		return (NULL);
-	c->cmdqueue = q;
+	ply_new_cmdqueue(&(c->cmdqueue));
 	c->socket_fd = socket_fd;
 	c->type = type;
 	c->id = id;
@@ -20,6 +16,6 @@ t_client	*new_client(int socket_fd, int id, int type)
 
 void		free_client(t_client *client)
 {
-	free_cmdqueue(client->cmdqueue);
+	ply_free_cmdqueue(&(client->cmdqueue));
 	free(client);
 }

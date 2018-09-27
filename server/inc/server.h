@@ -91,6 +91,7 @@ typedef char					*(*t_cmdfunc)(int player_id, void *args);
 typedef struct s_command		t_command;
 typedef struct s_command_list	t_command_list;
 typedef struct s_command_queue	t_command_queue;
+typedef struct s_ply_cmd_queue	t_ply_cmd_queue;
 typedef struct s_client			t_client;
 typedef struct s_vec
 {
@@ -321,6 +322,14 @@ void					free_cmdqueue(t_command_queue *q);
 int						enqueue_command(t_command_queue *q, t_command *cmd);
 int						enqueue_front(t_command_queue *q, t_command *cmd);
 t_command_list			*dequeue_command(t_command_queue *q);
+
+// command_player_queue_type.c
+void					ply_new_cmdqueue(t_ply_cmd_queue *q);
+void					ply_free_cmdqueue(t_ply_cmd_queue *q);
+int						ply_enqueue_command(t_ply_cmd_queue *q, t_command *cmd);
+int						ply_enqueue_front(t_ply_cmd_queue *q, t_command *cmd);
+t_command_list			*ply_dequeue_command(t_ply_cmd_queue *q);
+
 
 // handshake.c
 void					initiate_user_connection_handshake(int server_fd);

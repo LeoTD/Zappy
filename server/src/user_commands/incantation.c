@@ -112,7 +112,7 @@ struct s_incant_args	*create_incant_attempt_args(t_player *priest)
 char					*incantation(int player_id, void *args)
 {
 	t_command				*finish;
-	t_command_queue			*q;
+	t_ply_cmd_queue			*q;
 	int						i;
 	struct s_incant_args	*incant_args;
 
@@ -123,10 +123,10 @@ char					*incantation(int player_id, void *args)
 	incant_args = create_incant_attempt_args(get_player(player_id));
 	finish->args = incant_args;
 	finish->player_id = player_id;
-	q = get_client_by_id(player_id)->cmdqueue;
-	if (q->remaining_space < MAX_COMMANDS)
-		q->remaining_space += 1;
-	enqueue_front(q, finish);
+	q = &(get_client_by_id(player_id)->cmdqueue);
+	if (q->size >= MAX_COMMANDS)
+		q->size -= 1;
+	ply_enqueue_front(q, finish);
 	gfx_sendall("LEAD_RITUAL %d %d %d %d\n", player_id, incant_args->new_level > get_player(player_id)->level, incant_args->new_level, incant_args->group_size);
 	i = 0;
 	while (i < incant_args->group_size)
