@@ -7,39 +7,6 @@ class Gui{
 			text:		[],
 		};
 	}
-	
-	init_scene() {
-
-	}
-
-	createButton(opts) {
-		var button_h = BABYLON.GUI.Button.CreateSimpleButton(opts.name, opts.messge);
-		button_h.width = opts.width;
-		button_h.height = opts.height;
-		button_h.color = opts.color;
-		if (!opts.cornerRadius) {
-			button_h.cornerRadius = 0;
-		} else {
-			button_h.cornerRadius = opts.cornerRadius;
-		}
-		button_h.background = opts.background;
-		button_h.onPointerUpObservable.add( () => {
-			
-		});
-			
-		var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Click Me");
-		button1.width = "150px";
-		button1.height = "40px";
-		button1.color = "white";
-		button1.cornerRadius = 20;
-		button1.background = "green";
-		button1.left = this.engine.getRenderWidth / -2;
-		button1.top = this.engine.getRenderHeight / -2;
-		button1.onPointerUpObservable.add(function() {
-			alert("you did it!");
-		});
-		advancedTexture.addControl(button1); 
-	}
 
 	updateLeaderboardText() {
 		var cmp = function(a, b) {
@@ -47,7 +14,7 @@ class Gui{
 				return (b.highestLevelOnTeam - a.highestLevelOnTeam);
 			}
 			return (b.playersAtHighestLevel - a.playersAtHighestLevel);
-		}
+		};
 
 		var oldInfo;
 		if (this.currentTeamInfo) {
@@ -71,6 +38,15 @@ class Gui{
 			);
 			this.advTex.addControl(this.leaderboard.text[i]);
 		}
+	}
+
+	displayPlayerDetail() {
+		this.playerDetail = new PlayerDetail();
+		this.advTex.addControl(this.playerDetail);
+		this.playerDetail.horizontalAlignment =
+			BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+		this.playerDetail.verticalAlignment =
+			BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
 	}
 
 	displayLeaderboard() {
@@ -102,7 +78,7 @@ class Gui{
 		}
 		rectangle.alpha = 1;
 		rectangle.width = size.width + "px";
-        rectangle.height = size.height + "px";
+		rectangle.height = size.height + "px";
 		rectangle.horizontalAlignment = {left:		BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT,
 										 center:	BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER,
 										 right:		BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT	}[hor];
@@ -122,13 +98,11 @@ class Gui{
 
 		const leftMargin = 20;
 		const topMargin = 40;
-	
 		var text = new BABYLON.GUI.TextBlock("text", text);
-//		text.text = text;
 		text.color = "white";
 		text.fontSize = this.leaderboardFontSize;
 		text.isHitTestVisible = false;
-		
+
 		text.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
 		text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
 

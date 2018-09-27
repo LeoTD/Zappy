@@ -13,6 +13,7 @@ class PlayerSprite extends BABYLON.Sprite {
 		this.position.z = (this.player.x * game.tileSize) + this.offset.x;
 		this.position.x = (this.player.y * game.tileSize) + this.offset.y;
 		this.isPickable = true;
+		manager.isPickable = true;
 	}
 
 	resetAndIdle() {

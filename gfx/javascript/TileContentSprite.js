@@ -6,12 +6,12 @@ class TileContentSprite extends BABYLON.Sprite {
 		this.size = 5;
 		this.position.y = 2.7;
 		this.isVisible = false;
-		this.cellIndex = 0;
+		this.cellIndex = 1;
 	}
 
 	set count(amt) {
 		this._count = amt;
-		if (this._count < 0)
+		if (this._count <= 0)
 			this.hide();
 		else
 			this.showCount();
@@ -24,11 +24,11 @@ class TileContentSprite extends BABYLON.Sprite {
 	showCount() {
 		this.isVisible = true;
 		if (this._count <= 10)
-			this.cellIndex = this._count - 1;
+			this.cellIndex = this._count;
 		else if (this._count <= 50)
-			this.cellIndex = Math.floor(this._count / 10) + 8;
+			this.cellIndex = Math.floor(this._count / 10) + 9;
 		else
-			this.cellIndex = 14;
+			this.cellIndex = 15;
 	}
 
 	get count() {

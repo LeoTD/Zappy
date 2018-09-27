@@ -8,8 +8,11 @@ function shouldInvert(facing) {
 	return facing === 'n' || facing === 'e';
 }
 
-const fftaPlayerSprite = (path) => ({
-	assetPath: path,
+const fftaPlayerSprite = (spriteName) => ({
+	assetPath: `player-sprites/${spriteName}/${spriteName}-sheet.png`,
+	getPortraitPath: (teamId) => {
+		return `player-sprites/${spriteName}/team${teamId % 2 + 1}-portrait.png`;
+	},
 	getMaxSprites: (game) => game.MAX_PLAYERS,
 	dimensions: {
 		width: 32,
@@ -58,17 +61,9 @@ const fftaPlayerSprite = (path) => ({
 	}
 });
 
-SpriteData.blackMage = fftaPlayerSprite(
-	'player-sprites/human-blackmage/human-blackmage-sheet.png'
-);
-
-SpriteData.mogKnight = fftaPlayerSprite(
-	'player-sprites/moogle-mogknight/moogle-mogknight-sheet.png'
-);
-
-SpriteData.bangaa = fftaPlayerSprite(
-	'player-sprites/bangaa-warrior/bangaa-warrior-sheet.png'
-);
+SpriteData.blackMage = fftaPlayerSprite('human-blackmage');
+SpriteData.mogKnight = fftaPlayerSprite('moogle-mogknight');
+SpriteData.bangaa = fftaPlayerSprite('bangaa-warrior');
 
 const numberedResource = (path) => ({
 	assetPath: `numbered_resources/${path}`,

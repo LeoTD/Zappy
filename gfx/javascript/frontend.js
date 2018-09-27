@@ -59,13 +59,13 @@ document.addEventListener('DOMContentLoaded', function() {
 				game.get_player(ev.playerId).see();
 				break;
 			case 'INVENTORY':
-				game.get_player(ev.playerId).inventory();	
+				game.get_player(ev.playerId).checkInventory();
 				break;
 			case 'SPAWN_RESOURCE':
 				game.tiles[ev.x][ev.y].addContent(ev.objType, 1);
 				break;
 			case 'BAD_COMMAND':
-				game.get_player(ev.playerId).fail();	
+				game.get_player(ev.playerId).fail();
 				break;
 			case 'BROADCAST':
 				game.get_player(ev.playerId).broadcast();

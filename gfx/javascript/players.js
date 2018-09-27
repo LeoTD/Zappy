@@ -2,15 +2,18 @@ const compass = ['n', 'e', 's', 'w', 'n'];
 
 class playerAvatar {
 	constructor(opts) {
-		this.bubble		= new speechBubble(this)
-
-		this.id			= opts.id;
-		this.x 			= opts.x;
-		this.y 			= opts.y;
-		this.inv		= opts.inv;
-		this.level		= opts.level;
-		this.team		= opts.team;
-		this.facing		= opts.facing || 's';
+		this.bubble = new speechBubble(this);
+		this.id = opts.id;
+		this.x = opts.x;
+		this.y = opts.y;
+		this.inventory = {};
+		for (let i in opts.inv) {
+			this.inventory[`stone${i}`] = opts.inv[i];
+		}
+		this.inventory.food = opts.food;
+		this.level = opts.level;
+		this.team = opts.team;
+		this.facing = opts.facing || 's';
 	}
 
 	broadcast() {
@@ -33,7 +36,8 @@ class playerAvatar {
 
 	put(tile, type, isSuccess) {
 		if (isSuccess === 1) {
-			this.inventory();
+			this.bubble.cmdPopup('inventory');
+			this.inventory[type] -= 1;
 			game.tiles[tile.x][tile.y].addContent(type, 1);
 		}
 		else {
@@ -47,6 +51,7 @@ class playerAvatar {
 
 	finishLeadIncant(newLevel) {
 		this.sprite.resetAndIdle();
+		this.level = newLevel;
 	}
 
 	layEgg() {
@@ -54,8 +59,6 @@ class playerAvatar {
 	}
 
 	doneLayingEgg(tile) {
-		console.log(tile);
-		console.log(this);
 		game.tiles[tile.x][tile.y].addContent('eggs', 1);
 	}
 
@@ -70,7 +73,8 @@ class playerAvatar {
 
 	take(tile, type, isSuccess) {
 		if (isSuccess === 1) {
-			this.inventory();
+			this.inventory[type] += 1;
+			this.bubble.cmdPopup('inventory');
 			game.tiles[tile.x][tile.y].removeContent(type, 1);
 		}
 		else {
@@ -78,12 +82,12 @@ class playerAvatar {
 		}
 	}
 
-	see() {
-		this.bubble.cmdPopup('see');
+	checkInventory() {
+		this.bubble.cmdPopup('inventory');
 	}
 
-	inventory() {
-		this.bubble.cmdPopup('inventory');
+	see() {
+		this.bubble.cmdPopup('see');
 	}
 
 	createSprite() {
