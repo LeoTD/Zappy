@@ -8,6 +8,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/resource.h>
 # include <sys/socket.h>
 # include <sys/time.h>
 # include <unistd.h>
@@ -253,9 +254,9 @@ char					*fork_player(int player_id, void *arg);
 char					*fork_finish(int player_id, void *arg);
 char					*connect_nbr(int player_id, void *arg);
 
-// game/inventory.c
-char					*get_player_inventory(int pid);
-
+// simple_responses.c
+char					*ok_response(void);
+char					*ko_response(void);
 
 // command_line_options.c
 void					parse_command_line_options(int argc, char **argv);

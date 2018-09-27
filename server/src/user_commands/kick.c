@@ -44,5 +44,5 @@ char	*kick(int player_id, void *args)
 	}
 	free(tile_pids);
 	gfx_sendall("%s", "DONE\n");
-	return (npids > 1 ? "ok\n" : "ko\n");
+	return (npids > 1 ? ok_response() : ko_response());
 }

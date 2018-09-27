@@ -9,7 +9,7 @@ char	*left(int player_id, void *args)
 	p = get_player(player_id);
 	p->facing = direction_add(p->facing, WEST);
 	gfx_sendall("LEFT %d\n", player_id);
-	return ("ok\n");
+	return (ok_response());
 }
 
 char	*right(int player_id, void *args)
@@ -20,5 +20,5 @@ char	*right(int player_id, void *args)
 	p = get_player(player_id);
 	p->facing = direction_add(p->facing, EAST);
 	gfx_sendall("RIGHT %d\n", player_id);
-	return ("ok\n");
+	return (ok_response());
 }

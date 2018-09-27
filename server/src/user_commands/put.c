@@ -7,7 +7,7 @@ char	*put(int player_id, void *args)
 	obj_to_put = (char*)args;
 	if (attempt_to_put(player_id, obj_to_put))
 	{
-		return ("ko\n");
+		return (ko_response());
 	}
-	return ("ok\n");
+	return (ok_response());
 }

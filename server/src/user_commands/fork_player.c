@@ -32,7 +32,6 @@ char				*fork_finish(int player_id, void *args)
 		p->facing, p->count[FOOD],
 		p->count[LINEMATE], p->count[DERAUMERE], p->count[SIBUR],
 		p->count[MENDIANE], p->count[PHIRAS], p->count[THYSTAME]);
-	free(a);
 	return (NULL);
 }
 
@@ -54,5 +53,5 @@ char				*fork_player(int player_id, void *args)
 	p->tile->eggs += 1;
 	gfx_sendall("DONE_LAYING_EGG %d %d %d %d\n",
 			p->id, p->team_id, p->tile->x, p->tile->y);
-	return ("ok\n");
+	return (ok_response());
 }

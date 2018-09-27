@@ -14,6 +14,7 @@ void				ply_new_cmdqueue(t_ply_cmd_queue *q)
 	while (++i < 10)
 		q->jobs[i] = NULL;
 	q->size = 0;
+	q->dequeue_timer = -1;
 }
 
 void				ply_free_cmdqueue(t_ply_cmd_queue *q)

@@ -26,7 +26,9 @@ void			free_cmdlist(t_command_list *list)
 	{
 		purger = iter;
 		iter = iter->next;
+		free_cmd(purger->cmd);
 		free(purger);
 	}
+	free_cmd(list->cmd);
 	free(list);
 }

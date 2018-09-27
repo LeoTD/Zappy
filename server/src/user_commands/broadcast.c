@@ -95,5 +95,5 @@ char		*broadcast(int player_id, void *args)
 		clients++;
 	}
 	send_gfx_client_broadcast_msg(player_id, args);
-	return ("ok\n");
+	return (ok_response());
 }

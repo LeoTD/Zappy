@@ -67,7 +67,8 @@ USRCMD_FILES= advance.c \
 			  take.c \
 			  left_right.c \
 			  put.c \
-			  see.c 
+			  see.c \
+			  simple_responses.c \
 
 USRCMD_SRC	= $(addprefix user_commands/, $(USRCMD_FILES))
 

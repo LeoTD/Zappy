@@ -24,7 +24,7 @@ void	handle_possible_gameover(void)
 
 	if (already_ended)
 	{
-		sleep(99);
+		sleep(1);
 		exit(0);
 	}
 	winning_team_ids = NULL;

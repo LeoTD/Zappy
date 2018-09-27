@@ -77,7 +77,7 @@ char					*incantation_finish(int player_id, void *args)
 	}
 	gfx_sendall("%s", "DONE\n");
 	asprintf(&response, "current level %d\n", get_player(player_id)->level);
-	free(incant_args);
+	free(incant_args->levelup_group);
 	return (response);
 }
 
@@ -115,6 +115,7 @@ char					*incantation(int player_id, void *args)
 	t_ply_cmd_queue			*q;
 	int						i;
 	struct s_incant_args	*incant_args;
+	char					*response;
 
 	(void)args;
 	gfx_sendall("%s", "INCANT_START\n");
@@ -136,5 +137,6 @@ char					*incantation(int player_id, void *args)
 		i++;
 	}
 	gfx_sendall("%s", "DONE\n");
-	return ("elevation in progress\n");
+	asprintf(&response, "elevation in progress\n");
+	return (response);
 }

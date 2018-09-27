@@ -25,6 +25,7 @@ void		listen_for_connections(int port)
 	int					optval;
 
 	increase_rlimit();
+	optval = 1;
 	if ((fd = socket(AF_INET, SOCK_STREAM, getprotobyname("tcp")->p_proto)) < 0)
 		ERR_OUT("socket");
 	if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1)
