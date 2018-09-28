@@ -20,6 +20,10 @@ class playerAvatar {
 		this.bubble.cmdPopup('broadcast');
 	}
 
+	eatFood() {
+		this.inventory.food -= 1;
+	}
+
 	right() {
 		this.facing = compass[compass.indexOf(this.facing) + 1];
 		this.sprite.idleAnimation();

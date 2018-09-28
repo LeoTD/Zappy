@@ -83,14 +83,14 @@ module.exports = {
 	},
 	'INCANT_START': {
 		type: 'INCANT_START',
-		priestId: 0,
+		playerId: 0,
 		willSucceed: 0,
 		participants: [],
 		newLevel: 0
 	},
 	'INCANT_FINISH': {
 		type: 'INCANT_FINISH',
-		priestId: 0,
+		playerId: 0,
 		newLevel: 0,
 		levelupPids: []
 	},

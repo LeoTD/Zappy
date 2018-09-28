@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			case 'PUT':
 				game.get_player(ev.playerId).put({x:ev.x, y:ev.y}, ev.objType, ev.isSuccess);
 				break;
+			case 'EAT_FOOD':
+				game.get_player(ev.playerId).eatFood();
+				break;
 			case 'LAY_EGG':
 				game.get_player(ev.playerId).layEgg();
 				break;
@@ -76,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				game.gui.updateLeaderboardText();
 				break;
 			case 'INCANT_START':
-				const p = game.get_player(ev.priestId);
+				const p = game.get_player(ev.playerId);
 				p.leadIncant(ev.willSucceed);
 				if (ev.willSucceed) {
 					const t = game.tiles[p.x][p.y];
@@ -86,17 +89,19 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 				break;
 			case 'INCANT_FINISH':
-				game.get_player(ev.priestId).finishLeadIncant(ev.newLevel);
+				game.get_player(ev.playerId).finishLeadIncant(ev.newLevel);
 				stats.incHighestLevel(ev.newLevel, ev.levelupPids);
 				game.gui.updateLeaderboardText();
 				break;
 			case 'GAME_END':
 				// do cool stuff here;
 				stats.displayWinningTeam(ev.winningTeamIds);
+				break;
 			default:
 				console.log('event type not yet handled: ' + ev.type);
 			}
 		}
+		game.gui.update();
 	});
 });
 

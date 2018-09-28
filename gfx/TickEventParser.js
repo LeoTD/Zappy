@@ -44,6 +44,7 @@ class TickEventParser extends stream.Transform {
 		case 'INVENTORY':
 		case 'LAY_EGG':
 		case 'CONNECT':
+		case 'EAT_FOOD':
 			this.addEvent({
 				type: msg[0],
 				playerId: Number(msg[1])
@@ -107,7 +108,7 @@ class TickEventParser extends stream.Transform {
 		case 'INCANT_START':
 			this.constructMultiMessageEvent({
 				type: 'INCANT_START',
-				priestId: undefined,
+				playerId: undefined,
 				willSucceed: undefined,
 				participants: [],
 				newLevel: undefined,
@@ -115,7 +116,7 @@ class TickEventParser extends stream.Transform {
 			});
 			break;
 		case 'LEAD_RITUAL':
-			this.multi.priestId = Number(msg[1]);
+			this.multi.playerId = Number(msg[1]);
 			this.multi.willSucceed = Number(msg[2]);
 			this.multi.participants.push(Number(msg[1]));
 			this.multi.newLevel = Number(msg[3]);
@@ -130,7 +131,7 @@ class TickEventParser extends stream.Transform {
 		case 'INCANT_FINISH':
 			this.constructMultiMessageEvent({
 				type: 'INCANT_FINISH',
-				priestId: Number(msg[1]),
+				playerId: Number(msg[1]),
 				newLevel: Number(msg[2]),
 				levelupPids: []
 			});

@@ -40,6 +40,11 @@ class Gui{
 		}
 	}
 
+	update() {
+		if (this.playerDetail)
+			this.playerDetail.update();
+	}
+
 	displayPlayerDetail() {
 		this.playerDetail = new PlayerDetail();
 		this.advTex.addControl(this.playerDetail);
