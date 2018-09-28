@@ -1,6 +1,5 @@
 #include "server.h"
 #include "command_list_type.h"
-#include "command_queue_type.h"
 #include "client_type.h"
 #include "player_type.h"
 

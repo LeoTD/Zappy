@@ -10,19 +10,15 @@ void	start_server_and_game(void)
 	init_global_hatch_queue();
 }
 
-void	animate(void);
-
 int		main(int argc, char **argv)
 {
 	t_command_list	*cmds;
-	int				fd;
 
-	parse_command_line_options(argc, argv);
+	parse_options(argc, argv);
 	start_server_and_game();
 	while (1)
 	{
-		while ((fd = iter_next_readable_socket()) != -1)
-			handle_waiting_connection_data(fd);
+		handle_incoming_socket_data();
 		if (have_we_ticked())
 		{
 			gfx_sendall("TICK %d\n", get_elapsed_ticks());

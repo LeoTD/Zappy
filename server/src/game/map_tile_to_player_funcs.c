@@ -52,17 +52,3 @@ int			remove_player_from_tile(t_player *p, t_tile *t)
 	p->tile = NULL;
 	return (0);
 }
-
-t_player	*is_player_on_tile(t_player *p, t_tile *t)
-{
-	int			i;
-
-	i = -1;
-	while (++i < t->parray_size)
-		if (t->players[i] == p)
-			break ;
-	if (i == t->parray_size)
-		return (0);
-	else
-		return (p);
-}

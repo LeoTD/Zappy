@@ -36,11 +36,6 @@ void		init_teams(int teams, int players)
 
 int			game_init(int x, int y, int teams, int players)
 {
-	int			i;
-	int			j;
-
-	i = -1;
-	j = -1;
 	if ((g_map = malloc(sizeof(t_game_info))) == NULL)
 		ERR_OUT("game_init; malloc");
 	create_map(x, y);

@@ -1,4 +1,5 @@
 #include "server.h"
+#include "clients_lookup.h"
 #include "client_type.h"
 #include "test.h"
 
@@ -24,7 +25,8 @@ void test_can_make_and_free_client(void)
 
 void populate_client_lookup_with_fake_data(void)
 {
-	initialize_clients();
+	bzero(g_clients, sizeof(g_clients));
+	g_count_clients = 0;
 	register_client(1, 99, ACTIVE_PLAYER);
 	register_client(63, 729, ACTIVE_PLAYER);
 	register_client(107, 24, ACTIVE_PLAYER);
@@ -33,13 +35,13 @@ void populate_client_lookup_with_fake_data(void)
 void test_can_register_clients(void)
 {
 	populate_client_lookup_with_fake_data();
-	assert(check_lookup_size(get_clients()) == 3);
+	assert(check_lookup_size(g_clients) == 3);
 }
 
 void test_getting_client_by_id(void)
 {
 	populate_client_lookup_with_fake_data();
-	t_client **gc = get_clients();
+	t_client **gc = g_clients;
 	assert(get_client_by_id(99) == gc[0]);
 	assert(get_client_by_id(729) == gc[1]);
 	assert(get_client_by_id(24) == gc[2]);
@@ -48,7 +50,7 @@ void test_getting_client_by_id(void)
 void test_getting_client_by_socket_fd(void)
 {
 	populate_client_lookup_with_fake_data();
-	t_client **gc = get_clients();
+	t_client **gc = g_clients;
 	assert(get_client_by_socket_fd(1) == gc[0]);
 	assert(get_client_by_socket_fd(63) == gc[1]);
 	assert(get_client_by_socket_fd(107) == gc[2]);
@@ -56,7 +58,7 @@ void test_getting_client_by_socket_fd(void)
 
 void test_unregister_client_by_id()
 {
-	t_client **gc = get_clients();
+	t_client **gc = g_clients;
 	t_client *to_remove = gc[1];
 	populate_client_lookup_with_fake_data();
 	unregister_client_by_id(to_remove->id);

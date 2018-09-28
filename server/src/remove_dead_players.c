@@ -22,7 +22,6 @@ void	remove_dead_players(void)
 		if ((client = get_client_by_id(player_ids[i])))
 		{
 			send_death_message(client->socket_fd);
-			socket_lookup_remove(client->socket_fd);
 			unregister_client_by_id(player_ids[i]);
 		}
 		++i;

@@ -1,6 +1,5 @@
 #include "server.h"
 #include "client_type.h"
-#include "command_queue_type.h"
 #include "command_type.h"
 
 #define MAX_USER_COMMAND_LENGTH 4096
@@ -70,7 +69,7 @@ void		enqueue_commands_from_user_message(t_client *client, char *msg)
 	}
 }
 
-void	receive_user_message(int cli_fd)
+void		receive_user_message(int cli_fd)
 {
 	t_client	*client;
 	char		*msg;

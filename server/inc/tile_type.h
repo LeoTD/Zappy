@@ -2,7 +2,7 @@
 # define TILE_TYPE_H
 # include "server.h"
 
-struct s_tile
+struct	s_tile
 {
 	t_player			**players;
 	int					parray_size;

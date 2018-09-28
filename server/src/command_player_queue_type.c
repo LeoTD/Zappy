@@ -1,6 +1,5 @@
 #include "server.h"
 #include "command_type.h"
-#include "command_queue_type.h"
 #include "command_list_type.h"
 #include "command_player_queue_type.h"
 #define MOVE_FIRST(x) ((x + 10) % 10)
@@ -17,18 +16,6 @@ void				ply_new_cmdqueue(t_ply_cmd_queue *q)
 	q->dequeue_timer = -1;
 }
 
-void				ply_free_cmdqueue(t_ply_cmd_queue *q)
-{
-	int			i;
-	
-	i = -1;
-	if (!q)
-		return ;
-	while (++i < 10)
-		if (q->jobs[i])
-			free(q->jobs[i]);
-}
-
 int					ply_enqueue_command(t_ply_cmd_queue *q, t_command *cmd)
 {
 	if (!q || q->size >= MAX_COMMANDS)
@@ -40,7 +27,8 @@ int					ply_enqueue_command(t_ply_cmd_queue *q, t_command *cmd)
 		q->jobs[MOVE_FIRST(q->size + q->head_ind)] = new_cmdlist(cmd);
 		q->jobs[MOVE_FIRST(q->size + q->head_ind)]->next = NULL;
 		if (q->size <= 0)
-			q->dequeue_timer = get_cmdfunc_tick_delay(q->jobs[q->head_ind]->cmd->cmdfunc);
+			q->dequeue_timer =
+				get_cmdfunc_tick_delay(q->jobs[q->head_ind]->cmd->cmdfunc);
 		q->size++;
 	}
 	return (0);
@@ -58,7 +46,8 @@ int					ply_enqueue_front(t_ply_cmd_queue *q, t_command *cmd)
 		q->jobs[MOVE_FIRST(q->head_ind)] = new_cmdlist(cmd);
 		q->jobs[MOVE_FIRST(q->head_ind)]->next = NULL;
 		q->size++;
-		q->dequeue_timer = get_cmdfunc_tick_delay(q->jobs[q->head_ind]->cmd->cmdfunc);
+		q->dequeue_timer =
+			get_cmdfunc_tick_delay(q->jobs[q->head_ind]->cmd->cmdfunc);
 	}
 	return (0);
 }
@@ -77,7 +66,8 @@ t_command_list		*ply_dequeue_command(t_ply_cmd_queue *q)
 		q->head_ind = MOVE_FIRST(q->head_ind + 1);
 		q->size--;
 		if (q->size > 0)
-			q->dequeue_timer = get_cmdfunc_tick_delay(q->jobs[q->head_ind]->cmd->cmdfunc);
+			q->dequeue_timer =
+				get_cmdfunc_tick_delay(q->jobs[q->head_ind]->cmd->cmdfunc);
 		else
 			q->dequeue_timer = -1;
 		return (temp);

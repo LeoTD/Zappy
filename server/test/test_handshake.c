@@ -20,7 +20,7 @@ void test_sends_welcome_message(void)
 			select(get_server_fd() + 1, &readable, NULL, NULL, &timeout);
 			if (FD_ISSET(get_server_fd(), &readable))
 			{
-				handle_waiting_connection_data(get_server_fd());
+				handle_incoming_socket_data();
 				assert(string_equal_file_contents("WELCOME\n", "client_received.txt"));
 				exit(0);
 			}
@@ -39,13 +39,13 @@ void do_client_completion_test(char *test_teamname, char *expect)
 	nanosleep(&(struct timespec){ 0, 100000000 }, NULL);
 	while ((fd = iter_next_readable_socket()) == -1)
 		;
-	initiate_user_connection_handshake(fd);
+	initiate_handshake(fd);
 	while ((fd = iter_next_readable_socket()) != -1)
 		;
 	while ((fd = iter_next_readable_socket()) == -1)
 		;
 	assert(fd != get_server_fd());
-	complete_user_connection_handshake(fd);
+	complete_handshake(fd);
 	assert(string_equal_file_contents(expect, "client_received.txt"));
 }
 
@@ -57,7 +57,6 @@ void test_completing_handshake_with_one_client(void)
 	do_client_completion_test("zerg", ok);
 	do_client_completion_test("notateam", "WELCOME\n");
 }
-
 
 void test_handshake(void)
 {

@@ -13,9 +13,3 @@ t_client	*new_client(int socket_fd, int id, int type)
 	c->id = id;
 	return (c);
 }
-
-void		free_client(t_client *client)
-{
-	ply_free_cmdqueue(&(client->cmdqueue));
-	free(client);
-}

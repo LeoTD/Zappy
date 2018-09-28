@@ -11,7 +11,7 @@ void	print_map_info(void);
 void	place_resource(int type, int y, int x)
 {
 	if (type == 6)
-		place_food(GM(x,y));
+		g_map->tile[x][y].count[FOOD] += 1;
 	else
 		place_stone(type, GM(x,y));
 }

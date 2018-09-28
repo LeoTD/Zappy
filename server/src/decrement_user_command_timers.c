@@ -1,6 +1,6 @@
 #include "server.h"
 #include "client_type.h"
-#include "command_queue_type.h"
+#include "command_player_queue_type.h"
 
 void	decrement_user_command_timers(void)
 {

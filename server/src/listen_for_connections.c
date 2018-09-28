@@ -46,17 +46,26 @@ void		listen_for_connections(int port)
 	socket_lookup_add(fd, SERVER);
 }
 
-void		handle_waiting_connection_data(int fd)
+void		handle_incoming_socket_data(void)
 {
-	if (fd == get_server_fd())
-		initiate_user_connection_handshake(fd);
-	else if (socket_lookup_has(fd, HANDSHAKE))
-		complete_user_connection_handshake(fd);
-	else if (socket_lookup_has(fd, GFX))
-		unregister_client_by_id(get_client_by_socket_fd(fd)->id);
-	else
+	int		fd;
+
+	while ((fd = iter_next_readable_socket()) != -1)
 	{
-		assert(socket_lookup_has(fd, ACTIVE_PLAYER));
-		receive_user_message(fd);
+		if (fd == get_server_fd())
+			initiate_handshake(fd);
+		else if (socket_lookup_has(fd, HANDSHAKE))
+			complete_handshake(fd);
+		else if (socket_lookup_has(fd, GFX))
+		{
+			fprintf(stderr, "received unhandled message \
+from GFX client; closing connection\n");
+			unregister_client_by_id(get_client_by_socket_fd(fd)->id);
+		}
+		else
+		{
+			assert(socket_lookup_has(fd, ACTIVE_PLAYER));
+			receive_user_message(fd);
+		}
 	}
 }

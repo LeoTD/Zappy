@@ -14,7 +14,7 @@ void test_parses_error_free_command_line_options(void)
 	};
 	char *argv[] = {"./test_server", "-p", "4321", "-x", "90", "-y", "20", "-c", "3", "-t", "100", "-n", "zerg", "protoss", "terran", NULL };
 	int argc = 15;
-	parse_command_line_options(argc, argv);
+	parse_options(argc, argv);
 	assert(correct_opts.server_port == g_opts.server_port);
 	assert(correct_opts.world_width == g_opts.world_width);
 	assert(correct_opts.world_height == g_opts.world_height);
@@ -26,7 +26,7 @@ void test_parses_error_free_command_line_options(void)
 	assert(g_opts.team_names[i] == NULL);
 }
 
-void test_parse_command_line_options(void)
+void test_parse_options(void)
 {
 	test_parses_error_free_command_line_options();
 	printf("%s: ok\n", __FILE__);

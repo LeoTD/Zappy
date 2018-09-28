@@ -15,7 +15,7 @@ static void	gfx_eventmsg_game_end(int num_winners, int *team_ids)
 	gfx_sendall("%s", "DONE\n");
 }
 
-void	handle_possible_gameover(void)
+void		handle_possible_gameover(void)
 {
 	int			*winning_team_ids;
 	int			game_end_state;

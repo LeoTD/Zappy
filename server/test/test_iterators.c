@@ -1,5 +1,6 @@
 #include "test.h"
 #include "server.h"
+#include "clients_lookup.h"
 
 void		test_iter_tiles(void)
 {
@@ -111,7 +112,8 @@ void		test_iter_clients(void)
 	int			nclients;
 	int			found;
 
-	initialize_clients();
+	bzero(g_clients, sizeof(g_clients));
+	g_count_clients = 0;
 	nclients = 20;
 	for (int i = 0; i < nclients; i++)
 	{
@@ -129,7 +131,7 @@ void		test_iter_clients(void)
 		;
 	for (int i = 0; (all_copy[i] = iter_clients(-1)); i++)
 		;
-	for (t_client **clients = get_clients(); clients[0]; clients++)
+	for (t_client **clients = g_clients; clients[0]; clients++)
 	{
 		t_client **expect_one = clients[0]->type == GFX ? gfx_copy : players_copy;
 		t_client **expect_none = clients[0]->type == GFX ? players_copy : gfx_copy;

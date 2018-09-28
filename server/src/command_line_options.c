@@ -1,6 +1,6 @@
 #include "server.h"
 
-struct s_opts	g_opts = {};
+struct s_opts	g_opts = { 0, 0, 0, 0, 0, 0, 0 };
 
 static void		usage(void)
 {
@@ -46,6 +46,20 @@ static void		parse_team_names(char **argv)
 	optind += teamcount - 1;
 }
 
+int				team_name_to_id(char *name)
+{
+	int		i;
+
+	i = 0;
+	while (g_opts.team_names[i])
+	{
+		if (!strcmp(g_opts.team_names[i], name))
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 static void		ensure_all_options_present(void)
 {
 	if (g_opts.server_port <= 0
@@ -59,7 +73,7 @@ static void		ensure_all_options_present(void)
 	}
 }
 
-void			parse_command_line_options(int argc, char **argv)
+void			parse_options(int argc, char **argv)
 {
 	char	ch;
 

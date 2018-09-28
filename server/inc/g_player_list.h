@@ -6,7 +6,7 @@
 
 # define START_SIZE 64
 
-t_player        **g_player_list;
-int             g_list_size;
+t_player	**g_player_list;
+int			g_list_size;
 
 #endif

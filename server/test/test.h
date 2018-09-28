@@ -31,6 +31,8 @@ void start_game_with_fake_options(void);
 void init_user_commands_test_gamestate(void);
 int lowest_active_player_id(void);
 int	place_stone(int type, t_tile *t);
+t_player	*is_player_on_tile(t_player *p, t_tile *t);
+t_player		*new_player_on_tile(int team_id, int x, int y);
 
 // tests_see.c
 void	fill_col_resources(int x, int y1, int y2, int quantity, int type);

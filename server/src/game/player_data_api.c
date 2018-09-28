@@ -37,8 +37,3 @@ t_player		*get_player(int pid)
 		return (NULL);
 	return (g_player_list[pid]);
 }
-
-int				get_player_list_size(void)
-{
-	return (g_list_size);
-}

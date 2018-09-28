@@ -3,7 +3,7 @@
 # include "server.h"
 # include "command_list_type.h"
 
-struct s_command_queue
+struct	s_command_queue
 {
 	t_command_list	*head;
 	t_command_list	*tail;

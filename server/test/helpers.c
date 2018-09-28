@@ -16,6 +16,29 @@ char **stone_names = (char *[]){ "linemate", "deraumere", "sibur", "mendiane", "
 char system_sprintf_buf[4096] = { 0 };
 int place_food(t_tile *t);
 
+t_player		*new_player_on_tile(int team_id, int x, int y)
+{
+	t_player	*p;
+
+	p = new_player(team_id);
+	add_player_to_tile(p, &g_map->tile[x][y]);
+	return (p);
+}
+
+t_player	*is_player_on_tile(t_player *p, t_tile *t)
+{
+	int			i;
+
+	i = -1;
+	while (++i < t->parray_size)
+		if (t->players[i] == p)
+			break ;
+	if (i == t->parray_size)
+		return (0);
+	else
+		return (p);
+}
+
 void init_user_commands_test_gamestate(void)
 {
 	int mapx = 18;
@@ -25,10 +48,10 @@ void init_user_commands_test_gamestate(void)
 	t_player *p2 = new_player_on_tile(0, 2, 0);
 	p1->facing = SOUTH;
 	p2->facing = WEST;
-	place_food(&g_map->tile[0][0]);
-	place_food(&g_map->tile[3][0]);
-	place_food(&g_map->tile[3][0]);
-	place_food(&g_map->tile[2][1]);
+	g_map->tile[0][0].count[FOOD] += 1;
+	g_map->tile[3][0].count[FOOD] += 1;
+	g_map->tile[3][0].count[FOOD] += 1;
+	g_map->tile[2][1].count[FOOD] += 1;
 	place_stone(0, &g_map->tile[0][0]);
 	place_stone(1, &g_map->tile[1][0]);
 	place_stone(5, &g_map->tile[3][0]);

@@ -56,7 +56,10 @@ int				*kill_and_return_dead_players(int *size)
 int				mark_player_for_death(t_player *p)
 {
 	if (!g_dead_pids)
-		g_dead_pids = calloc((g_obit_size = OBIT_START_SIZE), sizeof(int));
+	{
+		g_obit_size = OBIT_START_SIZE;
+		g_dead_pids = calloc(g_obit_size, sizeof(int));
+	}
 	if (g_dead_num == g_obit_size)
 		g_dead_pids = realloc(g_dead_pids, (g_obit_size *= 2) * sizeof(int));
 	remove_player_from_tile(p, p->tile);

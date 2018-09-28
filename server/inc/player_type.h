@@ -1,7 +1,8 @@
 #ifndef PLAYER_TYPE_H
 # define PLAYER_TYPE_H
 # include "server.h"
-struct s_player
+
+struct	s_player
 {
 	t_tile				*tile;
 	int					facing;

@@ -8,14 +8,6 @@
 
 static int		g_pid_count;
 
-/*
-** TODO: Takes avatar on team [ team_id ] off the empty avatar list
-** 		 Adds that avatar to the active player list.
-** 		 returns the player_id.
-**
-** 		 If no empty avatar is found, returns [ -1 ].
-*/
-
 int				assign_avatar(int team_id)
 {
 	t_player	*new;
@@ -25,11 +17,6 @@ int				assign_avatar(int team_id)
 		return (-1);
 	return (new->id);
 }
-
-/*
-** Take a pointer to a [ t_player * ]
-** Mallocs and fills the struct with initial values
-*/
 
 void			reset_pid(void)
 {
@@ -57,13 +44,4 @@ t_player		*new_player(int team_id)
 	add_player_to_team_waitlist(tmp);
 	g_map->players++;
 	return (tmp);
-}
-
-t_player		*new_player_on_tile(int team_id, int x, int y)
-{
-	t_player	*p;
-
-	p = new_player(team_id);
-	add_player_to_tile(p, &g_map->tile[x][y]);
-	return (p);
 }

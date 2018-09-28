@@ -2,7 +2,7 @@
 # define COMMAND_TYPE_H
 # include "server.h"
 
-struct s_command
+struct	s_command
 {
 	t_cmdfunc	cmdfunc;
 	char		*args;

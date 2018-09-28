@@ -2,6 +2,7 @@
 #include "player_type.h"
 #include "tile_type.h"
 #include "client_type.h"
+#include "clients_lookup.h"
 
 t_tile		*iter_tiles(void)
 {
@@ -66,7 +67,7 @@ t_client	*iter_clients(int type)
 	t_client		*c;
 
 	if (clients == NULL)
-		clients = get_clients();
+		clients = g_clients;
 	while (1)
 	{
 		c = *clients++;

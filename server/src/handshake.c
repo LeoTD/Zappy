@@ -2,11 +2,12 @@
 #include "player_type.h"
 #include "client_type.h"
 #include "tile_type.h"
+#include "clients_lookup.h"
 
 #define MEANINGLESS_GFX_CLIENT_ID -1
 #define GFX_CLIENT_SECRET_KEY "banana"
 
-void		initiate_user_connection_handshake(int serv_fd)
+void		initiate_handshake(int serv_fd)
 {
 	int					cli_fd;
 	struct sockaddr_in	client_addr;
@@ -25,37 +26,23 @@ void		initiate_user_connection_handshake(int serv_fd)
 	}
 }
 
-static int	team_id_if_slot_available(char *msg)
-{
-	int		open_slots;
-	int		team_id;
-	int		i;
-
-	team_id = -1;
-	i = 0;
-	while (g_opts.team_names[i])
-	{
-		if (!strcmp(g_opts.team_names[i], msg))
-		{
-			team_id = i;
-			break ;
-		}
-		++i;
-	}
-	if (team_id == -1 || (open_slots = get_team_open_slots(team_id)) == 0)
-		return (-1);
-	return (team_id);
-}
-
-static void	greet_user_client(int fd, int team_id)
+static void	finish_new_player_handshake(int fd, char *client_msg)
 {
 	char	response[256];
 	int		open_slots;
+	int		team_id;
+	int		player_id;
 
-	open_slots = get_team_open_slots(team_id);
+	if ((team_id = team_name_to_id(client_msg)) == -1)
+		return (socket_lookup_remove(fd, 1));
+	if ((open_slots = get_team_open_slots(team_id)) == -1)
+		return (socket_lookup_remove(fd, 1));
 	snprintf(response, sizeof(response), "%d\n%d %d\n",
 			open_slots, g_opts.world_width, g_opts.world_height);
 	send(fd, response, strlen(response), 0);
+	player_id = assign_avatar(team_id);
+	register_client(fd, player_id, ACTIVE_PLAYER);
+	gfx_sendall("CONNECT %d\n", player_id);
 }
 
 static void	send_command_tick_delays(int fd)
@@ -77,12 +64,13 @@ static void	send_command_tick_delays(int fd)
 			get_cmdfunc_tick_delay(fork_finish));
 }
 
-static void	gfx_eventmsg_greeting(int fd)
+static void	finish_gfx_handshake(int fd)
 {
 	t_player	*p;
 	t_tile		*t;
 	int			i;
 
+	register_client(fd, MEANINGLESS_GFX_CLIENT_ID, GFX);
 	gfx_sendone(fd, "TICK %d\n", get_elapsed_ticks());
 	gfx_sendone(fd, "WORLD %d %d %d\n", g_opts.world_width,
 			g_opts.world_height, g_opts.tickrate);
@@ -104,30 +92,20 @@ static void	gfx_eventmsg_greeting(int fd)
 	gfx_sendone(fd, "%s", "DONE\n");
 }
 
-void		complete_user_connection_handshake(int cli_fd)
+void		complete_handshake(int cli_fd)
 {
-	char				msg[MAX_TEAM_NAME_LENGTH + 1];
-	int					team_id;
-	int					player_id;
+	char	msg[MAX_TEAM_NAME_LENGTH + 1];
 
 	if (recv(cli_fd, msg, MAX_TEAM_NAME_LENGTH, 0) <= 0)
+		return (socket_lookup_remove(cli_fd, 1));
+	if (g_count_clients == MAX_CLIENTS)
 	{
-		fputs("cli_fd closed during handshake\n", stderr);
-		socket_lookup_remove(cli_fd);
-		close(cli_fd);
-		return ;
+		fputs("Aborting handshake; already at capacity\n", stderr);
+		return (socket_lookup_remove(cli_fd, 1));
 	}
 	msg[strcspn(msg, "\n")] = '\0';
 	if (!strcmp(GFX_CLIENT_SECRET_KEY, msg))
-	{
-		register_client(cli_fd, MEANINGLESS_GFX_CLIENT_ID, GFX);
-		gfx_eventmsg_greeting(cli_fd);
-	}
-	else if ((team_id = team_id_if_slot_available(msg)) != -1)
-	{
-		greet_user_client(cli_fd, team_id);
-		player_id = assign_avatar(team_id);
-		register_client(cli_fd, player_id, ACTIVE_PLAYER);
-		gfx_sendall("CONNECT %d\n", player_id);
-	}
+		finish_gfx_handshake(cli_fd);
+	else
+		finish_new_player_handshake(cli_fd, msg);
 }

@@ -49,7 +49,7 @@ void	socket_lookup_add(int fd, enum e_socktype type)
 		g_max_fd = fd;
 }
 
-void	socket_lookup_remove(int fd)
+void	socket_lookup_remove(int fd, int do_close)
 {
 	int		new_max_fd;
 
@@ -67,6 +67,8 @@ void	socket_lookup_remove(int fd)
 		}
 		g_max_fd = new_max_fd;
 	}
+	if (do_close)
+		close(fd);
 }
 
 int		socket_lookup_has(int fd, enum e_socktype type)

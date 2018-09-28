@@ -32,12 +32,8 @@ INC			= inc/$(NAME).h \
 # ----------- SRC/GAME ------------------------------------------------------- #
 GAME_FILES	= map_creation.c \
 			  player_movement.c \
-			  tile_data_api.c \
 			  map_tile_movement.c \
 			  map_tile_to_player_funcs.c \
-			  map_stonefuncs.c \
-			  map_foodfuncs.c \
-			  player_actions.c \
 			  player_creation.c \
 			  player_death.c \
 			  player_data_api.c \
@@ -45,11 +41,9 @@ GAME_FILES	= map_creation.c \
 			  player_empty_list_funcs.c \
 			  game_init.c \
 			  game_upkeep.c \
-			  str_utils.c \
 			  resource_spawning.c \
-			  levelups_and_gameovers.c \
+			  winning_and_losing.c \
 			  direction.c \
-			  iterators.c \
 
 
 
@@ -64,9 +58,8 @@ USRCMD_FILES= advance.c \
 			  incantation.c \
 			  inventory.c \
 			  kick.c \
-			  take.c \
 			  left_right.c \
-			  put.c \
+			  put_take.c \
 			  see.c \
 			  simple_responses.c \
 
@@ -95,6 +88,7 @@ FILES		= active_socket_info.c \
 			  ascii_visuals.c \
 			  hatch_queue.c \
 			  gfx_event_messages.c \
+			  iterators.c \
 
 # Add any subfolder SRC's here:
 SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))

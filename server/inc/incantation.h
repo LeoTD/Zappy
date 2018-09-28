@@ -1,7 +1,7 @@
 #ifndef INCANTATION_H
 # define INCANTATION_H
 
-struct s_incant_args
+struct	s_incant_args
 {
 	int		priest_id;
 	int		*levelup_group;

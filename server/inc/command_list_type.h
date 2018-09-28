@@ -2,9 +2,9 @@
 # define COMMAND_LIST_TYPE_H
 # include "server.h"
 
-struct s_command_list
+struct	s_command_list
 {
-	t_command		*cmd;
+	t_command				*cmd;
 	struct s_command_list	*next;
 };
 
