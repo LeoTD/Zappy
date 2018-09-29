@@ -1,4 +1,5 @@
 #include "player_type.h"
+#include "hatch_queue.h"
 
 #define MAX_LEVEL 8
 #define LEVELCAPPED_PLAYERS_TO_WIN 6
@@ -29,6 +30,8 @@ int		is_everyone_dead(void)
 {
 	int		i;
 
+	if (g_hatch_queue.length > 0)
+		return (0);
 	i = 0;
 	while (i < g_opts.teamcount)
 	{
