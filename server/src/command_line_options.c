@@ -1,6 +1,6 @@
 #include "server.h"
 
-struct s_opts	g_opts = { 0, 0, 0, 0, 0, 0, 0 };
+struct s_opts	g_opts = { 100, 0, 0, 0, 0, 0, 0 };
 
 static void		usage(void)
 {
@@ -60,17 +60,14 @@ int				team_name_to_id(char *name)
 	return (-1);
 }
 
-static void		ensure_all_options_present(void)
+static int		have_bad_or_missing_options(void)
 {
-	if (g_opts.server_port <= 0
+	return (g_opts.server_port <= 0
 			|| g_opts.world_height <= 0
 			|| g_opts.world_width <= 0
 			|| g_opts.initial_players_per_team <= 0
 			|| g_opts.tickrate <= 0
-			|| g_opts.team_names == NULL)
-	{
-		usage();
-	}
+			|| g_opts.team_names == NULL);
 }
 
 void			parse_options(int argc, char **argv)
@@ -94,7 +91,8 @@ void			parse_options(int argc, char **argv)
 		else
 			usage();
 	}
-	if (g_opts.tickrate <= 0)
-		g_opts.tickrate = 100;
-	ensure_all_options_present();
+	if (argv[optind])
+		fprintf(stderr, "Extra operand `%s'\n", argv[optind]);
+	if (have_bad_or_missing_options() || argv[optind])
+		usage();
 }
