@@ -99,6 +99,7 @@ class playerAvatar {
 		Object.assign(opts, SpriteData[game.getTeamSpriteName(this.team)]);
 		opts.player = this;
 		this.sprite = new PlayerSprite(opts);
+		this.idle();
 	}
 
 	moveDirection(dir) {
