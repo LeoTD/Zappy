@@ -76,6 +76,65 @@ function createArcCamera(canvas, scene) {
 		if (this._onKeyDown) {
 			var camera = this.camera;
 			// Keyboard
+			var movx = 0.0;
+			var movz = 0.0;
+			for (var index = 0; index < this._keys.length; index++) {
+				var keyCode = this._keys[index];
+				if (this.keysUp.indexOf(keyCode) !== -1) {
+					movx += Math.sin(camera.rotation.y);
+					movz += Math.cos(camera.rotation.y);
+				}
+				else if (this.keysDown.indexOf(keyCode) !== -1) {
+					movx -= Math.sin(camera.rotation.y);
+					movz -= Math.cos(camera.rotation.y);
+				}
+				if (this.keysLeft.indexOf(keyCode) !== -1) {
+					//camera.cameraRotation.y += this.sensibility;
+					movx -= Math.sin(camera.rotation.y + Math.PI / 2);
+					movz -= Math.cos(camera.rotation.y + Math.PI / 2);
+				}
+				else if (this.keysRight.indexOf(keyCode) !== -1) {
+					movx += Math.sin(camera.rotation.y + Math.PI / 2);
+					movz += Math.cos(camera.rotation.y + Math.PI / 2);
+				}
+				if (this.keysMinus.indexOf(keyCode) !== -1) {
+					if (camera.mode !== BABYLON.Camera.ORTHOGRAPHIC_CAMERA) {
+						camera.position.x += this.sensibility;
+						camera.position.y += this.sensibility;
+						camera.position.z += this.sensibility;
+					}
+					camera.orthoTop += this.zoomSensibility;
+					camera.orthoBottom -= this.zoomSensibility;
+					camera.orthoLeft -= this.zoomSensibility;
+					camera.orthoRight += this.zoomSensibility;
+				}
+				else if (this.keysPlus.indexOf(keyCode) !== -1) {
+					if (camera.mode !== BABYLON.Camera.ORTHOGRAPHIC_CAMERA) {
+						camera.position.x -= this.sensibility;
+						camera.position.y -= this.sensibility;
+						camera.position.z -= this.sensibility;
+					}
+					camera.orthoTop -= this.zoomSensibility;
+					camera.orthoBottom += this.zoomSensibility;
+					camera.orthoLeft += this.zoomSensibility;
+					camera.orthoRight -= this.zoomSensibility;
+				}
+			}
+			var movementSpeed = 0.01;
+			var fooo = Math.sqrt(movx * movx + movz * movz);
+			if (fooo != 0)
+			{
+				movx /= fooo;
+				movz /= fooo;
+			}
+			camera.position.x += movx * camera.position.y * movementSpeed;
+			camera.position.z += movz * camera.position.y * movementSpeed;
+		}
+	};
+	customCameraInput.prototype.checkInputs = function () {
+		if (this._onKeyDown) {
+			var camera = this.camera;
+			// Keyboard
 			var target = camera.getTarget();
 			var oldtarget = target;
 			for (var index = 0; index < this._keys.length; index++) {
@@ -119,22 +178,19 @@ function createCustomCamera(canvas, scene) {
 
 	// try of isometric camera - GERARDO MODS
 	var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(200, 200, 200), scene);
-//	camera.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
+	//	camera.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
 	camera.orthoTop = 350;
 	camera.orthoBottom = -350;
 	camera.orthoLeft = -350;
 	camera.orthoRight = 350;
 
 	// This targets the camera to scene origin (Coord: (0, 0, 0))
-//	camera.setTarget(new BABYLON.Vector3(0, 0, 0));
-
-//	camera.setTarget(sphere.);
-
-
-	camera.rotation = new BABYLON.Vector3((Math.PI / 6), (Math.PI * 2.1 / -3), 0);
+	//	camera.setTarget(new BABYLON.Vector3(0, 0, 0));
+	camera.rotation = new BABYLON.Vector3((Math.PI / 4), 5 * Math.PI / 4, 0);
 
 	// This attaches the camera to the canvas
 	camera.attachControl(canvas, true);
+	camera.inputs.attached.mouse.detachControl(canvas);
 
 	// Remove default keyboard:
 	camera.inputs.removeByType("FreeCameraKeyboardMoveInput");
