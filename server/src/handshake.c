@@ -36,7 +36,7 @@ static void	finish_new_player_handshake(int fd, char *client_msg)
 
 	if ((team_id = team_name_to_id(client_msg)) == -1)
 		return (socket_lookup_remove(fd, 1));
-	if ((open_slots = get_team_open_slots(team_id)) == -1)
+	if ((open_slots = get_team_open_slots(team_id)) <= 0)
 		return (socket_lookup_remove(fd, 1));
 	snprintf(response, sizeof(response), "%d\n%d %d\n",
 			open_slots, g_opts.world_width, g_opts.world_height);
