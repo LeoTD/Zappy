@@ -1,10 +1,9 @@
+#include "server.h"
 #include "test.h"
 
 void	test_one_player_can_fork_once(void)
 {
 	game_init(1, 1, 1, 0);
-	init_global_hatch_queue();
-	t_command_queue *hq = get_hatch_queue();
 	t_player *p = new_player_on_tile(0, 0, 0);
 	fork_player(p->id, NULL);
 	for (int ticks = 0; ticks < 600; ticks++)
@@ -17,8 +16,6 @@ void	test_one_player_can_fork_once(void)
 void	test_many_forks(void)
 {
 	game_init(1, 1, 1, 0);
-	init_global_hatch_queue();
-	t_command_queue *hq = get_hatch_queue();
 	t_player *p = new_player_on_tile(0, 0, 0);
 	for (int ticks = 0; ticks < 630; ticks++)
 	{

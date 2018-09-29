@@ -12,7 +12,6 @@
 # include <sys/socket.h>
 # include <sys/time.h>
 # include <unistd.h>
-
 # include "language_defs.h"
 
 # define MAX_COMMANDS		10
@@ -222,9 +221,8 @@ void							send_results_to_users(t_command_list *lst);
 void							decrement_user_command_timers(void);
 
 // hatch_queue.c
-void							init_global_hatch_queue(void);
-t_command_queue					*get_hatch_queue(void);
 void							check_and_hatch_eggs(void);
+void							enqueue_player_egg(int x, int y, int team_id);
 
 //active_socket_info.c
 void							socket_lookup_init(int do_close);
@@ -254,15 +252,6 @@ void							free_client(t_client *client);
 // command_list_type.c
 t_command_list					*new_cmdlist(t_command *cmd);
 void							free_cmdlist(t_command_list *list);
-
-// command_queue_type.c
-t_command_queue					*new_cmdqueue(void);
-void							free_cmdqueue(t_command_queue *q);
-int								enqueue_command(
-		t_command_queue *q, t_command *cmd);
-int								enqueue_front(
-		t_command_queue *q, t_command *cmd);
-t_command_list					*dequeue_command(t_command_queue *q);
 
 // command_player_queue_type.c
 void							ply_new_cmdqueue(t_ply_cmd_queue *q);

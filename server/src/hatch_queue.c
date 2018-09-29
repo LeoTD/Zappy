@@ -1,60 +1,61 @@
 #include "server.h"
-#include "command_list_type.h"
-#include "command_queue_type.h"
-#include "command_type.h"
+#include "player_type.h"
+#include "tile_type.h"
+#include "hatch_queue.h"
+#include "delays.h"
 
-static t_command_queue	*g_hatch_queue;
-
-void			init_global_hatch_queue(void)
+struct s_hatch_queue		g_hatch_queue =
 {
-	g_hatch_queue = new_cmdqueue();
-}
+	.head = NULL,
+	.tail = NULL,
+	.length = 0
+};
 
-t_command_queue	*get_hatch_queue(void)
+void						enqueue_player_egg(int x, int y, int team_id)
 {
-	return (g_hatch_queue);
-}
+	struct s_player_egg	*egg;
 
-t_command_list	*get_hatch_events_this_tick(void)
-{
-	t_command_list	*curr;
-	t_command_list	*head;
-
-	curr = NULL;
-	head = NULL;
-	while (g_hatch_queue->head && g_hatch_queue->head->cmd->player_id == 0)
+	egg = malloc(sizeof(*egg));
+	egg->x = x;
+	egg->y = y;
+	egg->team_id = team_id;
+	egg->timer = DELAY_TIMER_EGG_HATCH;
+	egg->next = NULL;
+	if (g_hatch_queue.head == NULL)
 	{
-		if (!curr)
-		{
-			curr = dequeue_command(g_hatch_queue);
-			head = curr;
-		}
-		else
-			curr->next = dequeue_command(g_hatch_queue);
-		curr = curr->next;
+		g_hatch_queue.head = egg;
+		g_hatch_queue.tail = egg;
 	}
-	return (head);
-}
-
-void			decrement_hatch_event_timers(void)
-{
-	t_command_list	*event;
-
-	event = g_hatch_queue->head;
-	while (event)
+	else
 	{
-		assert(event->cmd);
-		event->cmd->player_id -= 1;
-		event = event->next;
+		g_hatch_queue.tail->next = egg;
+		g_hatch_queue.tail = egg;
 	}
+	g_hatch_queue.length += 1;
 }
 
-void			check_and_hatch_eggs(void)
+void						check_and_hatch_eggs(void)
 {
-	t_command_list	*hatch_events;
+	t_player			*p;
+	struct s_player_egg	*egg;
 
-	hatch_events = get_hatch_events_this_tick();
-	execute_command_list(hatch_events);
-	decrement_hatch_event_timers();
-	free_cmdlist(hatch_events);
+	while ((egg = g_hatch_queue.head) && egg->timer == 0)
+	{
+		p = new_player(egg->team_id);
+		add_player_to_tile(p, &g_map->tile[egg->x][egg->y]);
+		p->tile->eggs -= 1;
+		gfx_sendall("EGG_HATCH %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+			p->id, p->team_id, p->level, p->tile->x, p->tile->y, p->energy,
+			p->facing, p->count[FOOD], get_client_by_id(p->id) != NULL,
+			p->count[LINEMATE], p->count[DERAUMERE], p->count[SIBUR],
+			p->count[MENDIANE], p->count[PHIRAS], p->count[THYSTAME]);
+		g_hatch_queue.length -= 1;
+		g_hatch_queue.head = egg->next;
+		free(egg);
+	}
+	while (egg)
+	{
+		egg->timer -= 1;
+		egg = egg->next;
+	}
 }

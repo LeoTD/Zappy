@@ -11,6 +11,7 @@ void	feed_players(void)
 		if (p->energy <= 0 && p->count[FOOD] > 0)
 		{
 			p->count[FOOD]--;
+			gfx_sendall("EAT_FOOD %d\n", p->id);
 			p->energy = ENERGY_PER_FOOD;
 		}
 		else if (p->energy <= 0)

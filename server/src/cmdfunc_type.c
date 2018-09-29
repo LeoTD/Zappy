@@ -1,20 +1,19 @@
 #include "server.h"
+#include "delays.h"
 
 int					get_cmdfunc_tick_delay(t_cmdfunc f)
 {
 	if (f == connect_nbr)
-		return (0);
+		return (DELAY_TIMER_CONNECT_NBR);
 	if (f == inventory)
-		return (1);
+		return (DELAY_TIMER_INVENTORY);
 	if (f == fork_player)
-		return (42);
+		return (DELAY_TIMER_LAY_EGG);
 	if (f == incantation)
-		return (0);
+		return (DELAY_TIMER_START_INCANT);
 	if (f == incantation_finish)
-		return (300);
-	if (f == fork_finish)
-		return (600);
-	return (7);
+		return (DELAY_TIMER_FINISH_INCANT);
+	return (DELAY_TIMER_DEFAULT);
 }
 
 static t_cmdfunc	string_to_cmdfunc_nullary(char *s)

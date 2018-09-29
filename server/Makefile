@@ -1,35 +1,11 @@
 NAME		= server
 
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		+= -Wall -Werror -Wextra
 INC_FLAGS	= -I inc
-
-# -g for lldb
 DEBUG		= #-g
 
-# Cosmetics Section:
-OK_COLOR	= \033[38;5;105;1m
-OBJ_COLOR	= \033[38;5;208m
-COM_COLOR	= \033[38;5;200m
-LIB_COLOR	= \033[1;32m
-NO_COLOR    = \033[m
-
-COM_STRING	= "Compiling:"
-# End Cosmetics.
-
-# Add header files here: (use full relative path to Makefile)
-INC			= inc/$(NAME).h \
-			  inc/command_type.h \
-			  inc/command_list_type.h \
-			  inc/command_queue_type.h \
-			  inc/command_player_queue_type.h \
-			  inc/tile_type.h \
-			  inc/player_type.h \
-			  inc/client_type.h \
-			  inc/fork_player.h \
-
-# ---------------------------------------------------------------------------- #
-# ----------- SRC/GAME ------------------------------------------------------- #
+GAME_SRC	= $(addprefix game/, $(GAME_FILES))
 GAME_FILES	= map_creation.c \
 			  player_movement.c \
 			  map_tile_movement.c \
@@ -45,12 +21,7 @@ GAME_FILES	= map_creation.c \
 			  winning_and_losing.c \
 			  direction.c \
 
-
-
-GAME_SRC	= $(addprefix game/, $(GAME_FILES))
-
-# ---------------------------------------------------------------------------- #
-# ----------- SRC/USER_COMMANDS ---------------------------------------------- #
+USRCMD_SRC	= $(addprefix user_commands/, $(USRCMD_FILES))
 USRCMD_FILES= advance.c \
 			  broadcast.c \
 			  connect_nbr.c \
@@ -63,15 +34,11 @@ USRCMD_FILES= advance.c \
 			  see.c \
 			  simple_responses.c \
 
-USRCMD_SRC	= $(addprefix user_commands/, $(USRCMD_FILES))
-
-# Add source files here: (files assumed to be in ./src folder)
 FILES		= active_socket_info.c \
 			  cmdfunc_type.c \
 			  command_type.c \
 			  command_line_options.c \
 			  command_list_type.c \
-			  command_queue_type.c \
 			  command_player_queue_type.c \
 			  listen_for_connections.c \
 			  receive_user_message.c \
@@ -90,12 +57,8 @@ FILES		= active_socket_info.c \
 			  gfx_event_messages.c \
 			  iterators.c \
 
-# Add any subfolder SRC's here:
 SRC			= $(addprefix src/, $(FILES) $(GAME_SRC) $(USRCMD_SRC))
 
-# MAIN is used by		"make"
-# TESTMAIN is used by	"make test"
-# (Use full relative path to Makefile)
 MAIN		= src/server.c
 
 TESTMAIN	= test/testmain.c
@@ -103,13 +66,17 @@ TESTS		= $(wildcard test/test_*.c) test/helpers.c
 
 # ---------------------------------------------------------------------------- #
 
+BLUE	= \033[38;5;105;1m
+GREEN	= \033[1;32m
+NO_COLOR    = \033[m
+
 all: $(NAME)
 
 $(NAME): $(SRC) $(INC) $(MAIN)
-	@mkdir -p ../bin
-	@printf "%b" "$(LIB_COLOR)Compiling: $(OK_COLOR)$(NAME)\n$(NO_COLOR)"
+	mkdir -p ../bin
+	@printf "%b" "$(GREEN)Compiling: $(BLUE)$(NAME)\n$(NO_COLOR)"
 	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -o $(NAME) $(MAIN) $(SRC)
-	@cp $(NAME) ../bin/
+	cp $(NAME) ../bin/
 
 clean:
 	@printf "Cleaning up $(NAME)...\n"
@@ -124,12 +91,12 @@ re: fclean all
 test: CFLAGS += -Wno-error -Wno-unused-parameter -Wno-unused-variable
 test: test_$(NAME)
 test_$(NAME): $(SRC) $(INC) $(TESTMAIN) $(TESTS)
-	@printf "%b" "$(LIB_COLOR)Compiling Test: $(OK_COLOR)test_$(NAME)\n$(NO_COLOR)"
+	@printf "%b" "$(GREEN)Compiling: $(BLUE)test_$(NAME)\n$(NO_COLOR)"
 	@$(CC) $(DEBUG) $(CFLAGS) $(INC_FLAGS) -Itest -o test_$(NAME) $(TESTMAIN) $(TESTS) $(SRC)
 
 norm:
-	@printf "%b" "$(LIB_COLOR)$(NAME): Checking Norm...\n$(NO_COLOR)"
-	@norminette $(SRC) $(INC) $(MAIN)
+	@printf "%b" "$(GREEN)$(NAME): Checking Norm...\n$(NO_COLOR)"
+	norminette $(SRC) $(INC) $(MAIN)
 
 dev: CFLAGS += -Wno-error -fsanitize=address -fsanitize-address-use-after-scope -fsanitize=undefined
 dev: all

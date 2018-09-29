@@ -26,10 +26,8 @@ void			reset_pid(void)
 t_player		*new_player(int team_id)
 {
 	t_player	*tmp;
-	int			i;
 	static int	faceable_directions[4] = { NORTH, EAST, SOUTH, WEST };
 
-	i = -1;
 	if ((tmp = malloc(sizeof(t_player))) == NULL)
 		ERR_OUT("player creation; malloc");
 	bzero(tmp->count, sizeof(tmp->count));

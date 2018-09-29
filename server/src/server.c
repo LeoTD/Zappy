@@ -7,7 +7,6 @@ void	start_server_and_game(void)
 	seed_tiles_initial_resources();
 	listen_for_connections(g_opts.server_port);
 	init_tick_timer();
-	init_global_hatch_queue();
 }
 
 int		main(int argc, char **argv)

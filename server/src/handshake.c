@@ -3,6 +3,7 @@
 #include "client_type.h"
 #include "tile_type.h"
 #include "clients_lookup.h"
+#include "delays.h"
 
 #define MEANINGLESS_GFX_CLIENT_ID -1
 #define GFX_CLIENT_SECRET_KEY "banana"
@@ -47,21 +48,21 @@ static void	finish_new_player_handshake(int fd, char *client_msg)
 
 static void	send_command_tick_delays(int fd)
 {
-	gfx_sendone(fd, "DELAY_TIME SEE %d\n", get_cmdfunc_tick_delay(see));
-	gfx_sendone(fd, "DELAY_TIME ADVANCE %d\n", get_cmdfunc_tick_delay(advance));
-	gfx_sendone(fd, "DELAY_TIME RIGHT %d\n", get_cmdfunc_tick_delay(right));
-	gfx_sendone(fd, "DELAY_TIME LEFT %d\n", get_cmdfunc_tick_delay(left));
+	gfx_sendone(fd, "DELAY_TIME SEE %d\n", DELAY_TIMER_SEE);
+	gfx_sendone(fd, "DELAY_TIME ADVANCE %d\n", DELAY_TIMER_ADVANCE);
+	gfx_sendone(fd, "DELAY_TIME RIGHT %d\n", DELAY_TIMER_RIGHT);
+	gfx_sendone(fd, "DELAY_TIME LEFT %d\n", DELAY_TIMER_LEFT);
 	gfx_sendone(fd, "DELAY_TIME LEAD_RITUAL %d\n",
-			get_cmdfunc_tick_delay(incantation_finish));
-	gfx_sendone(fd, "DELAY_TIME KICK %d\n", get_cmdfunc_tick_delay(kick));
+			DELAY_TIMER_FINISH_INCANT);
+	gfx_sendone(fd, "DELAY_TIME KICK %d\n", DELAY_TIMER_KICK);
 	gfx_sendone(fd, "DELAY_TIME BROADCAST %d\n",
-			get_cmdfunc_tick_delay(broadcast));
-	gfx_sendone(fd, "DELAY_TIME TAKE %d\n", get_cmdfunc_tick_delay(take));
-	gfx_sendone(fd, "DELAY_TIME PUT %d\n", get_cmdfunc_tick_delay(put));
+			DELAY_TIMER_BROADCAST);
+	gfx_sendone(fd, "DELAY_TIME TAKE %d\n", DELAY_TIMER_TAKE);
+	gfx_sendone(fd, "DELAY_TIME PUT %d\n", DELAY_TIMER_PUT);
 	gfx_sendone(fd, "DELAY_TIME LAY_EGG %d\n",
-			get_cmdfunc_tick_delay(fork_player));
+			DELAY_TIMER_LAY_EGG);
 	gfx_sendone(fd, "DELAY_TIME EGG_HATCH %d\n",
-			get_cmdfunc_tick_delay(fork_finish));
+			DELAY_TIMER_EGG_HATCH);
 }
 
 static void	finish_gfx_handshake(int fd)

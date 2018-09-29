@@ -3,7 +3,6 @@
 # include <fcntl.h>
 # include <sys/resource.h>
 # include "tile_type.h"
-# include "command_queue_type.h"
 # include "command_list_type.h"
 # include "command_type.h"
 # include "client_type.h"
