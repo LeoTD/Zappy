@@ -1,6 +1,7 @@
 class TileContentSprite extends BABYLON.Sprite {
 	constructor(type) {
 		const manager = game.getContentSpriteManagerFor(type);
+		manager.renderingGroupId = 1;
 		super(type, manager);
 		this._count = 0;
 		this.size = 5;

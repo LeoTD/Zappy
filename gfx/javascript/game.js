@@ -40,9 +40,12 @@ class Game {
 		var skyboxMaterial = new BABYLON.BackgroundMaterial("skyBox", this.scene);
 		skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("skybox0/skybox", this.scene);
 		skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+		skyboxMaterial.backFaceCulling = false;
 		//	skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
 		//	skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 		skybox.material = skyboxMaterial;
+		skybox.infiniteDistance = true;
+		skybox.renderingGroupId = 0;
 		// Register a render loop to repeatedly render the scene
 		this.alpha = 0;
 	

@@ -15,5 +15,6 @@ class Board {
 		tileTexture.diffuseTexture.vScale = dim.y; //Repeat {y} times on the Horizontal Axes
 		tileTexture.opacityFresnel = false;
 		this._mesh.material = tileTexture;
+		this._mesh.renderingGroupId = 1;
 	}
 }
