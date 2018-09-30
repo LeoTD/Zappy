@@ -168,7 +168,7 @@ class TickEventParser extends stream.Transform {
 				width: Number(msg[1]),
 				height: Number(msg[2]),
 				tickrate: Number(msg[3]),
-				startTick: Number(msg[4]),
+				startTick: this.currentTick.tickNum,
 				tiles: [],
 				commandDelays: [],
 				teamNames: [],

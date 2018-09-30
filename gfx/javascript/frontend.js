@@ -110,7 +110,7 @@ function fastForwardToGameState(ev) {
 		x: ev.width,
 		y: ev.height,
 		tickrate: ev.tickrate,
-		num_elapsed_ticks: ev.startTick,
+		currentTick: ev.startTick,
 		teams: ev.teamNames
 	});
 	stats = new Stats(ev.teamNames);

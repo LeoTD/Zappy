@@ -7,12 +7,12 @@ class Game {
 
 		this.teams					= opts.teams;
 		this.tickrate				= opts.tickrate;
-		this.current_tick			= opts.num_elapsed_ticks;
 
 		// Player and tile arrays for detailed game state
 		//     management and for deploying animations.
 		this.players				= [];
 		this.MAX_PLAYERS			= 1024;
+		this.currentTick = opts.currentTick;
 		this.tileSize = 25;
 		this.tiles					= [];
 		for (let i = 0; i < this.x; i++)
