@@ -65,8 +65,6 @@ class Game {
 		this.alpha = 0;
 	
 		this.gui = new Gui();
-		this.gui.displayLeaderboard();
-		this.gui.displayPlayerDetail();
 
 		game.scene.registerBeforeRender( () => {
 			skybox.rotation.y = this.alpha;

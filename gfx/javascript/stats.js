@@ -1,6 +1,7 @@
 class Stats {
 	constructor(teamNames) {
-		this.teams = teamNames.map(name => ( {
+		this.teams = teamNames.map((name, idx) => ( {
+			teamId: idx,
 			playersOnTeam: 0,
 			highestLevelOnTeam: 1,
 			playersAtHighestLevel: 0,

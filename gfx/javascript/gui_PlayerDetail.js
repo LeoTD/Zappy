@@ -3,28 +3,16 @@ class PlayerDetail extends BABYLON.GUI.Rectangle {
 		super("player-detail-container");
 		this.adaptHeightToChildren = true;
 		this.width = "360px";
-		this.background = 'SlateGray';
 		this.paddingRight = "20px";
 		this.paddingBottom = "20px";
 		this.fontSize = 14;
 		this.addInventoryPanel();
 		this.addPlayerSummary();
-		this.trackPlayerSpriteClicks();
 		this.isVisible = false;
-	}
-
-	trackPlayerSpriteClicks() {
-		game.scene.onPointerDown = () => {
-			const pickResult = game.scene.pickSprite(
-				game.scene.pointerX,
-				game.scene.pointerY,
-				(sprite) => sprite.isPickable
-			);
-			if (pickResult.pickedSprite && pickResult.pickedSprite.player) {
-				game.gui.followedPlayer = pickResult.pickedSprite.player;
-				this.update();
-			}
-		};
+		this.horizontalAlignment
+			= BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+		this.verticalAlignment
+			= BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
 	}
 
 	addInventoryPanel() {
@@ -73,7 +61,7 @@ class PlayerSummary extends BABYLON.GUI.StackPanel {
 class PlayerTeamAndIdElement extends BABYLON.GUI.TextBlock {
 	constructor() {
 		super("player-team-and-id");
-		this.width = "180px";
+		this.width = "240px";
 		this.height = "60px";
 		this.paddingLeft = "10px";
 		this.paddingTop = "10px";
@@ -153,7 +141,7 @@ class PlayerInventoryPanel extends BABYLON.GUI.StackPanel {
 class PlayerInventoryItem extends BABYLON.GUI.StackPanel {
 	constructor(itemType, itemName) {
 		super(`player-inventory-item-${itemType}`);
-		this.isVertical = false
+		this.isVertical = false;
 		this.itemType = itemType;
 		this.itemName = itemName;
 		this.width = '140px';
