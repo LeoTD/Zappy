@@ -11,13 +11,13 @@ struct s_opts g_opts = {
 
 static char *g_usage =
 "Usage: ./server -p <port> -x <width> -y <height> -n <team> \
-[<team>] [<team>] ... -c <nb> -t <t>\n\
+[<team>] [<team>] ... -c <nb> [-t <t>]\n\
 -p port number\n\
 -x world width\n\
 -y world height\n\
 -n team_name_1 team_name_2 ...\n\
 -c number of clients authorized at the beginning of the game\n\
--t time unit divider (the greater t is, the faster the game will go)\n";
+-t [100] time unit divider (the greater t is, the faster the game will go)\n";
 
 static int *g_opts_keys[] = {
 	['x'] = &g_opts.world_width,
