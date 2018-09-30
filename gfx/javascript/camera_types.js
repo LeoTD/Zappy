@@ -14,13 +14,13 @@ function createCustomCamera(canvas, scene) {
 
 	// Create our own manager:
 	var customCameraInput = function () {
-		this._keys			= [];
-		this.keysLeft		= [37];
-		this.keysRight		= [39];
-		this.keysUp			= [38];
-		this.keysDown		= [40];
-		this.keysPlus		= [187];
-		this.keysMinus		= [189];
+		this._keys = [];
+		this.keysLeft = [37];
+		this.keysRight = [39];
+		this.keysUp = [38];
+		this.keysDown = [40];
+		this.keysPlus = [187];
+		this.keysMinus = [189];
 		this.sensibility	= 5;
 		this.zoomSensibility = 5;
 	};

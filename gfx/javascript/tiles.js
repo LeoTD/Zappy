@@ -1,7 +1,7 @@
 class Tile {
 	constructor(opts) {
-		this.x					= opts.x;
-		this.y					= opts.y;
+		this.x = opts.x;
+		this.y = opts.y;
 		this.inventory = {
 			eggs: 0,
 			food: 0,

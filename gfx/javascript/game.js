@@ -1,54 +1,36 @@
 class Game {
 	constructor(opts) {
-		
-		// General information:
-		this.x						= opts.x;
-		this.y						= opts.y;
-
-		this.teams					= opts.teams;
-		this.tickrate				= opts.tickrate;
-
-		// Player and tile arrays for detailed game state
-		//     management and for deploying animations.
-		this.players				= [];
-		this.MAX_PLAYERS			= 1024;
+		this.x = opts.x;
+		this.y = opts.y;
+		this.teams = opts.teams;
+		this.tickrate = opts.tickrate;
 		this.currentTick = opts.currentTick;
+		this.players = [];
+		this.MAX_PLAYERS = 1024;
 		this.tileSize = 25;
-		this.tiles					= [];
+		this.tiles = [];
 		for (let i = 0; i < this.x; i++)
 			this.tiles.push([]);
 
-		// ------- Constructs required by the BABYLON graphics engine ------- //
-		// -------	   or created to better manage BABYLON resources: ------- //
-		this.canvas					= undefined;
-		this.engine					= undefined;
-		this.scene					= undefined;
+		this.canvas = undefined;
+		this.engine = undefined;
+		this.scene = undefined;
 
-		// Various Sprite Managers
-		// Space saved for action/reaction sprite assets
-		//
-		//
-		//
-
-		// Graphical entities with global scope:
-		this.camera					= undefined;
-		this.skybox					= undefined;
-		this.board					= undefined;
-		this.sunlight				= undefined;
-		this.alpha					= undefined;
+		this.camera = undefined;
+		this.skybox = undefined;
+		this.board = undefined;
+		this.sunlight = undefined;
+		this.alpha = undefined;
 	}
 
 	startup() {
-		this.canvas 	= document.getElementById('renderCanvas');		// Get the canvas element
-		this.engine 	= new BABYLON.Engine(this.canvas, true);		// Generate the BABYLON 3D engine
-		this.scene 		= new BABYLON.Scene(this.engine);				// Create the scene object
-
-		//		this.scene.clearColor = new BABYLON.Color3(0, 0.1, 0.5);
-
-		this.sunlight	= new BABYLON.HemisphericLight('hemiLight', new BABYLON.Vector3(1, 1, 0), this.scene);
+		this.canvas = document.getElementById('renderCanvas');		// Get the canvas element
+		this.engine = new BABYLON.Engine(this.canvas, true);		// Generate the BABYLON 3D engine
+		this.scene = new BABYLON.Scene(this.engine);				// Create the scene object
+		this.sunlight = new BABYLON.HemisphericLight('hemiLight', new BABYLON.Vector3(1, 1, 0), this.scene);
 		this.sunlight.intensity = 0;
 
-		this.board		= new Board();
+		this.board = new Board();
 		this.board.createMesh({x:this.x, y:this.y}, this.scene);
 		this.initSpriteManagers();
 

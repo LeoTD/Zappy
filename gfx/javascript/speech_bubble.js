@@ -1,24 +1,24 @@
 class speechBubble {
 	constructor(player) {
 
-		this.p				= player;
+		this.p = player;
 
-		this.s				= {
-			put:		undefined,
-			take:		undefined,
+		this.s = {
+			put: undefined,
+			take: undefined,
 			inventory:	undefined,
 			broadcast:	undefined,
-			see:		undefined,
-			kick:		undefined,
-			incant:		undefined,
+			see: undefined,
+			kick: undefined,
+			incant: undefined,
 			incantFail:	undefined,
-			fork:		undefined,
-			layEgg:		undefined,
-			doneLayingEgg:		undefined,
+			fork: undefined,
+			layEgg: undefined,
+			doneLayingEgg: undefined,
 			eggHatch:	undefined,
-			death:		undefined,
-			fail:		undefined,
-		}
+			death: undefined,
+			fail: undefined,
+		};
 	}
 
 	cmdPopup(key) {
