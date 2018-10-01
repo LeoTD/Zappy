@@ -60,7 +60,7 @@ class speechBubble {
 
 		game.scene.beginDirectAnimation(
 			this.s[key],
-			[cascade],
+			[cascade, fade],
 			0,
 			100,
 			false,
