@@ -83,7 +83,7 @@ class PlayerTeamAndIdElement extends BABYLON.GUI.TextBlock {
 class PlayerPortraitElement extends BABYLON.GUI.Image {
 	constructor() {
 		super("player-portrait");
-		this.height = "176px";
+		this.height = "166px";
 		this.width = "128px";
 		this.paddingLeft = "20px";
 		this.stretch = BABYLON.GUI.Image.STRETCH_UNIFORM;
@@ -99,15 +99,21 @@ class PlayerPortraitElement extends BABYLON.GUI.Image {
 class PlayerStatusElement extends BABYLON.GUI.TextBlock {
 	constructor() {
 		super("player-status-element");
-		this.width = "128px";
-		this.height = "64px";
+		this.width = "228px";
+		this.height = "74px";
 		this.fontSize = 14;
 		this.color = 'white';
+		this.left = "16px";
+		this.horizontalAlignment =
+			BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+		this.textHorizontalAlignment =
+			BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
 	}
 
 	update() {
 		const player = game.gui.followedPlayer;
 		this.text = `level ${player.level}`
+		+ `\naction: ${player.currentAction}`
 		+ `\nat <${player.x}, ${player.y}>`;
 	}
 }

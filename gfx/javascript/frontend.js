@@ -25,10 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
 				game.get_player(ev.playerId).left();
 				break;
 			case 'KICK':
-				if (ev.kickees.length === 0)
+				if (ev.kickees.length === 0) {
+					game.get_player(ev.playerId).kick(false);
 					game.get_player(ev.playerId).fail();
-				else
+				} else {
+					game.get_player(ev.playerId).kick(true);
 					kickPlayers(ev.kickees, ev.direction);
+				}
 				break;
 			case 'TAKE':
 				game.get_player(ev.playerId).take({x:ev.x, y:ev.y}, ev.objType, ev.isSuccess);
@@ -57,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				o.food = ev.food;
 				o.inv = ev.inventory;
 				game.addPlayer(o);
-				game.get_player(o.id).eggHatch({x:o.x, y:o.y});
+				game.tiles[ev.x][ev.y].removeContent('eggs', 1);
 				break;
 			case 'SEE':
 				game.get_player(ev.playerId).see();

@@ -1,5 +1,15 @@
 const compass = ['n', 'e', 's', 'w', 'n'];
 
+const itemNames = {
+	stone0: 'linemate',
+	stone1: 'deraumere',
+	stone2: 'sibur',
+	stone3: 'mendiane',
+	stone4: 'phiras',
+	stone5: 'thystame',
+	food: 'food',
+};
+
 class playerAvatar {
 	constructor(opts) {
 		this.bubble = new speechBubble(this);
@@ -15,10 +25,26 @@ class playerAvatar {
 		this.team = opts.team;
 		this.facing = opts.facing || 's';
 		this.alive = true;
+		this._lastAction = {
+			title: 'idle', untilTick: Number.POSITIVE_INFINITY
+		};
+	}
+
+	setAction(title, timer) {
+		this._lastAction.title = title;
+		this._lastAction.untilTick = game.currentTick + timer;
+	}
+
+	get currentAction() {
+		if (game.currentTick >= this._lastAction.untilTick) {
+			this.setAction('idle', Number.POSITIVE_INFINITY);
+		}
+		return this._lastAction.title;
 	}
 
 	broadcast() {
 		this.bubble.cmdPopup('broadcast');
+		this.setAction('broadcast', 7) ;
 	}
 
 	eatFood() {
@@ -28,15 +54,18 @@ class playerAvatar {
 	right() {
 		this.facing = compass[compass.indexOf(this.facing) + 1];
 		this.sprite.idleAnimation();
+		this.setAction('right', 7);
 	}
 
 	left() {
 		this.facing = compass[compass.lastIndexOf(this.facing) - 1];
 		this.sprite.idleAnimation();
+		this.setAction('left', 7);
 	}
 
 	idle() {
 		this.sprite.idleAnimation();
+		this.setAction('idle', Number.POSITIVE_INFINITY);
 	}
 
 	put(tile, type, isSuccess) {
@@ -48,31 +77,36 @@ class playerAvatar {
 		else {
 			this.fail();
 		}
+		const maybeFail = isSuccess ? "" : " (FAIL)";
+		const itemName = itemNames[type] ? itemNames[type] : "???";
+		this.setAction(`put ${itemName}${maybeFail}`, 7);
 	}
 
 	leadIncant(isSuccess) {
 		this.sprite.playLeadIncantationAnimation();
+		const maybeFail = isSuccess ? "" : " (FAIL)";
+		this.setAction(`incantation${maybeFail}`, 300);
 	}
 
 	finishLeadIncant(newLevel) {
 		this.sprite.resetAndIdle();
 		this.level = newLevel;
+		this.idle();
 	}
 
 	layEgg() {
+		this.setAction('fork', 42);
 		this.bubble.cmdPopup('fork');
 	}
 
 	doneLayingEgg(tile) {
 		game.tiles[tile.x][tile.y].addContent('eggs', 1);
+		this.idle();
 	}
 
-	eggHatch(tile) {
-		game.tiles[tile.x][tile.y].removeContent('eggs', 1);
-	}
-	
 	death() {
 		this.bubble.cmdPopup('death');
+		this.setAction('DEAD', Number.POSITIVE_INFINITY);
 		this.alive = false;
 		this.sprite.dispose();
 	}
@@ -86,14 +120,19 @@ class playerAvatar {
 		else {
 			this.fail();
 		}
+		const maybeFail = isSuccess ? "" : " (FAIL)";
+		const itemName = itemNames[type] ? itemNames[type] : "???";
+		this.setAction(`take ${itemName}${maybeFail}`, 7);
 	}
 
 	checkInventory() {
 		this.bubble.cmdPopup('inventory');
+		this.setAction('inventory', 1);
 	}
 
 	see() {
 		this.bubble.cmdPopup('see');
+		this.setAction('see', 7);
 	}
 
 	createSprite() {
@@ -114,6 +153,14 @@ class playerAvatar {
 	advance() {
 		this.sprite.advanceAnimation();
 		this.moveDirection(this.facing);
+		this.setAction('advance', 7);
+	}
+
+	kick(isSuccess) {
+		const maybeFail = isSuccess ? "" : " (FAIL)";
+		this.setAction(`kick${maybeFail}`, 7);
+		if (!isSuccess)
+			this.fail();
 	}
 
 	getKicked(dir) {
