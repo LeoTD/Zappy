@@ -4,9 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		const tick = JSON.parse(data);
 		if (game && !game.gameOver)
 			game.currentTick = tick.tickNum;
-//		console.log(tick.tickNum);
 		for (const ev of tick.events) {
-			console.log(ev);
 			switch(ev.type) {
 			case 'INIT':
 				fastForwardToGameState(ev);

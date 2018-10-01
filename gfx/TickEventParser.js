@@ -224,8 +224,7 @@ class TickEventParser extends stream.Transform {
 			break;
 
 		default:
-			console.log("not handled", msg);
-				//assert.fail('unhandled message type')
+			break;
 		}
 	}
 }
