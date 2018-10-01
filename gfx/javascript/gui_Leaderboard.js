@@ -23,6 +23,7 @@ class Leaderboard extends BABYLON.GUI.Rectangle {
 		this.header.width = 1;
 		this.header.height = "30px";
 		this.header.paddingLeft = "60px";
+		this.header.top = "10px";
 		this.header.verticalAlignment =
 			BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
 		this.header.textHorizontalAlignment =
@@ -119,7 +120,7 @@ class LeaderboardRow extends BABYLON.GUI.Rectangle {
 		this.color = "white";
 		this.alpha = 1;
 		this.thickness = 0;
-		this.left = 20;
+		this.left = "5px";
 		this.top = this.idx * (this.heightInPixels);
 		this.horizontalAlignment =
 			BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
@@ -149,9 +150,15 @@ class LeaderboardRow extends BABYLON.GUI.Rectangle {
 
 	displayTeamStats(s, idx) {
 		const maybeEllipsis = s.teamName.length > 17 ? "... " : " ";
+		const maxLvl = s.highestLevelOnTeam;
+		const nMax = s.playersAtHighestLevel;
 		this.leftBlock.text =
 			`• ${idx + 1}: team '${s.teamName.slice(0, 17)}'` + maybeEllipsis;
-		this.rightBlock.text =
-			`${s.playersAtHighestLevel} players @ level ${s.highestLevelOnTeam}`;
+		if (s.playersOnTeam === 0 && s.eggCount === 0) {
+			this.rightBlock.text = 'eliminated!';
+		} else {
+			this.rightBlock.text =
+				`${nMax} (of ${s.playersOnTeam}) players @ level ${maxLvl}`;
+		}
 	}
 }

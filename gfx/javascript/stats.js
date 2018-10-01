@@ -51,11 +51,17 @@ class TeamStats {
 	processEvent(ev) {
 		switch (ev.type) {
 		case 'DONE_LAYING_EGG':
-			this.eggCount += 1;
+			if (ev.teamId === this.teamId) {
+				this.eggCount += 1;
+			}
 			break;
 		case 'EGG_HATCH':
-			this.eggCount -= 1;
-			/* fallthrough */
+			if (ev.teamId === this.teamId) {
+				this.eggCount -= 1;
+				this._cache.players.dirty = true;
+				this._cache.levelInfo.dirty = true;
+			}
+			break;
 		case 'DEATH':
 		case 'INCANT_FINISH':
 			this._cache.players.dirty = true;
