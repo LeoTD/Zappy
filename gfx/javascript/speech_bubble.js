@@ -22,6 +22,7 @@ class speechBubble {
 	}
 
 	cmdPopup(key) {
+		SpriteData[key].manager.renderingGroupId = 1;
 		this.s[key] = new BABYLON.Sprite(key, SpriteData[key].manager);
 		this.s[key].color.a = 1;
 		this.s[key].size = 5;
