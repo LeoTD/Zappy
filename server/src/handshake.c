@@ -6,7 +6,7 @@
 #include "delays.h"
 
 #define MEANINGLESS_GFX_CLIENT_ID -1
-#define GFX_CLIENT_SECRET_KEY "banana"
+#define GFX_CLIENT_SECRET_KEY "-banana"
 
 void		initiate_handshake(int serv_fd)
 {

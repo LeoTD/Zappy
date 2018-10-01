@@ -33,7 +33,7 @@ io.sockets.on('connection', (sock) => {
 		process.argv[3] || 5555,
 		process.argv[2] || 'localhost',
 		() => {
-			bridge.write("banana\n");
+			bridge.write("-banana\n");
 			bridge.pipe(split2()).pipe(parseTicks).pipe(notify);
 		}
 	);
