@@ -71,6 +71,20 @@ function createCustomCamera(canvas, scene) {
 		}
 	};
 
+	// Unhook
+	customCameraInput.prototype.detachControl = function (element) {
+		if (this._onKeyDown) {
+			element.removeEventListener("keydown", this._onKeyDown);
+			element.removeEventListener("keyup", this._onKeyUp);
+			BABYLON.Tools.UnregisterTopRootEvents([
+				{ name: "blur", handler: this._onLostFocus }
+			]);
+			this._keys = [];
+			this._onKeyDown = null;
+			this._onKeyUp = null;
+		}
+	};
+
 	// This function is called by the system on every frame
 	customCameraInput.prototype.checkInputs = function () {
 		if (this._onKeyDown) {
@@ -78,31 +92,17 @@ function createCustomCamera(canvas, scene) {
 			// Keyboard
 			for (var index = 0; index < this._keys.length; index++) {
 				var keyCode = this._keys[index];
-				var cam_x = camera.getTarget().subtract(camera.position).x;
-				var cam_y = camera.getTarget().subtract(camera.position).y;
-				var cam_z = camera.getTarget().subtract(camera.position).z;
-				if (cam_x > 0)
-					cam_x = cam_x * cam_x / (1 - cam_y * cam_y);
-				else
-					cam_x = -1 * cam_x * cam_x / (1 - cam_y * cam_y);
-				if (cam_z > 0)
-					cam_z = cam_z * cam_z / (1 - cam_y * cam_y);
-				else
-					cam_z = -1 * cam_z * cam_z / (1 - cam_y * cam_y);
 				if (this.keysUp.indexOf(keyCode) !== -1) {
-					camera.position.x += this.sensibility * cam_x;
-					camera.position.z += this.sensibility * cam_z;
+					camera.position.x -= this.sensibility;
 				}
-				if (this.keysDown.indexOf(keyCode) !== -1) {
-					camera.position.x -= this.sensibility * cam_x;
-					camera.position.z -= this.sensibility * cam_z;
+				else if (this.keysDown.indexOf(keyCode) !== -1) {
+					camera.position.x += this.sensibility;
 				}
 				if (this.keysLeft.indexOf(keyCode) !== -1) {
 					camera.position.z -= this.sensibility;
 				}
-				if (this.keysRight.indexOf(keyCode) !== -1) {
-					camera.position.x += this.sensibility * cam_z;
-					camera.position.z -= this.sensibility * cam_x;
+				else if (this.keysRight.indexOf(keyCode) !== -1) {
+					camera.position.z += this.sensibility;
 				}
 				if (this.keysMinus.indexOf(keyCode) !== -1) {
 					camera.position.x += this.sensibility;
