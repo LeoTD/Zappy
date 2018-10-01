@@ -2,8 +2,6 @@ class PlayerSprite extends BABYLON.Sprite {
 	constructor({ player, manager, dimensions, animations, size }) {
 		manager.renderingGroupId = 1;
 		super("player", manager);
-		this.height = dimensions.height;
-		this.width = dimensions.width;
 		this.size = size;
 		this.player = player;
 		this.playWalkAnimation = animations.walk.bind(this);

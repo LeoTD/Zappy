@@ -18,7 +18,7 @@ const fftaPlayerSprite = (spriteName) => ({
 		width: 32,
 		height: 32,
 	},
-	size: 8,
+	size: 12,
 	animations: {
 		walk: function (legInterval) {
 			let startFrame = 2;
