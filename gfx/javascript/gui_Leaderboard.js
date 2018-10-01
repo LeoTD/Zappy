@@ -4,7 +4,7 @@ class Leaderboard extends BABYLON.GUI.Rectangle {
 	constructor() {
 		super("leaderboard-container");
 		this.height = "200px";
-		this.width = "480px";
+		this.width = "520px";
 		this.top = 40;
 		this.left = 20;
 		this.horizontalAlignment =
@@ -116,7 +116,7 @@ class LeaderboardRow extends BABYLON.GUI.Rectangle {
 		this.idx = idx;
 		this.paddingTop = "14px";
 		this.height = `${this.fontSizeInPixels + this.paddingTopInPixels}px`;
-		this.width = "400px";
+		this.width = "440px";
 		this.color = "white";
 		this.alpha = 1;
 		this.thickness = 0;
