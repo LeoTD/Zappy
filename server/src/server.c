@@ -34,7 +34,6 @@ int		main(int argc, char **argv)
 		if (have_we_ticked())
 		{
 			gfx_sendall("TICK %d\n", get_elapsed_ticks());
-			animate();
 			check_and_hatch_eggs();
 			game_upkeep();
 			remove_dead_players();

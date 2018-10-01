@@ -140,7 +140,7 @@ char					*incantation(int player_id, void *args)
 	ritual_completion_command->player_id = player_id;
 	result = get_eventual_incantation_result(get_player(player_id));
 	result->priest_id = player_id;
-	ritual_completion_command->args = result;
+	ritual_completion_command->args = (char *)result;
 	q = &(get_client_by_id(player_id)->cmdqueue);
 	if (q->size >= MAX_COMMANDS)
 		q->size -= 1;
