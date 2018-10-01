@@ -2,18 +2,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	var socket = io();
 	socket.on('tick', (data) => {
 		const tick = JSON.parse(data);
-		if (game)
+		if (game && !game.gameOver)
 			game.currentTick = tick.tickNum;
 //		console.log(tick.tickNum);
 		for (const ev of tick.events) {
 			console.log(ev);
-			stats.processEvent(ev);
 			switch(ev.type) {
 			case 'INIT':
 				fastForwardToGameState(ev);
-				break;
-			case 'BROADCAST':
-				game.get_player(ev.playerId).broadcast();
 				break;
 			case 'ADVANCE':
 				game.get_player(ev.playerId).advance();
@@ -97,9 +93,12 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 				break;
 			case 'GAME_END':
+				handleGameOver(ev);
+				break;
 			default:
 				console.log('event type not yet handled: ' + ev.type);
 			}
+			stats.processEvent(ev);
 		}
 		game.gui.update();
 	});
@@ -107,6 +106,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 var game;
 var stats;
+
+function handleGameOver(ev) {
+	game.gameOver = true;
+	for (let p of game.players.filter(p => p.alive)) {
+		if (ev.winningTeamIds.includes(p.team)) {
+			p.sprite.playLeadIncantationAnimation();
+			p.setAction('WIN', Number.POSITIVE_INFINITY);
+		} else {
+			p.death();
+		}
+	}
+	game.gui.update();
+}
 
 function fastForwardToGameState(ev) {
 	game = new Game({

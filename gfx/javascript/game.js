@@ -9,6 +9,7 @@ class Game {
 		this.MAX_PLAYERS = 1024;
 		this.tileSize = 25;
 		this.tiles = [];
+		this.gameOver = false;
 		for (let i = 0; i < this.x; i++)
 			this.tiles.push([]);
 
@@ -63,18 +64,6 @@ class Game {
 		window.addEventListener('resize', function () { 
 			game.engine.resize();
 		});
-	}
-
-	game_over() {
-
-	}
-
-	tick() {
-
-	}
-
-	spawn_resources() {
-
 	}
 
 	addPlayer(pinfo) {

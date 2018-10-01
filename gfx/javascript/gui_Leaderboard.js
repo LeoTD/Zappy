@@ -168,7 +168,10 @@ class LeaderboardRow extends BABYLON.GUI.Rectangle {
 		const nMax = s.playersAtHighestLevel;
 		this.leftBlock.text =
 			`• ${idx + 1}: team '${s.teamName.slice(0, 17)}'` + maybeEllipsis;
-		if (s.playersOnTeam === 0 && s.eggCount === 0) {
+		if (s.won) {
+			this.rightBlock.text = 'win!';
+			this.rightBlock.color = 'yellow';
+		} else if (s.playersOnTeam === 0 && s.eggCount === 0) {
 			this.rightBlock.text = 'eliminated!';
 		} else {
 			this.rightBlock.text =

@@ -105,6 +105,8 @@ class playerAvatar {
 	}
 
 	death() {
+		if (!this.alive)
+			return ;
 		this.bubble.cmdPopup('death');
 		this.setAction('DEAD', Number.POSITIVE_INFINITY);
 		this.alive = false;

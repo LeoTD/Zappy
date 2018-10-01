@@ -3,6 +3,7 @@ class TeamStats {
 		this.teamName = teamName;
 		this.teamId = teamId;
 		this.eggCount = 0;
+		this.won = false;
 		this._cache = {
 			levelInfo: { dirty: true, value: { highest: 0, countHighest: 0 } },
 			players: { dirty: true, value: [] },
@@ -66,6 +67,11 @@ class TeamStats {
 		case 'INCANT_FINISH':
 			this._cache.players.dirty = true;
 			this._cache.levelInfo.dirty = true;
+			break;
+		case 'GAME_END':
+			if (ev.winningTeamIds.includes(this.teamId)) {
+				this.won = true;
+			}
 			break;
 		default:
 			break;
