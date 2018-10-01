@@ -89,6 +89,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			case 'INCANT_FINISH':
 				game.get_player(ev.playerId).finishLeadIncant(ev.newLevel);
 				stats.incHighestLevel(ev.newLevel, ev.levelupPids);
+				for (let pid of ev.levelupPids) {
+					game.get_player(pid).level = ev.newLevel;
+				}
 				break;
 			case 'GAME_END':
 				// do cool stuff here;
