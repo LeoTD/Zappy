@@ -135,6 +135,8 @@ function fastForwardToGameState(ev) {
 			food: p.food,
 			inv: p.inventory,
 		});
+		if (!game.gui.followedPlayer)
+			game.gui.followedPlayer = game.get_player(p.playerId);
 		game.get_player(p.playerId).idle();
 	}
 }
