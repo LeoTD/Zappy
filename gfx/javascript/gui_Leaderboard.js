@@ -12,6 +12,7 @@ class Leaderboard extends BABYLON.GUI.Rectangle {
 		this.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
 		this.isHitTestVisible = false;
 		this.addHeader();
+		this.addTickTracker();
 		this.addRowsAndMaybeSlider();
 	}
 
@@ -30,6 +31,18 @@ class Leaderboard extends BABYLON.GUI.Rectangle {
 			BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
 		this.header.isHitTestVisible = false;
 		this.addControl(this.header);
+	}
+
+	addTickTracker() {
+		this.tickTracker = new BABYLON.GUI.TextBlock('leaderboard-ticks');
+		this.tickTracker.fontSize = '14px';
+		this.tickTracker.color = 'yellow';
+		this.tickTracker.resizeToFit = true;
+		this.tickTracker.verticalAlignment =
+			BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+		this.tickTracker.horizontalAlignment =
+			BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+		this.addControl(this.tickTracker);
 	}
 
 	addRowsAndMaybeSlider() {
@@ -75,6 +88,7 @@ class Leaderboard extends BABYLON.GUI.Rectangle {
 
 	update() {
 		this.rowsContainer.update(this.minDisplayedIdx);
+		this.tickTracker.text = `${game.currentTick} (t=${game.tickrate})`;
 	}
 }
 

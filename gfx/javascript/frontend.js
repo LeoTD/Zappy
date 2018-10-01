@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	var socket = io();
 	socket.on('tick', (data) => {
 		const tick = JSON.parse(data);
+		if (game)
+			game.currentTick = tick.tickNum;
 //		console.log(tick.tickNum);
 		for (const ev of tick.events) {
 			console.log(ev);
