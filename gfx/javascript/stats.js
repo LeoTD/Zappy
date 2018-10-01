@@ -1,43 +1,80 @@
-class Stats {
-	constructor(teamNames) {
-		this.teams = teamNames.map((name, idx) => ( {
-			teamId: idx,
-			playersOnTeam: 0,
-			highestLevelOnTeam: 1,
-			playersAtHighestLevel: 0,
-			teamName: name,
-			winners: undefined,
-		}));
+class TeamStats {
+	constructor (teamName, teamId) {
+		this.teamName = teamName;
+		this.teamId = teamId;
+		this.eggCount = 0;
+		this._cache = {
+			levelInfo: { dirty: true, value: { highest: 0, countHighest: 0 } },
+			players: { dirty: true, value: [] },
+		};
 	}
 
-	incPlayerCount(id) {
-		this.teams[id].playersOnTeam += 1;
+	get players() {
+		if (this._cache.players.dirty) {
+			this._cache.players.dirty = false;
+			this._cache.players.value =
+				game.players.filter(p => p.alive && p.team === this.teamId);
+		}
+		return this._cache.players.value;
 	}
 
+	get levelInfo() {
+		if (this._cache.levelInfo.dirty) {
+			this._cache.levelInfo.dirty = false;
+			const v = this._cache.levelInfo.value;
+			v.highest = 0;
+			v.countHighest = 0;
+			for (let p of this.players) {
+				if (p.level > v.highest) {
+					v.highest = p.level;
+					v.countHighest = 1;
+				} else if (p.level === v.highest) {
+					v.countHighest += 1;
+				}
+			}
+		}
+		return this._cache.levelInfo.value;
+	}
 
-	decPlayerCount(id, level) {
-		this.teams[id].playersOnTeam -= 1;
-		if (level === this.highestLevelOnTeam) {
-			this.teams[id].playersAtHighestLevel -= 1;
+	get highestLevelOnTeam() {
+		return this.levelInfo.highest;
+	}
+
+	get playersAtHighestLevel() {
+		return this.levelInfo.countHighest;
+	}
+
+	get playersOnTeam() {
+		return this.players.length;
+	}
+
+	processEvent(ev) {
+		switch (ev.type) {
+		case 'DONE_LAYING_EGG':
+			this.eggCount += 1;
+			break;
+		case 'EGG_HATCH':
+			this.eggCount -= 1;
+			/* fallthrough */
+		case 'DEATH':
+		case 'INCANT_FINISH':
+			this._cache.players.dirty = true;
+			this._cache.levelInfo.dirty = true;
+			break;
+		default:
+			break;
 		}
 	}
-
-	incHighestLevel(level, playerIds) {
-		var id = 0;
-		for (var i = 0; i < playerIds.length; i++) {
-			id = game.get_player(playerIds[i]).team;
-			if (level > this.teams[id].highestLevelOnTeam) {
-				this.teams[id].highestLevelOnTeam += 1;
-				this.teams[id].playersAtHighestLevel = 1;
-			}
-			else if (level === this.teams[id].highestLevelOnTeam) {
-				this.teams[id].playersAtHighestLevel += 1;
-			}
-		}
-	}
-
-	displayWinningTeam(ids) {
-		this.winners = ids;
-	}
-
 }
+
+stats = {
+	addTeams: function (teamNames) {
+		this.teams = teamNames.map((teamName, teamId) => {
+			return new TeamStats(teamName, teamId);
+		});
+	},
+	processEvent: function (ev) {
+		if (this.teams)
+			this.teams.forEach(ts => ts.processEvent(ev));
+	}
+};

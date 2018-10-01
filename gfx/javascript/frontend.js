@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 //		console.log(tick.tickNum);
 		for (const ev of tick.events) {
 			console.log(ev);
+			stats.processEvent(ev);
 			switch(ev.type) {
 			case 'INIT':
 				fastForwardToGameState(ev);
@@ -55,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				o.inv = ev.inventory;
 				game.addPlayer(o);
 				game.get_player(o.id).eggHatch({x:o.x, y:o.y});
-				stats.incPlayerCount(ev.teamId);
 				break;
 			case 'SEE':
 				game.get_player(ev.playerId).see();
@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				break;
 			case 'DEATH':
 				game.get_player(ev.playerId).death();
-				stats.decPlayerCount(game.get_player(ev.playerId).team, game.get_player(ev.playerId).level);
 				break;
 			case 'INCANT_START':
 				const p = game.get_player(ev.playerId);
@@ -88,15 +87,11 @@ document.addEventListener('DOMContentLoaded', function() {
 				break;
 			case 'INCANT_FINISH':
 				game.get_player(ev.playerId).finishLeadIncant(ev.newLevel);
-				stats.incHighestLevel(ev.newLevel, ev.levelupPids);
 				for (let pid of ev.levelupPids) {
 					game.get_player(pid).level = ev.newLevel;
 				}
 				break;
 			case 'GAME_END':
-				// do cool stuff here;
-				stats.displayWinningTeam(ev.winningTeamIds);
-				break;
 			default:
 				console.log('event type not yet handled: ' + ev.type);
 			}
@@ -116,8 +111,8 @@ function fastForwardToGameState(ev) {
 		currentTick: ev.startTick,
 		teams: ev.teamNames
 	});
-	stats = new Stats(ev.teamNames);
 	game.startup();
+	stats.addTeams(game.teams);
 	for (let tileStat of ev.tiles) {
 		const t = game.addTile({ x: tileStat.x, y: tileStat.y });
 		t.addContent("food", tileStat.food);
@@ -138,8 +133,6 @@ function fastForwardToGameState(ev) {
 			food: p.food,
 			inv: p.inventory,
 		});
-		stats.incPlayerCount(p.teamId);
-		stats.incHighestLevel(1, [p.playerId]);
 		game.get_player(p.playerId).idle();
 	}
 }

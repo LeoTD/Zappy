@@ -14,6 +14,7 @@ class playerAvatar {
 		this.level = opts.level;
 		this.team = opts.team;
 		this.facing = opts.facing || 's';
+		this.alive = true;
 	}
 
 	broadcast() {
@@ -72,6 +73,7 @@ class playerAvatar {
 	
 	death() {
 		this.bubble.cmdPopup('death');
+		this.alive = false;
 		this.sprite.dispose();
 	}
 
