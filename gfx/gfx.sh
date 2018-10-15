@@ -6,6 +6,7 @@ if [ $# -eq 0 -o $# -gt 2 ]; then
 	echo "This client can be started before the server spins up, in which case it will wait until the server is ready."
 	exit
 fi
+pkill -f node bridge.js
 zport=""
 zhost=""
 if [ $# -eq 1 ]; then
