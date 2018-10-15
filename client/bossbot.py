@@ -21,12 +21,12 @@ class BossBot:
     target = [0, 0, 0, 0, 0, 0, 0]
 #    requirements_met = False
     requirements =     [[1, 0, 0, 0, 0, 0, 16],
-                        [4, 2, 4, 0, 3, 0, 28],
-                        [2, 0, 1, 0, 2, 0, 28],
-                        [1, 1, 2, 0, 1, 0, 28],
-                        [1, 2, 1, 3, 0, 0, 28],
-                        [1, 2, 3, 0, 1, 0, 28],
-                        [2, 2, 2, 2, 2, 1, 28]]
+                        [2, 2, 2, 0, 0, 0, 20],
+                        [2, 0, 1, 0, 2, 0, 20],
+                        [1, 1, 2, 0, 1, 0, 20],
+                        [1, 2, 1, 3, 0, 0, 20],
+                        [1, 2, 3, 0, 1, 0, 20],
+                        [2, 2, 2, 2, 2, 1, 20]]
     tasks = [True, True, True, True, True, True, False]
     resources = ["linemate", "deraumere", "sibur", "mendiane", "phiras", "thystame", "food"]
     

@@ -26,14 +26,15 @@ class WorkBot:
     tile_inventory = [0 ,0 ,0 ,0 ,0 ,0 ,0]
     team_inventory = [0 ,0 ,0 ,0 ,0 ,0 ,0]
     target = [0, 0, 0, 0, 0, 0, 0]
+    nums = [0, 0, 0, 0, 0]
 #    requirements_met = False
     requirements =     [[1, 0, 0, 0, 0, 0, 16],
-                        [1, 1, 1, 0, 0, 0, 28],
-                        [2, 0, 1, 0, 2, 0, 28],
-                        [1, 1, 2, 0, 1, 0, 28],
-                        [1, 2, 1, 3, 0, 0, 28],
-                        [1, 2, 3, 0, 1, 0, 28],
-                        [2, 2, 2, 2, 2, 1, 28]]
+                        [1, 1, 1, 0, 0, 0, 20],
+                        [2, 0, 1, 0, 2, 0, 20],
+                        [1, 1, 2, 0, 1, 0, 20],
+                        [1, 2, 1, 3, 0, 0, 20],
+                        [1, 2, 3, 0, 1, 0, 20],
+                        [2, 2, 2, 2, 2, 1, 20]]
     tasks = [True, True, True, True, True, True, True]
     resources = ["linemate", "deraumere", "sibur", "mendiane", "phiras", "thystame", "food"]
 
@@ -284,16 +285,14 @@ class WorkBot:
         self.inventory[6] = 0
 
     def confirm_unique_bot_num(self):
-        self.nums = [0, 0, 0, 0, 0]
         while self.nums != [1, 1, 1, 1, 1]:
             self.nums = [0, 0, 0, 0, 0]
             self.broadcast("i'm bot %d" % self.bot_number)
-            self.conn.send("inventory\n")
-            self.confirm_command('{')
-            self.conn.send("inventory\n")
-            self.confirm_command('{')
+            while sum(self.nums) < 5:
+                self.get_next_line()
+                self.decode_msg(self.line)
             if self.nums[self.bot_number] > 1:
-                rand = randint(0, 1)
+                rand = randint(0, 2)
                 if rand == 0:
                     for i in range(5):
                         if self.nums[i] == 0:
@@ -307,7 +306,8 @@ class WorkBot:
             self.decode_msg(self.line)
         self.grab_food()
         if self.level == 1 and not self.bots_unique:
-            self.confirm_unique_bot_num()
+            rand = randint(0, 6)
+  #          self.confirm_unique_bot_num()
 
     def go_forage(self):
         print("\tWORKER: faraging")
