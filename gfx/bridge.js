@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 const server = http.createServer(app);
 server.listen(3000, () => {
 	console.log('listening on *:3000');
-});
+}).on('error', () => {});
 
 const io = socketio.listen(server);
 io.sockets.on('connection', (sock) => {

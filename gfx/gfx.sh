@@ -15,15 +15,16 @@ else
 	zhost="$1"
 	zport="$2"
 fi
-$(
+(
 	[ $(basename $(pwd)) = 'bin' ] && cd ..
 	cd gfx
 	echo "Waiting for $zhost:$zport"
 	while ! nc -z $zhost $zport; do
 	  sleep 0.1
 	done
-	node bridge.js $zhost $zport &
+	node bridge.js $zhost $zport &1>/dev/null &2>/dev/null &
 )
+sleep 0.5
 while ! nc -z localhost 3000; do
   sleep 0.1
 done
