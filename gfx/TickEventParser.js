@@ -35,7 +35,6 @@ class TickEventParser extends stream.Transform {
 
 	parse(line) {
 		const msg = line.toString().split(' ');
-		console.log(msg);
 		switch(msg[0]) {
 		case 'SEE':
 		case 'ADVANCE':
