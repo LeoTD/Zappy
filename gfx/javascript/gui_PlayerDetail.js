@@ -150,8 +150,9 @@ class PlayerInventoryItem extends BABYLON.GUI.StackPanel {
 		this.isVertical = false;
 		this.itemType = itemType;
 		this.itemName = itemName;
-		this.width = '140px';
+		this.width = '250px';
 		this.height = '32px';
+		this.paddingLeft = '110px';
 		this.addItemSprite();
 		this.addTextBlock();
 	}
