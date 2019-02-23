@@ -48,7 +48,8 @@ class PlayerSummary extends BABYLON.GUI.StackPanel {
 		this.addControl(this.portrait);
 		this.addControl(this.playerStatus);
 		this.portrait.horizontalAlignment =
-			BABYLON.GUI.HORIZONTAL_ALIGNMENT_LEFT;
+			BABYLON.GUI.HORIZONTAL_ALIGNMENT_RIGHT;
+//			BABYLON.GUI.HORIZONTAL_ALIGNMENT_LEFT;
 
 	}
 	update() {
@@ -150,8 +151,9 @@ class PlayerInventoryItem extends BABYLON.GUI.StackPanel {
 		this.isVertical = false;
 		this.itemType = itemType;
 		this.itemName = itemName;
-		this.width = '140px';
+		this.width = '250px';
 		this.height = '32px';
+		this.paddingLeft = '110px';
 		this.addItemSprite();
 		this.addTextBlock();
 	}
