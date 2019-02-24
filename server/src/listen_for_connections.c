@@ -25,7 +25,7 @@ void		increase_rlimit(void)
 	struct rlimit rl;
 
 	getrlimit(RLIMIT_NOFILE, &rl);
-	rl.rlim_cur = OPEN_MAX;
+	rl.rlim_cur = FOPEN_MAX;
 	setrlimit(RLIMIT_NOFILE, &rl);
 }
 

@@ -12,12 +12,13 @@
 
 #ifndef SERVER_H
 # define SERVER_H
+# define _GNU_SOURCE
+# include <stdio.h>
 # include <arpa/inet.h>
 # include <assert.h>
 # include <limits.h>
 # include <netdb.h>
 # include <stdarg.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/resource.h>
@@ -25,6 +26,7 @@
 # include <sys/socket.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <time.h>
 # include "language_defs.h"
 
 # define MAX_COMMANDS		10

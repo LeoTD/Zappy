@@ -1,7 +1,8 @@
 NAME		= server
 
 CC			= gcc
-CFLAGS		+= -Wall -Werror -Wextra
+#CFLAGS		+= -Wall -Werror -Wextra
+CFLAGS		+= 
 INC_FLAGS	= -I inc
 DEBUG		= #-g
 
