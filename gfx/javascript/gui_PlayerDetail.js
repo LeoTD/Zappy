@@ -48,8 +48,7 @@ class PlayerSummary extends BABYLON.GUI.StackPanel {
 		this.addControl(this.portrait);
 		this.addControl(this.playerStatus);
 		this.portrait.horizontalAlignment =
-			BABYLON.GUI.HORIZONTAL_ALIGNMENT_RIGHT;
-//			BABYLON.GUI.HORIZONTAL_ALIGNMENT_LEFT;
+			BABYLON.GUI.HORIZONTAL_ALIGNMENT_LEFT;
 
 	}
 	update() {
