@@ -1,21 +1,16 @@
 # Zappy ⚡️️️️️️️️⚡️
 
 A multi-players, single process and single thread game within a TCP/IP network 🤖
-* **Techinal part**: Zappy is a team project consisting of 5 people creating a world with resources (**the server** written in **C**) with complex AIs (**the clients** written in Python) that have personalities and actions. Server-client and client-client interactions happen through the server on a TCP/IP network which is displayed on **a Graphical Interface** (written in **JavaScript**). The game servers may only utilize **a SINGLE PROCCESS within a SINGLE THREAD**. Interesting parts about Zappy's technical part I'd like to mention about:
+* **Technical part**: Zappy is a team project consisting of 5 people creating a world with resources (**the server** written in **C**) with complex AIs (**the clients** written in Python) that have personalities and actions. Server-client and client-client interactions happen through the server on a TCP/IP network which is displayed on **a Graphical Interface** (written in **JavaScript**). The game servers may only utilize **a SINGLE PROCESS within a SINGLE THREAD**. Interesting parts about Zappy's technical part I'd like to mention about:
   * A time unit taken into consideration in **Event Driven Engine** allows to choose game speed (`-t <timeunit>` while executing server binary). The greater time unit, the faster game goes.
-  * We implement a **circular buffer for each player action's queue**, because it has a known maximum (10) and provides a faster acces time.
-  * Our GFX is both a Client and a Web Server written in nodejs, the client connects and identify as a Graphic Client after submitting a special token to the Server in C. After we secure the stream of information beetween the Game Engine and our Web server, we use [Babylon.js V3.3](https://github.com/BabylonJS/Babylon.js/releases?after=4.0.0-alpha.5), a javascript 3D Engine, to render the Game World in your browser and to update the information we use [Socket.io](https://github.com/socketio/socket.io) to enable a real-time bidirectional communication. Thank to this design we can host the Graphic Server in one computer and be able to have **Multiple Graphical Client** in differents computers just by connection to the&nbsp;`<computer-ip>:<port>` in your browser.
+  * We implement a **circular buffer for each player action's queue**, because it has a known maximum (10) and provides a faster access time.
+  * Our GFX is both a Client and a Web Server written in nodejs, the client connects and identify as a Graphic Client after submitting a special token to the Server in C. After we secure the stream of information between the Game Engine and our Web server, we use [Babylon.js V3.3](https://github.com/BabylonJS/Babylon.js/releases?after=4.0.0-alpha.5), a javascript 3D Engine, to render the Game World in your browser and to update the information we use [Socket.io](https://github.com/socketio/socket.io) to enable a real-time bidirectional communication. Thank to this design we can host the Graphic Server in one computer and be able to have **Multiple Graphical Client** in differents computers just by connection to the&nbsp;`<computer-ip>:<port>` in your browser.
   </br>
-
-
-
 * **Fun part**: Zappy is about creating families, surviving by eating food and collecting stones in order to level up. Each level has different requirements for a ritual, which makes the adventure more and more difficult for the AI players, which play on their own, without any help form their creator. The game is over once 6 members of one family reach the highest possible level (8).
 </br></br>
 
-![](imgs/zappy1.png)
-![](imgs/zappy2.png)
-![](imgs/zappy3.png)
-![](imgs/zappy5.png)
+![](resources/landscape.png)
+![](resources/contact.png)
 </br></br>
 
 # How to run Zappy?
@@ -113,7 +108,7 @@ Each player is allowed to use following commands:
 | kick | 7 | kick the players form your square |
 | broadcast \<text> | 7 | send a message to all players |
 | incantation | 300 | begin the ritual of incantation |
-| fork | 42 | lay an agg and create additional spot in a family |
+| fork | 42 | lay an egg and create additional spot in a family |
 | connect_nbr | 0 | number of unused connection within a family |
  
  </br>
