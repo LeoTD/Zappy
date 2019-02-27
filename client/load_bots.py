@@ -16,15 +16,16 @@ args = parser.parse_args()
 
 server_ip = args.host
 comm_port = args.port
+team_name = args.team
 worker = False
 
 print "Hello"
-boss = BossBot(server_ip, comm_port, "a")
+boss = BossBot(server_ip, comm_port, team_name)
 for i in range(5):
     pid = os.fork()
     if pid == 0:
         boss = None
-        work = WorkBot(server_ip, comm_port, "a")
+        work = WorkBot(server_ip, comm_port, team_name)
         worker = True
     else:
         break
