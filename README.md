@@ -6,16 +6,11 @@ A multi-players, single process and single thread game within a TCP/IP network ð
   * We implement a **circular buffer for each player action's queue**, because it has a known maximum (10) and provides a faster acces time.
   * Our GFX is both a Client and a Web Server written in nodejs, the client connects and identify as a Graphic Client after submitting a special token to the Server in C. After we secure the stream of information beetween the Game Engine and our Web server, we use [Babylon.js V3.3](https://github.com/BabylonJS/Babylon.js/releases?after=4.0.0-alpha.5), a javascript 3D Engine, to render the Game World in your browser and to update the information we use [Socket.io](https://github.com/socketio/socket.io) to enable a real-time bidirectional communication. Thank to this design we can host the Graphic Server in one computer and be able to have **Multiple Graphical Client** in differents computers just by connection to the&nbsp;`<computer-ip>:<port>` in your browser.
   </br>
-
-
-
 * **Fun part**: Zappy is about creating families, surviving by eating food and collecting stones in order to level up. Each level has different requirements for a ritual, which makes the adventure more and more difficult for the AI players, which play on their own, without any help form their creator. The game is over once 6 members of one family reach the highest possible level (8).
 </br></br>
 
-![](imgs/zappy1.png)
-![](imgs/zappy2.png)
-![](imgs/zappy3.png)
-![](imgs/zappy5.png)
+![](resources/landscape.png)
+![](resources/contact.png)
 </br></br>
 
 # How to run Zappy?
