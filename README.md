@@ -133,7 +133,7 @@ Each level has different ritual requirements:
 | | |
 |:-:|:-:|
 | 🇺🇸 [Joshua Gelbard](https://github.com/joshgelbard) | Server / GUI |
-| 🇨🇴 [Leonardo Tanenba](https://github.com/LeoTD) | Server / GUI |
+| 🇨🇴 [Leonardo Tanenbaum-Diaz](https://github.com/LeoTD) | Server / GUI |
 | 🇺🇸 [Ezekiel Liu](https://github.com/eliu42) | Server / GUI |
 | 🇨🇦 [Maksym Moros](https://github.com/maxmoros)| Server / AI |
 | 🇵🇪 [Gerardo Malpartida](https://github.com/regien)| Server / GUI |
